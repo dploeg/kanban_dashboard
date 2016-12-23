@@ -4,9 +4,10 @@ class WorkItem
 
   attr_accessor :start_date, :complete_date
 
-  def initialize(opts = {})
-    @start_date = opts[:start_date]
-    @complete_date = opts[:complete_date]
+  def initialize args
+    args.each do |k, v|
+      instance_variable_set("@#{k}", v) unless v.nil?
+    end
   end
 
   def lead_time

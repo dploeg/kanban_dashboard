@@ -15,7 +15,7 @@ class FileDataReader
     begin
       input_data = JSON.parse(file)
       input_data.each { |input_hash|
-        work_item = WorkItem.new(:start_date => input_hash['start_date'], :complete_date => input_hash['complete_date'])
+        work_item = WorkItem.new(input_hash)
         @work_items.push(work_item)
       }
     rescue => error
