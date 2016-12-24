@@ -11,7 +11,7 @@ class WorkItem
   end
 
   def lead_time
-    Date.strptime(@complete_date, "%d/%m/%Y") - Date.strptime(@start_date, "%d/%m/%Y")
+    (Date.strptime(@complete_date, "%d/%m/%Y") - Date.strptime(@start_date, "%d/%m/%Y")).to_i
   end
 
   def to_s
