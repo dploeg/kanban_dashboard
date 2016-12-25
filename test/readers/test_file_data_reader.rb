@@ -14,13 +14,14 @@ class TestFileDataReader < Minitest::Test
       assert_equal 0, reader.work_items.size
     end
 
-    should 'read in file data with dates' do
+    should 'read in file data with dates and class of service' do
       reader = FileDataReader.new('test/fixtures/files/sample_data.json')
       reader.read_data
       input_data = reader.work_items
       assert_equal 3, input_data.size
       assert_equal "15/3/16", input_data[1].start_date
       assert_equal "21/3/16", input_data[1].complete_date
+      assert_equal "Fixed Date", input_data[1].class_of_service
     end
 
     should 'throw exception if the file is empty' do

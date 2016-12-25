@@ -2,7 +2,7 @@ require 'date'
 
 class WorkItem
 
-  attr_accessor :start_date, :complete_date
+  attr_accessor :start_date, :complete_date, :class_of_service
 
   def initialize args
     args.each do |k, v|
@@ -15,6 +15,6 @@ class WorkItem
   end
 
   def to_s
-    "Start Date: " + @start_date + ", Complete Date: " + @complete_date
+    "Start Date: " + @start_date + ", Complete Date: " + @complete_date + ", Class of Service: " + @class_of_service
   end
 end

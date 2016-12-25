@@ -4,8 +4,24 @@
     "complete_date": "21/3/16"
   },
   {
+    "start_date": "11/3/16",
+    "complete_date": "23/3/16",
+    "class_of_service": "Standard"
+  },
+  {
     "start_date": "15/3/16",
-    "complete_date": "21/3/16"
+    "complete_date": "21/3/16",
+    "class_of_service": "Expedite"
+  },
+  {
+    "start_date": "15/3/16",
+    "complete_date": "21/3/16",
+    "class_of_service": "Fixed Date"
+  },
+  {
+    "start_date": "18/3/16",
+    "complete_date": "27/3/16",
+    "class_of_service": "Fixed Date"
   },
   {
     "start_date": "12/3/16",

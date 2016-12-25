@@ -1,14 +1,17 @@
 [
   {
     "start_date": "10/3/16",
-    "complete_date": "21/3/16"
+    "complete_date": "21/3/16",
+    "class_of_service": "Standard"
   },
   {
     "start_date": "15/3/16",
-    "complete_date": "21/3/16"
+    "complete_date": "21/3/16",
+    "class_of_service": "Fixed Date"
   },
   {
     "start_date": "12/3/16",
-    "complete_date": "25/3/16"
+    "complete_date": "25/3/16",
+    "class_of_service": "Standard"
   }
 ]
