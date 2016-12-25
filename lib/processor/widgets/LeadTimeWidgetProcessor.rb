@@ -12,9 +12,28 @@ class LeadTimeWidgetProcessor
 
   def process(work_items)
     classes_of_service_items = sort_into_classes_of_service(work_items)
+    populate_percentile_lead_times_from_work_items(classes_of_service_items)
+  end
 
+  def output
+    send_event('lead_times', { items: convert_to_output })
+  end
+
+  def lead_time_95th_percentile(class_of_service = STANDARD_CLASS_OF_SERVICE)
+    @percentile_values[class_of_service]
+  end
+
+  def convert_to_output
+    output = Array.new
+    @percentile_values.keys.each { |class_of_service|
+      output.push({"label" => class_of_service, "value" => @percentile_values[class_of_service]})
+    }
+    output
+  end
+
+  private def populate_percentile_lead_times_from_work_items(classes_of_service_items)
     classes_of_service_items.keys.each {
-      |class_of_service|
+        |class_of_service|
 
       lead_times = Array.new
       classes_of_service_items[class_of_service].each {
@@ -24,15 +43,6 @@ class LeadTimeWidgetProcessor
 
       @percentile_values[class_of_service] = lead_times.percentile(@percentile).to_i
     }
-
-  end
-
-  def output
-    send_event('lead_times', { items: convert_to_output })
-  end
-
-  def lead_time_95th_percentile(class_of_service = STANDARD_CLASS_OF_SERVICE)
-    @percentile_values[class_of_service]
   end
 
   private def sort_into_classes_of_service(work_items)
@@ -54,12 +64,4 @@ class LeadTimeWidgetProcessor
     classes_of_service
   end
 
-  def convert_to_output
-    puts @percentile_values.to_s
-    output = Array.new
-    @percentile_values.keys.each { |class_of_service|
-      output.push({"label" => class_of_service, "value" => @percentile_values[class_of_service]})
-    }
-    output
-  end
 end

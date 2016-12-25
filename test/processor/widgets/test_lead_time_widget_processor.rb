@@ -43,27 +43,13 @@ class TestDataProcessor < Minitest::Test
       widget.process @work_items
       output = widget.convert_to_output
 
-      assert_equal 4, output.size
-      puts output
-      puts output[0]["label"]
-      assert_equal output[0]["label"], "Standard"
-      assert_equal output[1]["label"], "Expedite"
-      assert_equal output[2]["label"], "Fixed Date"
-      assert_equal output[3]["label"], "Intangible"
-
-      assert_equal output[0]["value"], 32
-      assert_equal output[1]["value"], 8
-      assert_equal output[2]["value"], 21
-      assert_equal output[3]["value"], 28
-
+      check_output(output)
 
     end
 
     should 'output percentile' do
       widget = LeadTimeWidgetProcessor.new
       widget.process @work_items
-
-
 
       widget.output
 
@@ -72,5 +58,17 @@ class TestDataProcessor < Minitest::Test
 
   end
 
+  private def check_output(output)
+    assert_equal 4, output.size
+    assert_equal output[0]["label"], "Standard"
+    assert_equal output[1]["label"], "Expedite"
+    assert_equal output[2]["label"], "Fixed Date"
+    assert_equal output[3]["label"], "Intangible"
+
+    assert_equal output[0]["value"], 32
+    assert_equal output[1]["value"], 8
+    assert_equal output[2]["value"], 21
+    assert_equal output[3]["value"], 28
+  end
 
 end
