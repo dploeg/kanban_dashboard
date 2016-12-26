@@ -3,9 +3,9 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../../lib/processor/widgets/LeadTimeWidgetProcessor'
+require_relative '../../../lib/processor/widgets/LeadTimePercentileSummaryWidgetProcessor'
 
-class TestDataProcessor < Minitest::Test
+class TestLeadTimePercentileSummaryWidgetProcessor < Minitest::Test
 
   context 'LeadTimeWidgetProcessor' do
 
@@ -31,14 +31,14 @@ class TestDataProcessor < Minitest::Test
     end
 
     should 'process 95th percentile for widget' do
-      widget = LeadTimeWidgetProcessor.new
+      widget = LeadTimePercentileSummaryWidgetProcessor.new
       widget.process @work_items
 
       assert_equal 32, widget.lead_time_95th_percentile
     end
 
     should 'convert hashmap to send_event output' do
-      widget = LeadTimeWidgetProcessor.new
+      widget = LeadTimePercentileSummaryWidgetProcessor.new
 
       widget.process @work_items
       output = widget.convert_to_output
@@ -48,7 +48,7 @@ class TestDataProcessor < Minitest::Test
     end
 
     should 'output percentile' do
-      widget = LeadTimeWidgetProcessor.new
+      widget = LeadTimePercentileSummaryWidgetProcessor.new
       widget.process @work_items
 
       widget.output

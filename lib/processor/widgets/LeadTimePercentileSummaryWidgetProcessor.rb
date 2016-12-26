@@ -1,7 +1,7 @@
 require 'descriptive_statistics'
 require 'dashing/app'
 
-class LeadTimeWidgetProcessor
+class LeadTimePercentileSummaryWidgetProcessor
 
   def initialize(percentile = 95)
     @percentile = percentile
