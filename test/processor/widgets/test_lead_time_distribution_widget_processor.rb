@@ -3,16 +3,16 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../../lib/processor/widgets/lead_time_distribution_widget_processor'
+require_relative '../../../lib/processor/widgets/lead_time_percentile_summary_widget_processor'
 
-class TestLeadTimePercentileSummaryWidgetProcessor < Minitest::Test
+class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
 
-  STANDARD = "Standard"
   EXPEDITE = "Expedite"
   FIXED_DATE = "Fixed Date"
   INTANGIBLE = "Intangible"
+  STANDARD = "Standard"
 
-  context 'LeadTimePercentileSummaryWidgetProcessor' do
+  context 'LeadTimeDistributionWidgetProcessor' do
 
     setup do
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"),
@@ -35,50 +35,60 @@ class TestLeadTimePercentileSummaryWidgetProcessor < Minitest::Test
 
     end
 
-    should 'process 95th percentile for widget' do
-      widget = LeadTimePercentileSummaryWidgetProcessor.new
+    should 'output hash' do
+      widget = LeadTimeDistributionWidgetProcessor.new
       widget.process @work_items
 
-      assert_equal 32, widget.lead_time_95th_percentile
-      assert_equal 32, widget.lead_time_95th_percentile(STANDARD)
-      assert_equal 8, widget.lead_time_95th_percentile(EXPEDITE)
-      assert_equal 21, widget.lead_time_95th_percentile(FIXED_DATE)
-      assert_equal 28, widget.lead_time_95th_percentile(INTANGIBLE)
-    end
-
-    should 'builds output map' do
-      widget = LeadTimePercentileSummaryWidgetProcessor.new
-
-      widget.process @work_items
-      output = widget.build_output_hash
-
-      check_output(output)
-
-    end
-
-    should 'output percentile' do
-      widget = LeadTimePercentileSummaryWidgetProcessor.new
-      widget.process @work_items
-
-      widget.output
-
+      output_hash = widget.build_output_hash
+      check_output(output_hash)
 
     end
 
   end
 
-  private def check_output(output_map)
-    output = output_map["items"]
-    assert_equal 4, output.size
-    assert_equal output[0]["label"], STANDARD
-    assert_equal output[1]["label"], EXPEDITE
-    assert_equal output[2]["label"], FIXED_DATE
-    assert_equal output[3]["label"], INTANGIBLE
+  private def check_output(output)
+    assert_equal 3, output.keys.size
 
-    assert_equal output[0]["value"], 32
-    assert_equal output[1]["value"], 8
-    assert_equal output[2]["value"], 21
-    assert_equal output[3]["value"], 28
+    check_output_labels(output)
+    assert_equal 0, output['options'].size
+
+    check_datasets(output)
+
+  end
+
+  def check_datasets(output)
+    assert_equal 1, output['datasets'].size
+    planned = output['datasets'][0]
+    assert_equal planned['label'], 'Planned'
+
+    assert_same_elements [1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0], planned['data']
+
+    check_formatting(planned)
+  end
+
+  def check_formatting(planned)
+    check_settings(planned['backgroundColor'], 'rgba(255, 99, 132, 0.2)')
+    check_settings(planned['borderColor'], 'rgba(255, 99, 132, 1)')
+    assert_equal 1, planned['borderWidth']
+  end
+
+  def check_settings(setting_array, setting)
+    assert_equal 20, setting_array.size
+    setting_array.each { |background|
+      assert_equal setting, background
+    }
+  end
+
+  def check_output_labels(output)
+    labels = output['labels']
+    assert_equal 20, labels.size
+    counter = 0
+    min = 6
+    increments = 2
+    labels.each { |label|
+      assert_equal min + counter * increments, label
+      counter=counter+1
+    }
   end
 
 end

@@ -3,12 +3,12 @@ require 'dashing/app'
 
 class LeadTimePercentileSummaryWidgetProcessor
 
+  STANDARD_CLASS_OF_SERVICE = "Standard"
+
   def initialize(percentile = 95)
     @percentile = percentile
     @percentile_values = Hash.new
   end
-
-  STANDARD_CLASS_OF_SERVICE = "Standard"
 
   def process(work_items)
     classes_of_service_items = sort_into_classes_of_service(work_items)
@@ -16,19 +16,21 @@ class LeadTimePercentileSummaryWidgetProcessor
   end
 
   def output
-    send_event('lead_times', { items: convert_to_output })
+    send_event('lead_times', build_output_hash)
   end
 
   def lead_time_95th_percentile(class_of_service = STANDARD_CLASS_OF_SERVICE)
     @percentile_values[class_of_service]
   end
 
-  def convert_to_output
-    output = Array.new
+  def build_output_hash
+    output_map = Hash.new
+    labels_and_values = Array.new
     @percentile_values.keys.each { |class_of_service|
-      output.push({"label" => class_of_service, "value" => @percentile_values[class_of_service]})
+      labels_and_values.push({"label" => class_of_service, "value" => @percentile_values[class_of_service]})
     }
-    output
+    output_map["items"] = labels_and_values
+    output_map
   end
 
   private def populate_percentile_lead_times_from_work_items(classes_of_service_items)
