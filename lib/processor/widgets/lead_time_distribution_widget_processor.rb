@@ -63,8 +63,8 @@ class LeadTimeDistributionWidgetProcessor
     background_colors = Array.new
     border_colors = Array.new
     (0..@num_labels -1).each {
-      background_colors.push('rgba(255, 99, 132, 0.2)')
-      border_colors.push('rgba(255, 99, 132, 1)')
+      background_colors.push('rgba(255, 206, 86, 0.2)')
+      border_colors.push('rgba(255, 206, 86, 1)')
     }
     planned['backgroundColor'] = background_colors
     planned['borderColor'] = border_colors

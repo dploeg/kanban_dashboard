@@ -67,8 +67,8 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
   end
 
   def check_formatting(planned)
-    check_settings(planned['backgroundColor'], 'rgba(255, 99, 132, 0.2)')
-    check_settings(planned['borderColor'], 'rgba(255, 99, 132, 1)')
+    check_settings(planned['backgroundColor'], 'rgba(255, 206, 86, 0.2)')
+    check_settings(planned['borderColor'], 'rgba(255, 206, 86, 1)')
     assert_equal 1, planned['borderWidth']
   end
 
