@@ -20,8 +20,14 @@ class LeadTimeDistributionWidgetProcessor
     output = Hash.new
     output['labels'] = build_labels
     output['datasets'] = build_datasets
-    output['options'] = Array.new
+    output['options'] = build_options
     output
+  end
+
+  def build_options
+    options = Hash.new
+    options['scales'] = {'yAxes'=> [{'stacked' => true, 'ticks' =>{'min' =>0, 'stepSize' => 1}}]}
+    options
   end
 
   def build_datasets
