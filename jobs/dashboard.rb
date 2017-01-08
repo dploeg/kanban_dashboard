@@ -11,4 +11,33 @@ SCHEDULER.every '10s' do
   processor = DataProcessor.new(reader, widget_processors)
 
   processor.process_data
+
+  data = [
+    {
+      label: 'First dataset',
+      data: [
+        { x: rand(30), y: rand(30), r: rand(5..15) },
+        { x: rand(30), y: rand(30), r: rand(5..15) },
+        { x: rand(30), y: rand(30), r: rand(5..15) },
+        { x: rand(30), y: rand(30), r: rand(5..15) },
+        { x: rand(30), y: rand(30), r: rand(5..15) },
+      ],
+      backgroundColor: '#F7464A',
+      hoverBackgroundColor: '#FF6384',
+    },
+    {
+      label: 'Second dataset',
+      data: [
+        { x: rand(30), y: rand(30), r: rand(5..15) },
+        { x: rand(30), y: rand(30), r: rand(5..15) },
+        { x: rand(30), y: rand(30), r: rand(5..15) },
+        { x: rand(30), y: rand(30), r: rand(5..15) },
+        { x: rand(30), y: rand(30), r: rand(5..15) },
+      ],
+      backgroundColor: '#46BFBD',
+      hoverBackgroundColor: '#36A2EB',
+    },
+  ]
+  send_event('control_chart', { datasets: data })
+
 end
