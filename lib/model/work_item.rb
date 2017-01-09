@@ -2,11 +2,14 @@ require 'date'
 
 class WorkItem
 
-  attr_accessor :start_date, :complete_date, :class_of_service
+  attr_accessor :start_date, :complete_date, :class_of_service, :additional_values
 
   def initialize args
     args.each do |k, v|
       instance_variable_set("@#{k}", v) unless v.nil?
+    end
+    if @additional_values.nil?
+      @additional_values = Hash.new
     end
   end
 

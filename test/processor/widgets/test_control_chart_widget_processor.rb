@@ -99,22 +99,22 @@ class TestControlChartWidgetProcessor < Minitest::Test
     end
 
     should "add classes of service" do
-      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"),
-                     WorkItem.new(:start_date => "15/3/16", :complete_date => "21/3/16"),
-                     WorkItem.new(:start_date => "12/3/16", :complete_date => "14/4/16"),
-                     WorkItem.new(:start_date => "19/3/16", :complete_date => "19/4/16"),
-                     WorkItem.new(:start_date => "21/3/16", :complete_date => "17/4/16"),
-                     WorkItem.new(:start_date => "28/3/16", :complete_date => "22/4/16"),
-                     WorkItem.new(:start_date => "2/4/16", :complete_date => "25/4/16", :class_of_service => STANDARD),
-                     WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16"),
+      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"),                                 #1
+                     WorkItem.new(:start_date => "15/3/16", :complete_date => "21/3/16"),                                 #2
+                     WorkItem.new(:start_date => "12/3/16", :complete_date => "14/4/16"),                                 #8
+                     WorkItem.new(:start_date => "19/3/16", :complete_date => "19/4/16"),                                 #10
+                     WorkItem.new(:start_date => "21/3/16", :complete_date => "17/4/16"),                                 #9
+                     WorkItem.new(:start_date => "28/3/16", :complete_date => "22/4/16"),                                 #11
+                     WorkItem.new(:start_date => "2/4/16", :complete_date => "25/4/16", :class_of_service => STANDARD),   #12
+                     WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16"),                                  #3
 
-                     WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16", :class_of_service => EXPEDITE),
-                     WorkItem.new(:start_date => "2/4/16", :complete_date => "13/4/16", :class_of_service => FIXED_DATE),
-                     WorkItem.new(:start_date => "5/4/16", :complete_date => "25/4/16", :class_of_service => INTANGIBLE),
-                     WorkItem.new(:start_date => "6/4/16", :complete_date => "13/4/16", :class_of_service => EXPEDITE),
-                     WorkItem.new(:start_date => "7/4/16", :complete_date => "14/4/16", :class_of_service => EXPEDITE),
-                     WorkItem.new(:start_date => "6/4/16", :complete_date => "28/4/16", :class_of_service => FIXED_DATE),
-                     WorkItem.new(:start_date => "13/4/16", :complete_date => "12/5/16", :class_of_service => INTANGIBLE),
+                     WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16", :class_of_service => EXPEDITE),   #4
+                     WorkItem.new(:start_date => "2/4/16", :complete_date => "13/4/16", :class_of_service => FIXED_DATE), #5
+                     WorkItem.new(:start_date => "5/4/16", :complete_date => "25/4/16", :class_of_service => INTANGIBLE), #13
+                     WorkItem.new(:start_date => "6/4/16", :complete_date => "13/4/16", :class_of_service => EXPEDITE),   #6
+                     WorkItem.new(:start_date => "7/4/16", :complete_date => "14/4/16", :class_of_service => EXPEDITE),   #7
+                     WorkItem.new(:start_date => "6/4/16", :complete_date => "28/4/16", :class_of_service => FIXED_DATE), #14
+                     WorkItem.new(:start_date => "13/4/16", :complete_date => "12/5/16", :class_of_service => INTANGIBLE),#15
       ]
 
       widget = ControlChartWidgetProcessor.new
@@ -128,12 +128,19 @@ class TestControlChartWidgetProcessor < Minitest::Test
       check_CoS_background_colors(output_hash)
       check_CoS_hover_background_colors(output_hash)
 
+      check_x_positions(output_hash)
+
     end
 
 
 
   end
 
+  def check_x_positions(output_hash)
+    assert_equal 8, output_hash['datasets'][0][:data][3][:x] #7
+    assert_equal 6, output_hash['datasets'][1][:data][1][:x] #7
+    assert_equal 14, output_hash['datasets'][2][:data][1][:x]
+  end
 
   def process_and_build_output_hash
     widget = ControlChartWidgetProcessor.new
