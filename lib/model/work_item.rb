@@ -2,6 +2,8 @@ require 'date'
 
 class WorkItem
 
+  DATE_FORMAT = "%d/%m/%Y"
+
   attr_accessor :start_date, :complete_date, :class_of_service, :additional_values
 
   def initialize args
@@ -14,7 +16,11 @@ class WorkItem
   end
 
   def lead_time
-    (Date.strptime(@complete_date, "%d/%m/%Y") - Date.strptime(@start_date, "%d/%m/%Y")).to_i
+    lead_time = (Date.strptime(@complete_date, DATE_FORMAT) - Date.strptime(@start_date, DATE_FORMAT)).to_i
+    if lead_time == 0
+      lead_time = 1
+    end
+    lead_time
   end
 
   def to_s

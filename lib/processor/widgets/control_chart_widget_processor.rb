@@ -70,7 +70,7 @@ class ControlChartWidgetProcessor
   end
 
   private def order_work_items(work_items)
-    work_items.sort { |a, b| Date.strptime(a.complete_date, '%d/%m/%Y') <=> Date.strptime(b.complete_date, '%d/%m/%Y') } #refactor date format
+    work_items.sort { |a, b| Date.strptime(a.complete_date, WorkItem::DATE_FORMAT) <=> Date.strptime(b.complete_date, WorkItem::DATE_FORMAT) }
   end
 
   private def build_data(data_items, counter)
