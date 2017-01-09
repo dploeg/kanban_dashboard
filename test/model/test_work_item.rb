@@ -28,8 +28,18 @@ class TestWorkItem < Minitest::Test
     should 'mark lead time as one where lead time is zero' do
       work_item = WorkItem.new(:start_date => "15/10/16", :complete_date => "15/10/16")
       assert_equal 1, work_item.lead_time
-
     end
+
+    should 'create start week string' do
+      work_item = WorkItem.new(:start_date => "15/10/16", :complete_date => "5/11/16")
+      assert_equal '2016-41', work_item.start_week_string
+    end
+
+    should 'create end week string' do
+      work_item = WorkItem.new(:start_date => "15/10/16", :complete_date => "5/11/16")
+      assert_equal '2016-44', work_item.complete_week_string
+    end
+
   end
 
 end

@@ -11,18 +11,10 @@ class ControlChartWidgetProcessor
 
 
   def process(work_items)
-    ordered_work_items = order_work_items(work_items)
+    ordered_work_items = order_work_items_by_completed(work_items)
     decorate_with_x_position(ordered_work_items)
     @work_items_per_CoS = sort_into_classes_of_service(ordered_work_items)
 
-  end
-
-  def decorate_with_x_position(work_items)
-    position = 1
-    work_items.each {|item|
-      item.additional_values[:x_position] = position
-      position+=1
-    }
   end
 
   def output
@@ -38,7 +30,15 @@ class ControlChartWidgetProcessor
     output
   end
 
-  def build_datasets
+  private def decorate_with_x_position(work_items)
+    position = 1
+    work_items.each {|item|
+      item.additional_values[:x_position] = position
+      position+=1
+    }
+  end
+
+  private def build_datasets
     datasets = Array.new
     colour_counter = 0
     x_counter = 1
@@ -50,7 +50,7 @@ class ControlChartWidgetProcessor
     datasets
   end
 
-  def build_options
+  private def build_options
     {
         scales: {
             xAxes: [{
@@ -67,10 +67,6 @@ class ControlChartWidgetProcessor
                     }]
         }
     }
-  end
-
-  private def order_work_items(work_items)
-    work_items.sort { |a, b| Date.strptime(a.complete_date, WorkItem::DATE_FORMAT) <=> Date.strptime(b.complete_date, WorkItem::DATE_FORMAT) }
   end
 
   private def build_data(data_items, counter)

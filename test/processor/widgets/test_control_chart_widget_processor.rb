@@ -121,7 +121,6 @@ class TestControlChartWidgetProcessor < Minitest::Test
       widget.process @work_items
 
       output_hash = widget.build_output_hash
-      puts output_hash.to_s
       assert_equal 4, output_hash['datasets'].size
 
       check_CoS_labels(output_hash)

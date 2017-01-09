@@ -21,4 +21,13 @@ module ProcessorUtils
     classes_of_service
   end
 
+  def order_work_items_by_completed(work_items)
+    work_items.sort { |a, b| Date.strptime(a.complete_date, WorkItem::DATE_FORMAT) <=> Date.strptime(b.complete_date, WorkItem::DATE_FORMAT) }
+  end
+
+  def order_work_items_by_started(work_items)
+    work_items.sort { |a, b| Date.strptime(a.start_date, WorkItem::DATE_FORMAT) <=> Date.strptime(b.start_date, WorkItem::DATE_FORMAT) }
+  end
+
+
 end
