@@ -26,7 +26,7 @@ class LeadTimeDistributionWidgetProcessor
 
   def build_options
     options = Hash.new
-    options['scales'] = {'yAxes'=> [{'stacked' => true, 'ticks' =>{'min' =>0, 'stepSize' => 1}}]}
+    options['scales'] = {'yAxes'=> [{'stacked' => false, 'ticks' =>{'min' =>0, 'stepSize' => 1}}]}
     options
   end
 

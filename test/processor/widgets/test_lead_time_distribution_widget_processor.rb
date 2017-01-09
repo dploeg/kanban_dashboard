@@ -52,6 +52,7 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
     check_output_labels(output)
     assert_equal 1, output['options'].size
     assert_equal 1, output['options']['scales']['yAxes'][0]['ticks']['stepSize']
+    assert_equal false, output['options']['scales']['yAxes'][0]['stacked']
     check_datasets(output)
 
   end

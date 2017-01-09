@@ -48,6 +48,15 @@ class TestStartedVsFinishedWidgetProcessor < Minitest::Test
       assert_equal "2016-12", labels[2]
     end
 
+    should "set options with single step for y axis" do
+      output_hash = process_and_build_output_hash
+
+      assert_equal 1, output_hash['options'].size
+      assert_equal 1, output_hash['options']['scales']['yAxes'][0]['ticks']['stepSize']
+      assert_equal false, output_hash['options']['scales']['yAxes'][0]['stacked']
+
+    end
+
     should "create output" do
       widget = StartedVsFinishedWidgetProcessor.new
       widget.process @work_items

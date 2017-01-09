@@ -21,9 +21,16 @@ class StartedVsFinishedWidgetProcessor
     output = Hash.new
     output['labels'] = build_labels
     output['datasets'] = build_datasets
-    # output['options'] = build_options
+    output['options'] = build_options
     output
   end
+
+  private def build_options
+    options = Hash.new
+    options['scales'] = {'yAxes'=> [{'stacked' => false, 'ticks' =>{'min' =>0, 'stepSize' => 1}}]}
+    options
+  end
+
 
   private def populate_keys(work_items)
      items_by_started = order_work_items_by_started(work_items)
