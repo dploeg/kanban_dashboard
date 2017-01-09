@@ -98,12 +98,37 @@ class TestControlChartWidgetProcessor < Minitest::Test
       widget.output
     end
 
-=begin
-
     should "add classes of service" do
+      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"),
+                     WorkItem.new(:start_date => "15/3/16", :complete_date => "21/3/16"),
+                     WorkItem.new(:start_date => "12/3/16", :complete_date => "14/4/16"),
+                     WorkItem.new(:start_date => "19/3/16", :complete_date => "19/4/16"),
+                     WorkItem.new(:start_date => "21/3/16", :complete_date => "17/4/16"),
+                     WorkItem.new(:start_date => "28/3/16", :complete_date => "22/4/16"),
+                     WorkItem.new(:start_date => "2/4/16", :complete_date => "25/4/16", :class_of_service => STANDARD),
+                     WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16"),
+
+                     WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16", :class_of_service => EXPEDITE),
+                     WorkItem.new(:start_date => "2/4/16", :complete_date => "13/4/16", :class_of_service => FIXED_DATE),
+                     WorkItem.new(:start_date => "5/4/16", :complete_date => "25/4/16", :class_of_service => INTANGIBLE),
+                     WorkItem.new(:start_date => "6/4/16", :complete_date => "13/4/16", :class_of_service => EXPEDITE),
+                     WorkItem.new(:start_date => "7/4/16", :complete_date => "14/4/16", :class_of_service => EXPEDITE),
+                     WorkItem.new(:start_date => "6/4/16", :complete_date => "28/4/16", :class_of_service => FIXED_DATE),
+                     WorkItem.new(:start_date => "13/4/16", :complete_date => "12/5/16", :class_of_service => INTANGIBLE),
+      ]
+
+      widget = ControlChartWidgetProcessor.new
+      widget.process @work_items
+
+      output_hash = widget.build_output_hash
+      puts output_hash.to_s
+      assert_equal 4, output_hash['datasets'].size
+
+      check_CoS_labels(output_hash)
+      check_CoS_background_colors(output_hash)
+      check_CoS_hover_background_colors(output_hash)
 
     end
-=end
 
 
 
@@ -116,4 +141,26 @@ class TestControlChartWidgetProcessor < Minitest::Test
 
     widget.build_output_hash
   end
+
+  def check_CoS_labels(output_hash)
+    assert_equal STANDARD, output_hash['datasets'][0][:label]
+    assert_equal EXPEDITE, output_hash['datasets'][1][:label]
+    assert_equal FIXED_DATE, output_hash['datasets'][2][:label]
+    assert_equal INTANGIBLE, output_hash['datasets'][3][:label]
+  end
+
+  def check_CoS_background_colors(output_hash)
+    assert_equal "#F7464A", output_hash['datasets'][0][:backgroundColor]
+    assert_equal "#F79B46", output_hash['datasets'][1][:backgroundColor]
+    assert_equal "#464AF7", output_hash['datasets'][2][:backgroundColor]
+    assert_equal "#F7F446", output_hash['datasets'][3][:backgroundColor]
+  end
+
+  def check_CoS_hover_background_colors(output_hash)
+    assert_equal "#FF6384", output_hash['datasets'][0][:hoverBackgroundColor]
+    assert_equal "#FF9063", output_hash['datasets'][1][:hoverBackgroundColor]
+    assert_equal "#6384FF", output_hash['datasets'][2][:hoverBackgroundColor]
+    assert_equal "#F9F777", output_hash['datasets'][3][:hoverBackgroundColor]
+  end
+
 end
