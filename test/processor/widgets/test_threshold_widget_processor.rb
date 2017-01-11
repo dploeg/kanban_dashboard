@@ -48,7 +48,22 @@ class TestThresholdWidgetProcessor < Minitest::Test
       @threshold_processor.verify
     end
 
-    should 'build output hash' do
+
+    should 'build output hash with no warnings' do
+      @threshold_processor = MiniTest::Mock.new
+      @threshold_processor.expect :process, [], [@work_items]
+
+      widget = ThresholdWidgetProcessor.new(@threshold_processor)
+
+      widget.process(@work_items)
+
+      @threshold_processor.verify
+
+      output_hash = widget.build_output_hash
+      check_output_hash_for_no_warnings(output_hash)
+    end
+
+    should 'build output hash with some warnings' do
       @threshold_processor = MiniTest::Mock.new
       @threshold_processor.expect :process, @warnings, [@work_items]
 
@@ -59,8 +74,7 @@ class TestThresholdWidgetProcessor < Minitest::Test
       @threshold_processor.verify
 
       output_hash = widget.build_output_hash
-      check_output_hash(output_hash)
-
+      check_output_hash_for_warnings(output_hash)
     end
 
     should "call send_event to output results" do
@@ -81,8 +95,7 @@ class TestThresholdWidgetProcessor < Minitest::Test
 
   end
 
-
-  private def check_output_hash(output_hash)
+  private def check_output_hash_for_warnings(output_hash)
     output = output_hash['items']
     assert_equal 3, output.size
     assert_equal output[0]["label"], @warning1.label
@@ -92,5 +105,13 @@ class TestThresholdWidgetProcessor < Minitest::Test
     assert_equal output[0]["value"], @warning1.value
     assert_equal output[1]["value"], @warning2.value
     assert_equal output[2]["value"], @warning3.value
+    assert_equal "warning", output_hash['status']
   end
+
+  private def check_output_hash_for_no_warnings(output_hash)
+    output = output_hash['items']
+    assert_equal 0, output.size
+    assert_nil output_hash['status']
+  end
+
 end

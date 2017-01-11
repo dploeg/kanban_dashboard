@@ -22,6 +22,9 @@ class ThresholdWidgetProcessor
       items.push("label" => warning.label, "value" => warning.value)
     }
     output['items'] = items
+    if @warnings.size > 0
+      output['status'] = "warning"
+    end
     output
   end
 end
