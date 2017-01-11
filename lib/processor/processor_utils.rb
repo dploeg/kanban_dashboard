@@ -29,5 +29,21 @@ module ProcessorUtils
     work_items.sort { |a, b| Date.strptime(a.start_date, WorkItem::DATE_FORMAT) <=> Date.strptime(b.start_date, WorkItem::DATE_FORMAT) }
   end
 
+  def populate_percentile_lead_times_from_work_items(classes_of_service_items, percentile)
+    percentile_values = Hash.new
+    classes_of_service_items.keys.each {
+        |class_of_service|
+
+      lead_times = Array.new
+      classes_of_service_items[class_of_service].each {
+          |item|
+        lead_times.push(item.lead_time)
+      }
+
+      percentile_values[class_of_service] = lead_times.percentile(percentile).to_i
+    }
+    percentile_values
+  end
+
 
 end

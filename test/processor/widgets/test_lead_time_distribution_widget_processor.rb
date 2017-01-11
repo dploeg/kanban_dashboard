@@ -4,13 +4,10 @@ require 'shoulda/matchers'
 require 'shoulda/context'
 
 require_relative '../../../lib/processor/widgets/lead_time_percentile_summary_widget_processor'
+require_relative '../../test_constants'
 
 class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
-
-  EXPEDITE = "Expedite"
-  FIXED_DATE = "Fixed Date"
-  INTANGIBLE = "Intangible"
-  STANDARD = "Standard"
+  include TestConstants
 
   context 'LeadTimeDistributionWidgetProcessor' do
 
@@ -21,16 +18,16 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
                      WorkItem.new(:start_date => "19/3/16", :complete_date => "19/4/16"),
                      WorkItem.new(:start_date => "21/3/16", :complete_date => "17/4/16"),
                      WorkItem.new(:start_date => "28/3/16", :complete_date => "22/4/16"),
-                     WorkItem.new(:start_date => "2/4/16", :complete_date => "25/4/16", :class_of_service => STANDARD),
+                     WorkItem.new(:start_date => "2/4/16", :complete_date => "25/4/16", :class_of_service => TestConstants::STANDARD),
                      WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16"),
 
-                     WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16", :class_of_service => EXPEDITE),
-                     WorkItem.new(:start_date => "2/4/16", :complete_date => "13/4/16", :class_of_service => FIXED_DATE),
-                     WorkItem.new(:start_date => "5/4/16", :complete_date => "25/4/16", :class_of_service => INTANGIBLE),
-                     WorkItem.new(:start_date => "6/4/16", :complete_date => "13/4/16", :class_of_service => EXPEDITE),
-                     WorkItem.new(:start_date => "7/4/16", :complete_date => "14/4/16", :class_of_service => EXPEDITE),
-                     WorkItem.new(:start_date => "6/4/16", :complete_date => "28/4/16", :class_of_service => FIXED_DATE),
-                     WorkItem.new(:start_date => "13/4/16", :complete_date => "12/5/16", :class_of_service => INTANGIBLE),
+                     WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16", :class_of_service => TestConstants::EXPEDITE),
+                     WorkItem.new(:start_date => "2/4/16", :complete_date => "13/4/16", :class_of_service => TestConstants::FIXED_DATE),
+                     WorkItem.new(:start_date => "5/4/16", :complete_date => "25/4/16", :class_of_service => TestConstants::INTANGIBLE),
+                     WorkItem.new(:start_date => "6/4/16", :complete_date => "13/4/16", :class_of_service => TestConstants::EXPEDITE),
+                     WorkItem.new(:start_date => "7/4/16", :complete_date => "14/4/16", :class_of_service => TestConstants::EXPEDITE),
+                     WorkItem.new(:start_date => "6/4/16", :complete_date => "28/4/16", :class_of_service => TestConstants::FIXED_DATE),
+                     WorkItem.new(:start_date => "13/4/16", :complete_date => "12/5/16", :class_of_service => TestConstants::INTANGIBLE),
       ]
 
     end
@@ -41,9 +38,20 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
 
       output_hash = widget.build_output_hash
       check_output(output_hash)
-
     end
 
+    should 'call send_event' do
+      widget = LeadTimeDistributionWidgetProcessor.new
+      widget.process @work_items
+
+      send_event = MiniTest::Mock.new
+      send_event.expect :call, nil, ['lead_time_distribution', widget.build_output_hash]
+      widget.stub :send_event, send_event do
+        widget.output
+      end
+
+      send_event.verify
+    end
   end
 
   private def check_output(output)

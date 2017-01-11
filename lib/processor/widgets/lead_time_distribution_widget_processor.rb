@@ -1,3 +1,5 @@
+require 'dashing/app'
+
 class LeadTimeDistributionWidgetProcessor
 
 

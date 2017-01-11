@@ -4,13 +4,10 @@ require 'shoulda/matchers'
 require 'shoulda/context'
 
 require_relative '../../../lib/processor/widgets/lead_time_distribution_widget_processor'
+require_relative '../../test_constants'
 
 class TestLeadTimePercentileSummaryWidgetProcessor < Minitest::Test
-
-  STANDARD = "Standard"
-  EXPEDITE = "Expedite"
-  FIXED_DATE = "Fixed Date"
-  INTANGIBLE = "Intangible"
+  include TestConstants
 
   context 'LeadTimePercentileSummaryWidgetProcessor' do
 
@@ -60,7 +57,13 @@ class TestLeadTimePercentileSummaryWidgetProcessor < Minitest::Test
       widget = LeadTimePercentileSummaryWidgetProcessor.new
       widget.process @work_items
 
-      widget.output
+      send_event = MiniTest::Mock.new
+      send_event.expect :call, nil, ['lead_times', widget.build_output_hash]
+      widget.stub :send_event, send_event do
+        widget.output
+      end
+
+      send_event.verify
 
 
     end
@@ -70,10 +73,10 @@ class TestLeadTimePercentileSummaryWidgetProcessor < Minitest::Test
   private def check_output(output_map)
     output = output_map["items"]
     assert_equal 4, output.size
-    assert_equal output[0]["label"], STANDARD
-    assert_equal output[1]["label"], EXPEDITE
-    assert_equal output[2]["label"], FIXED_DATE
-    assert_equal output[3]["label"], INTANGIBLE
+    assert_equal output[0]["label"], TestConstants::STANDARD
+    assert_equal output[1]["label"], TestConstants::EXPEDITE
+    assert_equal output[2]["label"], TestConstants::FIXED_DATE
+    assert_equal output[3]["label"], TestConstants::INTANGIBLE
 
     assert_equal output[0]["value"], 32
     assert_equal output[1]["value"], 8

@@ -9,9 +9,9 @@ require_relative '../lib/processor/widgets/started_vs_finished_widget_processor'
 
 SCHEDULER.every '10s' do
   reader = FileDataReader.new('assets/work_items/sample_data.json')
-  widget_processors = [LeadTimePercentileSummaryWidgetProcessor.new, LeadTimeDistributionWidgetProcessor.new, ControlChartWidgetProcessor.new, StartedVsFinishedWidgetProcessor.new]
+  widget_processors = [LeadTimePercentileSummaryWidgetProcessor.new, LeadTimeDistributionWidgetProcessor.new,
+                       ControlChartWidgetProcessor.new, StartedVsFinishedWidgetProcessor.new]
   processor = DataProcessor.new(reader, widget_processors)
-
   processor.process_data
 
 end

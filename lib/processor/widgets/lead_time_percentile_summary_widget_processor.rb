@@ -4,7 +4,7 @@ require 'dashing/app'
 require_relative '../processor_utils'
 
 class LeadTimePercentileSummaryWidgetProcessor
-include ProcessorUtils
+  include ProcessorUtils
 
 
   def initialize(percentile = 95)
@@ -14,7 +14,7 @@ include ProcessorUtils
 
   def process(work_items)
     classes_of_service_items = sort_into_classes_of_service(work_items)
-    populate_percentile_lead_times_from_work_items(classes_of_service_items)
+    @percentile_values = populate_percentile_lead_times_from_work_items(classes_of_service_items, @percentile)
   end
 
   def output
@@ -35,18 +35,5 @@ include ProcessorUtils
     output_map
   end
 
-  private def populate_percentile_lead_times_from_work_items(classes_of_service_items)
-    classes_of_service_items.keys.each {
-        |class_of_service|
-
-      lead_times = Array.new
-      classes_of_service_items[class_of_service].each {
-          |item|
-        lead_times.push(item.lead_time)
-      }
-
-      @percentile_values[class_of_service] = lead_times.percentile(@percentile).to_i
-    }
-  end
 
 end

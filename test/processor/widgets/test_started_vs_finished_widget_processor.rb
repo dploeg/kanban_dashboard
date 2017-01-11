@@ -7,12 +7,6 @@ require_relative '../../../lib/processor/widgets/started_vs_finished_widget_proc
 
 class TestStartedVsFinishedWidgetProcessor < Minitest::Test
 
-  EXPEDITE = "Expedite"
-  FIXED_DATE = "Fixed Date"
-  INTANGIBLE = "Intangible"
-  STANDARD = "Standard"
-
-
   context 'StartedVsFinishedWidgetProcessor' do
 
     setup do
@@ -61,7 +55,13 @@ class TestStartedVsFinishedWidgetProcessor < Minitest::Test
       widget = StartedVsFinishedWidgetProcessor.new
       widget.process @work_items
 
-      widget.output
+      send_event = MiniTest::Mock.new
+      send_event.expect :call, nil, ['started_vs_finished', widget.build_output_hash]
+      widget.stub :send_event, send_event do
+        widget.output
+      end
+
+      send_event.verify
     end
   end
 

@@ -4,6 +4,7 @@ require 'shoulda/matchers'
 require 'shoulda/context'
 
 require_relative '../../lib/processor/data_processor'
+require_relative '../../lib/model/work_item'
 
 class TestDataProcessor < Minitest::Test
 

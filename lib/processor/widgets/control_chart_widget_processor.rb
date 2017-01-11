@@ -1,3 +1,5 @@
+require 'dashing/app'
+
 require_relative '../processor_utils'
 
 class ControlChartWidgetProcessor
