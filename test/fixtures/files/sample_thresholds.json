@@ -1,0 +1,19 @@
+[
+  {
+    "type": "UPPER",
+    "value": 10,
+    "class_of_service": "Standard",
+    "processor": "first"
+  },
+  {
+    "type": "LOWER",
+    "value": 2,
+    "class_of_service": "Expedite",
+    "processor": "second"
+  },
+  {
+    "value": 12,
+    "processor": "second"
+  }
+]
+

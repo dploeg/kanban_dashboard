@@ -1,9 +1,9 @@
 require "json"
 
 
-class FileDataReader
+class FileWorkItemReader
 
-  @file_name
+  attr_reader :work_items
 
   def initialize(file_name)
     @file_name = file_name
@@ -23,7 +23,4 @@ class FileDataReader
     end
   end
 
-  def work_items
-    @work_items
-  end
 end

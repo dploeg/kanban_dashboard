@@ -14,5 +14,8 @@ class Threshold
     end
   end
 
+  def ==(other)
+    self.type == other.type && self.value == other.value && self.processor == other.processor && self.class_of_service == other.class_of_service
+  end
 
 end

@@ -2,20 +2,20 @@ require 'minitest/autorun'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../lib/readers/file_data_reader'
+require_relative '../../lib/readers/file_work_item_reader'
 
-class TestFileDataReader < Minitest::Test
+class TestFileWorkItemReader < Minitest::Test
 
-  context 'FileDataReader' do
+  context 'FileWorkItemReader' do
 
     should 'do nothing with an file with no data' do
-      reader = FileDataReader.new('test/fixtures/files/no_data_in_file.json')
+      reader = FileWorkItemReader.new('test/fixtures/files/no_data_in_file.json')
       reader.read_data
       assert_equal 0, reader.work_items.size
     end
 
     should 'read in file data with dates and class of service' do
-      reader = FileDataReader.new('test/fixtures/files/sample_data.json')
+      reader = FileWorkItemReader.new('test/fixtures/files/sample_data.json')
       reader.read_data
       input_data = reader.work_items
       assert_equal 3, input_data.size
@@ -25,7 +25,7 @@ class TestFileDataReader < Minitest::Test
     end
 
     should 'throw exception if the file is empty' do
-      reader = FileDataReader.new('test/fixtures/files/empty_file.json')
+      reader = FileWorkItemReader.new('test/fixtures/files/empty_file.json')
       assert_raises RuntimeError do
         reader.read_data
       end
