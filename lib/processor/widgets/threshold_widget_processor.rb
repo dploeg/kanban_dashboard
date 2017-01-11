@@ -24,6 +24,8 @@ class ThresholdWidgetProcessor
     output['items'] = items
     if @warnings.size > 0
       output['status'] = "warning"
+    else
+      output['status'] = "clear"
     end
     output
   end

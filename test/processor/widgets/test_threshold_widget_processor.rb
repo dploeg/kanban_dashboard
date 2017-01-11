@@ -111,7 +111,7 @@ class TestThresholdWidgetProcessor < Minitest::Test
   private def check_output_hash_for_no_warnings(output_hash)
     output = output_hash['items']
     assert_equal 0, output.size
-    assert_nil output_hash['status']
+    assert_equal "clear", output_hash['status']
   end
 
 end

@@ -8,6 +8,8 @@
 $background-color: #222;
 $text-color: #fff;
 
+$background-clear-color-1: #56c54d;
+
 $background-warning-color-1: #e82711;
 $background-warning-color-2: #9b2d23;
 $text-warning-color: #fff;
@@ -149,6 +151,10 @@ h3 {
   height: inherit;
   display: table-cell;
   vertical-align: middle;
+}
+
+.widget.status-clear {
+  background-color: $background-clear-color-1;
 }
 
 .widget.status-warning {
