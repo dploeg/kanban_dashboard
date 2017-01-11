@@ -9,8 +9,7 @@ class DataProcessor
 
 
   def process_data
-    @reader.read_data
-    work_items = @reader.work_items
+    work_items = @reader.read_data
 
     @widget_processors.each { |widget|
       widget.process(work_items)

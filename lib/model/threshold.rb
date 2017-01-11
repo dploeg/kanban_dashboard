@@ -18,4 +18,8 @@ class Threshold
     self.type == other.type && self.value == other.value && self.processor == other.processor && self.class_of_service == other.class_of_service
   end
 
+  def to_s
+    "Threshold(Type: #{@type}, value: #{@value}, class_of_service: #{@class_of_service},processor: #{@processor}, object_id: #{"0x00%x" % (object_id << 1)})"
+  end
+
 end

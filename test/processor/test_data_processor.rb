@@ -29,8 +29,7 @@ class TestDataProcessor < Minitest::Test
 
   private def setup_readers
     @reader = MiniTest::Mock.new
-    @reader.expect :read_data, nil
-    @reader.expect :work_items, @work_items
+    @reader.expect :read_data, @work_items
   end
 
   private def setup_widget_processors

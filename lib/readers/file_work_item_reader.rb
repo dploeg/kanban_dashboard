@@ -21,6 +21,7 @@ class FileWorkItemReader
     rescue => error
       raise RuntimeError.new(error)
     end
+    @work_items
   end
 
 end

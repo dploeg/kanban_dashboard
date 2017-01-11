@@ -1,0 +1,14 @@
+[
+  {
+    "type": "UPPER",
+    "value": 10,
+    "class_of_service": "Standard",
+    "processor": "percentile"
+  },
+  {
+    "type": "UPPER",
+    "value": 5,
+    "class_of_service": "Expedite",
+    "processor": "percentile"
+  }
+]

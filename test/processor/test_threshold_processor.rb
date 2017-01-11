@@ -50,8 +50,8 @@ class TestThresholdProcessor < Minitest::Test
       @threshold_reader.expect :read_thresholds, @threshold_map
       @first_threshold_processor.expect :name, "first"
       @second_threshold_processor.expect :name, "second"
-      @first_threshold_processor.expect :process, @threshold_warning1, [@work_items, [@threshold3, @threshold4, @threshold5]]
-      @second_threshold_processor.expect :process, @threshold_warning2, [@work_items, [@threshold6]]
+      @first_threshold_processor.expect :process, @threshold_warning1, [@work_items, *[@threshold3, @threshold4, @threshold5]]
+      @second_threshold_processor.expect :process, @threshold_warning2, [@work_items, *[@threshold6]]
 
       warnings = threshold_processor.process(@work_items)
 

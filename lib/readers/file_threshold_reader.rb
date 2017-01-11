@@ -22,6 +22,7 @@ class FileThresholdReader
     rescue => error
       raise RuntimeError.new(error)
     end
+    @thresholds
   end
 
   def translate_type(input_hash)

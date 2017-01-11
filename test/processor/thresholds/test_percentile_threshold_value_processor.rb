@@ -18,6 +18,13 @@ class TestPercentileThresholdValueProcessor < Minitest::Test
 
     end
 
+    should "not return anything if no thresholds passed" do
+      processor = PercentileThresholdValueProcessor.new
+      warnings = processor.process(@work_items, *[])
+
+      assert_equal 0, warnings.size
+    end
+
     should "not return anything if threshold not reached" do
       processor = PercentileThresholdValueProcessor.new
       warnings = processor.process(@work_items, *[@threshold1, @threshold2])
@@ -77,6 +84,13 @@ class TestPercentileThresholdValueProcessor < Minitest::Test
 
       assert_equal 85, processor.percentile
     end
+
+    should "initialise name" do
+      processor = PercentileThresholdValueProcessor.new(85)
+
+      assert_equal ProcessorUtils::PERCENTILE_THRESHOLD_VALUE_PROCESSOR, processor.name
+    end
+
 
   end
 

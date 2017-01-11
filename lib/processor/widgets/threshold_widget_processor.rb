@@ -11,7 +11,7 @@ class ThresholdWidgetProcessor
   end
 
   def output
-    send_event('threshold', build_output_hash)
+    send_event('thresholds', build_output_hash)
   end
 
   def build_output_hash

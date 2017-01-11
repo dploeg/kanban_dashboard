@@ -71,7 +71,7 @@ class TestThresholdWidgetProcessor < Minitest::Test
       widget.process(@work_items)
 
       send_event = MiniTest::Mock.new
-      send_event.expect :call, nil, ['threshold', widget.build_output_hash]
+      send_event.expect :call, nil, ['thresholds', widget.build_output_hash]
       widget.stub :send_event, send_event do
         widget.output
       end

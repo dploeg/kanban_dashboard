@@ -3,10 +3,11 @@ require_relative '../processor_utils'
 class PercentileThresholdValueProcessor
   include ProcessorUtils
 
-  attr_reader :percentile
+  attr_reader :percentile, :name
 
   def initialize(percentile = 95)
     @percentile = percentile
+    @name = PERCENTILE_THRESHOLD_VALUE_PROCESSOR
   end
 
   def process(work_items, *thresholds)
@@ -22,7 +23,7 @@ class PercentileThresholdValueProcessor
   end
 
   private def check_threshold(actual, threshold, warnings, class_of_service)
-    if (threshold.type == Threshold::LOWER)
+    if threshold.type == Threshold::LOWER
       if actual < threshold.value #question as to whether to push this down into the threshold itself
         warnings.push(build_warning(actual, threshold, class_of_service))
       end
@@ -42,7 +43,7 @@ class PercentileThresholdValueProcessor
   end
 
   private def build_warning(actual, threshold, class_of_service)
-    ThresholdWarning.new("Lead Time " + @percentile.to_s + " percentile - " + class_of_service ,
+    ThresholdWarning.new("Lead Time " + @percentile.to_s + " percentile - " + class_of_service,
                          "has exceeded " + threshold.type.downcase + " threshold of " + threshold.value.to_s + " with value of " + actual.to_s)
   end
 end
