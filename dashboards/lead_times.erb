@@ -1,0 +1,21 @@
+<% content_for :title do %>Lead Times<% end %>
+<div class="gridster">
+  <ul>
+    <li data-row="1" data-col="1" data-sizex="4" data-sizey="2">
+      <div data-id="control_chart" data-view ="BubbleChart" data-title="Lead Time Control Chart" data-moreinfo=""></div>
+    </li>
+
+    <li data-row="1" data-col="2" data-sizex="1" data-sizey="1">
+      <div data-id="lead_times" data-view="List" data-unordered="true" data-title="Lead Times" data-moreinfo="95 percentile for lead times"></div>
+    </li>
+
+    <li data-row="1" data-col="2" data-sizex="2" data-sizey="1">
+      <div data-id="lead_time_distribution" data-view ="BarChart" data-title="Lead Time Distribution" data-moreinfo=""></div>
+    </li>
+
+    <li data-row="2" data-col="2" data-sizex="4" data-sizey="1">
+      <div data-id="thresholds" data-view="List" data-unordered="true" data-title="Threshold Warnings" ></div>
+    </li>
+
+  </ul>
+</div>
