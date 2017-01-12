@@ -1,9 +1,11 @@
 require 'dashing/app'
+require_relative '../../../lib/processor/widgets/widget_processor'
 
-class LeadTimeDistributionWidgetProcessor
+class LeadTimeDistributionWidgetProcessor < WidgetProcessor
 
 
   def initialize(number_of_labels = 20)
+    super('lead_time_distribution')
     @num_labels = number_of_labels
   end
 
@@ -12,10 +14,6 @@ class LeadTimeDistributionWidgetProcessor
     work_items.each { |item|
       @lead_times.push(item.lead_time)
     }
-  end
-
-  def output
-    send_event('lead_time_distribution', build_output_hash)
   end
 
   def build_output_hash

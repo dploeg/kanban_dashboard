@@ -1,11 +1,13 @@
 require 'dashing/app'
 
+require_relative '../../../lib/processor/widgets/widget_processor'
 require_relative '../processor_utils'
 
-class ControlChartWidgetProcessor
+class ControlChartWidgetProcessor < WidgetProcessor
   include ProcessorUtils
 
   def initialize
+    super('control_chart')
     @work_items_per_CoS = Hash.new
     @background_colors = ["#F7464A", "#F79B46", "#464AF7", "#F7F446", "#F446F7"]
     @hover_background_colors = ["#FF6384", "#FF9063", "#6384FF", "#F9F777", "#F777F9"]
@@ -17,10 +19,6 @@ class ControlChartWidgetProcessor
     decorate_with_x_position(ordered_work_items)
     @work_items_per_CoS = sort_into_classes_of_service(ordered_work_items)
 
-  end
-
-  def output
-    send_event('control_chart', build_output_hash)
   end
 
   def build_output_hash
