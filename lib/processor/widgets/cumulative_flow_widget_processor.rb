@@ -43,7 +43,7 @@ class CumulativeFlowWidgetProcessor < WidgetProcessor
     completed = Hash.new
     completed['label'] = 'Completed'
     completed['data'] = accumulate_values(@completed.values)
-    add_formatting_to_dataset(completed, 'rgba(92, 255, 127, 0.2)', 'rgba(92, 255, 127, 1)', @started.length)
+    add_formatting_to_dataset(completed, 'rgba(0, 143, 31, 1)', 'rgba(92, 255, 127, 1)', @started.length)
     completed['lineTension'] = 0
     completed
   end

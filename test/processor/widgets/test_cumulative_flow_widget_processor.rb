@@ -79,6 +79,12 @@ class TestCumulativeFlowWidgetProcessor < Minitest::Test
 
   end
 
+  private def check_formatting_completed(dataset)
+    check_settings(dataset['backgroundColor'], 'rgba(0, 143, 31, 1)')
+    check_settings(dataset['borderColor'], 'rgba(92, 255, 127, 1)')
+    assert_equal 1, dataset['borderWidth']
+  end
+
   private def process_and_build_output_hash
     widget = CumulativeFlowWidgetProcessor.new
     widget.process @work_items
