@@ -1,9 +1,11 @@
 require 'dashing/app'
 
+require_relative '../../../lib/processor/widgets/widget_processor'
+require_relative '../../../lib/processor/data/started_vs_finished_data_processor'
 require_relative '../processor_utils'
 
-class StartedVsFinishedWidgetProcessor < StartedVsFinishedDataProcessor
-  include ProcessorUtils
+class StartedVsFinishedWidgetProcessor < WidgetProcessor
+  include StartedVsFinishedDataProcessor
 
   def initialize
     super('started_vs_finished')

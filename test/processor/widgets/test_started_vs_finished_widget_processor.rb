@@ -3,6 +3,8 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
+require_relative '../../../lib/model/work_item'
+require_relative '../../../lib/processor/data/started_vs_finished_data_processor'
 require_relative '../../../lib/processor/widgets/started_vs_finished_widget_processor'
 
 class TestStartedVsFinishedWidgetProcessor < Minitest::Test

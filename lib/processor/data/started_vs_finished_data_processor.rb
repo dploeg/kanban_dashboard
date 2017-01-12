@@ -1,15 +1,11 @@
 require_relative '../processor_utils'
 
-class StartedVsFinishedDataProcessor
+module StartedVsFinishedDataProcessor
   include ProcessorUtils
 
-  def initialize(widget_name)
+  def process(work_items)
     @started = Hash.new
     @completed = Hash.new
-    @widget_name = widget_name
-  end
-
-  def process(work_items)
     populate_keys(work_items)
     populate_values(work_items)
   end
