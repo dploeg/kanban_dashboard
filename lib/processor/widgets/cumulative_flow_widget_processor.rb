@@ -35,6 +35,7 @@ class CumulativeFlowWidgetProcessor < WidgetProcessor
     started['label'] = 'Started'
     started['data'] = accumulate_values(@started.values)
     add_formatting_to_dataset(started, 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 1)')
+    started['lineTension'] = 0
     started
   end
 
@@ -43,6 +44,7 @@ class CumulativeFlowWidgetProcessor < WidgetProcessor
     completed['label'] = 'Completed'
     completed['data'] = accumulate_values(@completed.values)
     add_formatting_to_dataset(completed, 'rgba(92, 255, 127, 0.2)', 'rgba(92, 255, 127, 1)')
+    completed['lineTension'] = 0
     completed
   end
 

@@ -56,11 +56,19 @@ class TestCumulativeFlowWidgetProcessor < Minitest::Test
       check_labels(output_hash)
     end
 
+    should "set draw straight lines" do
+      output_hash = process_and_build_output_hash
+
+      assert_equal 0, output_hash['datasets'][0]['lineTension']
+      assert_equal 0, output_hash['datasets'][1]['lineTension']
+    end
+
+
     should "set options for a single item" do
       expected = {
           scales: {
               yAxes: [{
-                          stacked: true
+                          stacked: false
                       }]
           }
       }
