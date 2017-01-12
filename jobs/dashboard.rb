@@ -12,8 +12,8 @@ require_relative '../lib/processor/widgets/threshold_widget_processor'
 require_relative '../lib/processor/widgets/cumulative_flow_widget_processor'
 
 SCHEDULER.every '10s' do
-  work_item_reader = FileWorkItemReader.new('assets/work_items/sample_data.json')
-  threshold_reader = FileThresholdReader.new('assets/work_items/sample_thresholds.json')
+  work_item_reader = FileWorkItemReader.new('assets/dashboard_data/sample_data.json')
+  threshold_reader = FileThresholdReader.new('assets/dashboard_data/sample_thresholds.json')
   threshold_value_processors = [PercentileThresholdValueProcessor.new]
   threshold_processor = ThresholdProcessor.new(threshold_reader, threshold_value_processors)
 
