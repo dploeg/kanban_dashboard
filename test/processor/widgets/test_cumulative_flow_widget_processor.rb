@@ -20,9 +20,9 @@ class TestCumulativeFlowWidgetProcessor < Minitest::Test
     should "create a base output hash for a single item" do
       output_hash = process_and_build_output_hash
       assert_equal 2, output_hash['datasets'].size
-      started = output_hash['datasets'][0]
+      started = output_hash['datasets'][1]
       assert_equal started['label'], 'Started'
-      completed = output_hash['datasets'][1]
+      completed = output_hash['datasets'][0]
       assert_equal completed['label'], 'Completed'
 
       assert_equal [1,1,1], started['data']
@@ -46,8 +46,9 @@ class TestCumulativeFlowWidgetProcessor < Minitest::Test
     should "color started and completed for a single item" do
       output_hash = process_and_build_output_hash
 
-      check_formatting_started(output_hash['datasets'][0])
-      check_formatting_completed(output_hash['datasets'][1])
+      #note - order is reversed because completed should appear on top of started
+      check_formatting_started(output_hash['datasets'][1])
+      check_formatting_completed(output_hash['datasets'][0])
     end
 
     should "set labels for a single item" do
@@ -77,12 +78,6 @@ class TestCumulativeFlowWidgetProcessor < Minitest::Test
       assert_equal expected, output_hash['options']
     end
 
-  end
-
-  private def check_formatting_completed(dataset)
-    check_settings(dataset['backgroundColor'], 'rgba(0, 143, 31, 1)')
-    check_settings(dataset['borderColor'], 'rgba(92, 255, 127, 1)')
-    assert_equal 1, dataset['borderWidth']
   end
 
   private def process_and_build_output_hash

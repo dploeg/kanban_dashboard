@@ -16,8 +16,8 @@ class CumulativeFlowWidgetProcessor < WidgetProcessor
 
     started = build_started_output
     completed = build_completed_output
-    datasets.push(started)
     datasets.push(completed)
+    datasets.push(started)
   end
 
   private def build_options
@@ -34,7 +34,7 @@ class CumulativeFlowWidgetProcessor < WidgetProcessor
     started = Hash.new
     started['label'] = 'Started'
     started['data'] = accumulate_values(@started.values)
-    add_formatting_to_dataset(started, 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 1)', @started.length)
+    add_formatting_to_dataset(started, 'rgba(227, 175, 116, 1)', 'rgba(190, 120, 39, 1)', @started.length)
     started['lineTension'] = 0
     started
   end
@@ -43,7 +43,7 @@ class CumulativeFlowWidgetProcessor < WidgetProcessor
     completed = Hash.new
     completed['label'] = 'Completed'
     completed['data'] = accumulate_values(@completed.values)
-    add_formatting_to_dataset(completed, 'rgba(0, 143, 31, 1)', 'rgba(92, 255, 127, 1)', @started.length)
+    add_formatting_to_dataset(completed, 'rgba(161, 192, 229, 1)', 'rgba(44, 96, 160, 1)', @started.length)
     completed['lineTension'] = 0
     completed
   end

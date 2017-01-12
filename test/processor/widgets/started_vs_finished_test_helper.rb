@@ -9,14 +9,14 @@ require_relative '../../../lib/processor/widgets/started_vs_finished_widget_proc
 module StartedVsFinishedTestHelper
 
   private def check_formatting_started(dataset)
-     check_settings(dataset['backgroundColor'], 'rgba(255, 99, 132, 0.2)')
-     check_settings(dataset['borderColor'], 'rgba(255, 99, 132, 1)')
+     check_settings(dataset['backgroundColor'], 'rgba(227, 175, 116, 1)')
+     check_settings(dataset['borderColor'], 'rgba(190, 120, 39, 1)')
      assert_equal 1, dataset['borderWidth']
    end
 
    private def check_formatting_completed(dataset)
-     check_settings(dataset['backgroundColor'], 'rgba(92, 255, 127, 0.2)')
-     check_settings(dataset['borderColor'], 'rgba(92, 255, 127, 1)')
+     check_settings(dataset['backgroundColor'], 'rgba(161, 192, 229, 1)')
+     check_settings(dataset['borderColor'], 'rgba(44, 96, 160, 1)')
      assert_equal 1, dataset['borderWidth']
    end
 
