@@ -1,4 +1,4 @@
-require_relative '../processor_utils'
+require_relative '../../processor_utils'
 
 module StartedVsFinishedDataProcessor
   include ProcessorUtils
@@ -14,13 +14,7 @@ module StartedVsFinishedDataProcessor
     send_event(@widget_name, build_output_hash)
   end
 
-  def build_output_hash
-    output = Hash.new
-    output['labels'] = build_labels
-    output['datasets'] = build_datasets
-    output['options'] = build_options
-    output
-  end
+
 
   private def populate_keys(work_items)
      items_by_started = order_work_items_by_started(work_items)
@@ -82,6 +76,18 @@ module StartedVsFinishedDataProcessor
 
   private def build_labels
     @started.keys
+  end
+
+  private def add_formatting_to_dataset(data, background, border)
+    background_colors = Array.new
+    border_colors = Array.new
+    (0..@started.length-1).each {
+      background_colors.push(background)
+      border_colors.push(border)
+    }
+    data['backgroundColor'] = background_colors
+    data['borderColor'] = border_colors
+    data['borderWidth'] = 1
   end
 
 end

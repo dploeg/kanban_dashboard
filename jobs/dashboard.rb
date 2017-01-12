@@ -9,6 +9,7 @@ require_relative '../lib/processor/widgets/net_flow_widget_processor'
 require_relative '../lib/processor/threshold_processor'
 require_relative '../lib/processor/threshold/percentile_threshold_value_processor'
 require_relative '../lib/processor/widgets/threshold_widget_processor'
+require_relative '../lib/processor/widgets/cumulative_flow_widget_processor'
 
 SCHEDULER.every '10s' do
   work_item_reader = FileWorkItemReader.new('assets/work_items/sample_data.json')
@@ -18,7 +19,7 @@ SCHEDULER.every '10s' do
 
   widget_processors = [LeadTimePercentileSummaryWidgetProcessor.new, LeadTimeDistributionWidgetProcessor.new,
                        ControlChartWidgetProcessor.new, StartedVsFinishedWidgetProcessor.new,
-                       NetFlowWidgetProcessor.new,
+                       NetFlowWidgetProcessor.new, CumulativeFlowWidgetProcessor.new,
                        ThresholdWidgetProcessor.new(threshold_processor)]
   processor = DataProcessor.new(work_item_reader, widget_processors)
   processor.process_data

@@ -3,19 +3,12 @@ require 'dashing/app'
 require_relative '../../../lib/processor/widgets/widget_processor'
 require_relative '../../../lib/processor/widgets/data/started_vs_finished_data_processor'
 require_relative '../../../lib/processor/widgets/data/started_vs_finished_data_builder'
-require_relative '../processor_utils'
 
-class StartedVsFinishedWidgetProcessor < WidgetProcessor
+class CumulativeFlowWidgetProcessor < WidgetProcessor
   include StartedVsFinishedDataProcessor, StartedVsFinishedDataBuilder
 
   def initialize
-    super('started_vs_finished')
-  end
-
-  private def build_options
-    options = Hash.new
-    options['scales'] = {'yAxes'=> [{'stacked' => false, 'ticks' =>{'min' =>0, 'stepSize' => 1}}]}
-    options
+    super('cumulative_flow')
   end
 
   private def build_datasets
@@ -27,10 +20,20 @@ class StartedVsFinishedWidgetProcessor < WidgetProcessor
     datasets.push(completed)
   end
 
+  private def build_options
+    {
+        scales: {
+            yAxes: [{
+                        stacked: false
+                    }]
+        }
+    }
+  end
+
   private def build_started_output
     started = Hash.new
     started['label'] = 'Started'
-    started['data'] = @started.values
+    started['data'] = accumulate_values(@started.values)
     add_formatting_to_dataset(started, 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 1)')
     started
   end
@@ -38,9 +41,21 @@ class StartedVsFinishedWidgetProcessor < WidgetProcessor
   private def build_completed_output
     completed = Hash.new
     completed['label'] = 'Completed'
-    completed['data'] = @completed.values
+    completed['data'] = accumulate_values(@completed.values)
     add_formatting_to_dataset(completed, 'rgba(92, 255, 127, 0.2)', 'rgba(92, 255, 127, 1)')
     completed
+  end
+
+  def accumulate_values(values)
+    accumulated = Array.new
+
+    running_total = 0
+    values.each { |value|
+      running_total+=value
+      accumulated.push(running_total)
+    }
+
+    accumulated
   end
 
 end

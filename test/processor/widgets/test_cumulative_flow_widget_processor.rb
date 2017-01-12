@@ -4,19 +4,20 @@ require 'shoulda/matchers'
 require 'shoulda/context'
 
 require_relative '../../../lib/model/work_item'
-require_relative '../../../lib/processor/widgets/started_vs_finished_widget_processor'
+require_relative '../../test_constants'
+require_relative '../../../lib/processor/widgets/cumulative_flow_widget_processor'
 require_relative '../../../test/processor/widgets/started_vs_finished_test_helper'
 
-class TestStartedVsFinishedWidgetProcessor < Minitest::Test
-  include StartedVsFinishedTestHelper
+class TestCumulativeFlowWidgetProcessor < Minitest::Test
+  include TestConstants, StartedVsFinishedTestHelper
 
-  context 'StartedVsFinishedWidgetProcessor' do
+  context 'CumulativeFlowWidgetProcessor' do
 
     setup do
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")]
     end
 
-    should "create a base output hash of data for a single item" do
+    should "create a base output hash for a single item" do
       output_hash = process_and_build_output_hash
       assert_equal 2, output_hash['datasets'].size
       started = output_hash['datasets'][0]
@@ -24,8 +25,22 @@ class TestStartedVsFinishedWidgetProcessor < Minitest::Test
       completed = output_hash['datasets'][1]
       assert_equal completed['label'], 'Completed'
 
-      assert_equal [1,0,0], started['data']
+      assert_equal [1,1,1], started['data']
       assert_equal [0,0,1], completed['data']
+
+    end
+
+    should "create output" do
+      widget = CumulativeFlowWidgetProcessor.new
+      widget.process @work_items
+
+      send_event = MiniTest::Mock.new
+      send_event.expect :call, nil, ['cumulative_flow', widget.build_output_hash]
+      widget.stub :send_event, send_event do
+        widget.output
+      end
+
+      send_event.verify
     end
 
     should "color started and completed for a single item" do
@@ -41,31 +56,23 @@ class TestStartedVsFinishedWidgetProcessor < Minitest::Test
       check_labels(output_hash)
     end
 
-    should "set options with single step for y axis" do
+    should "set options for a single item" do
+      expected = {
+          scales: {
+              yAxes: [{
+                          stacked: true
+                      }]
+          }
+      }
       output_hash = process_and_build_output_hash
 
-      assert_equal 1, output_hash['options'].size
-      assert_equal 1, output_hash['options']['scales']['yAxes'][0]['ticks']['stepSize']
-      assert_equal false, output_hash['options']['scales']['yAxes'][0]['stacked']
-
+      assert_equal expected, output_hash['options']
     end
 
-    should "create output" do
-      widget = StartedVsFinishedWidgetProcessor.new
-      widget.process @work_items
-
-      send_event = MiniTest::Mock.new
-      send_event.expect :call, nil, ['started_vs_finished', widget.build_output_hash]
-      widget.stub :send_event, send_event do
-        widget.output
-      end
-
-      send_event.verify
-    end
   end
 
   private def process_and_build_output_hash
-    widget = StartedVsFinishedWidgetProcessor.new
+    widget = CumulativeFlowWidgetProcessor.new
     widget.process @work_items
 
     widget.build_output_hash
