@@ -1,8 +1,9 @@
 require 'dashing/app'
 require_relative '../../../lib/processor/widgets/widget_processor'
+require_relative '../../../lib/processor/widgets/data/chart_data_builder'
 
 class LeadTimeDistributionWidgetProcessor < WidgetProcessor
-
+  include ChartDataBuilder
 
   def initialize(number_of_labels = 20)
     super('lead_time_distribution')
@@ -16,17 +17,9 @@ class LeadTimeDistributionWidgetProcessor < WidgetProcessor
     }
   end
 
-  def build_output_hash
-    output = Hash.new
-    output['labels'] = build_labels
-    output['datasets'] = build_datasets
-    output['options'] = build_options
-    output
-  end
-
   def build_options
     options = Hash.new
-    options['scales'] = {'yAxes'=> [{'stacked' => false, 'ticks' =>{'min' =>0, 'stepSize' => 1}}]}
+    options['scales'] = {'yAxes' => [{'stacked' => false, 'ticks' => {'min' => 0, 'stepSize' => 1}}]}
     options
   end
 
@@ -35,7 +28,7 @@ class LeadTimeDistributionWidgetProcessor < WidgetProcessor
     planned = Hash.new
     planned['label'] = 'Planned'
     planned['data'] = add_lead_time_data
-    add_formatting_to_dataset(planned)
+    add_formatting_to_dataset(planned, 'rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 1)', @num_labels)
     datasets.push(planned)
   end
 
@@ -57,18 +50,6 @@ class LeadTimeDistributionWidgetProcessor < WidgetProcessor
     }
 
     lead_time_hash.values
-  end
-
-  def add_formatting_to_dataset(planned)
-    background_colors = Array.new
-    border_colors = Array.new
-    (0..@num_labels -1).each {
-      background_colors.push('rgba(255, 206, 86, 0.2)')
-      border_colors.push('rgba(255, 206, 86, 1)')
-    }
-    planned['backgroundColor'] = background_colors
-    planned['borderColor'] = border_colors
-    planned['borderWidth'] = 1
   end
 
   def build_labels()

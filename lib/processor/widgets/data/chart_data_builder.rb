@@ -1,9 +1,9 @@
-module StartedVsFinishedDataBuilder
+module ChartDataBuilder
 
-  private def add_formatting_to_dataset(data, background, border)
+  private def add_formatting_to_dataset(data, background, border, dataset_size)
     background_colors = Array.new
     border_colors = Array.new
-    (0..@started.length-1).each {
+    (0..dataset_size-1).each {
       background_colors.push(background)
       border_colors.push(border)
     }
