@@ -11,6 +11,7 @@ class FileWorkItemReader
   end
 
   def read_data
+    @work_items = Array.new
     file = File.read(@file_name)
     begin
       input_data = JSON.parse(file)

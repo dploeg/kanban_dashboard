@@ -2,8 +2,8 @@ require 'minitest/autorun'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../lib/readers/file_threshold_reader'
 require_relative '../../lib/model/threshold'
+require_relative '../../lib/readers/file_threshold_reader'
 
 class TestFileThresholdReader < Minitest::Test
 
@@ -26,6 +26,14 @@ class TestFileThresholdReader < Minitest::Test
         assert_equal Threshold.new(:type => Threshold::LOWER, :value => 2, :class_of_service => "Expedite", :processor => "second"), thresholds['second'][0]
         assert_equal Threshold.new(:type => Threshold::UPPER, :value => 12, :processor => "second"), thresholds['second'][1]
 
+      end
+
+      should 're-reading should reset the array' do
+        reader = FileThresholdReader.new('test/fixtures/files/sample_thresholds.json')
+        reader.read_thresholds
+        reader.read_thresholds
+        thresholds = reader.thresholds
+        assert_equal 2, thresholds.size
       end
 
       should 'throw exception if the file is empty' do

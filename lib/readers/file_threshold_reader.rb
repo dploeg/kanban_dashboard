@@ -1,3 +1,5 @@
+require "json"
+
 class FileThresholdReader
 
   attr_reader :thresholds
@@ -8,6 +10,7 @@ class FileThresholdReader
   end
 
   def read_thresholds
+    @thresholds = Hash.new
     file = File.read(@file_name)
     begin
       input_data = JSON.parse(file)
