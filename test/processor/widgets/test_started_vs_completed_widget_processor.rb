@@ -11,7 +11,6 @@ class TestStartedVsCompletedWidgetProcessor < Minitest::Test
   include StartedVsFinishedTestHelper
 
   context 'StartedVsCompletedWidgetProcessor' do
-
     setup do
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")]
     end
@@ -26,6 +25,19 @@ class TestStartedVsCompletedWidgetProcessor < Minitest::Test
 
       assert_equal [1,0,0], started['data']
       assert_equal [0,0,1], completed['data']
+    end
+
+    should "create a base output hash of data for a single item with double digit month input" do
+      @work_items = [WorkItem.new(:start_date => "07/01/16", :complete_date => "15/01/16")]
+      output_hash = process_and_build_output_hash
+      assert_equal 2, output_hash['datasets'].size
+      started = output_hash['datasets'][0]
+      assert_equal started['label'], 'Started'
+      completed = output_hash['datasets'][1]
+      assert_equal completed['label'], 'Completed'
+
+      assert_equal [1,0], started['data']
+      assert_equal [0,1], completed['data']
     end
 
     should "color started and completed for a single item" do

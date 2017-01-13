@@ -31,7 +31,8 @@ module StartedVsCompletedDataProcessor
      current_year = first_year.to_i
 
      while current_year<=last_year && current_week <= last_week do
-       key = current_year.to_s + "-" + current_week.to_s
+       key = current_year.to_s + "-" + '%02i' % current_week
+
        @started[key] = 0
        @completed[key] = 0
 

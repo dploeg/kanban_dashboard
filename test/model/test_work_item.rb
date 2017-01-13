@@ -35,9 +35,23 @@ class TestWorkItem < Minitest::Test
       assert_equal '2016-41', work_item.start_week_string
     end
 
+    should 'create start week string for dates with week < 10' do
+      work_item = WorkItem.new(:start_date => "15/01/16", :complete_date => "5/01/16")
+      assert_equal '2016-02', work_item.start_week_string
+      work_item = WorkItem.new(:start_date => "15/1/16", :complete_date => "5/1/16")
+      assert_equal '2016-02', work_item.start_week_string
+    end
+
     should 'create end week string' do
       work_item = WorkItem.new(:start_date => "15/10/16", :complete_date => "5/11/16")
       assert_equal '2016-44', work_item.complete_week_string
+    end
+
+    should 'create end week string for dates with week < 10' do
+      work_item = WorkItem.new(:start_date => "15/1/15", :complete_date => "5/1/16")
+      assert_equal '2016-01', work_item.complete_week_string
+      work_item = WorkItem.new(:start_date => "15/1/15", :complete_date => "5/01/16")
+      assert_equal '2016-01', work_item.complete_week_string
     end
 
   end

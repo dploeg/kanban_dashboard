@@ -30,8 +30,6 @@ num_items = 100
 first_date = DateTime.strptime("1/1/16", WorkItem::DATE_FORMAT)
 last_date = DateTime.strptime("30/6/16", WorkItem::DATE_FORMAT)
 
-puts "First date: " + first_date.strftime(WorkItem::DATE_FORMAT)
-puts "Last date: " + last_date.strftime(WorkItem::DATE_FORMAT)
 EXPEDITE = "Expedite"
 STANDARD = "Standard"
 FIXED_DATE = "Fixed Date"
@@ -51,10 +49,6 @@ item_count = 0
 
   work_items.push(WorkItem.new(:start_date => start_date.strftime(WorkItem::DATE_FORMAT), :complete_date => complete_date.strftime(WorkItem::DATE_FORMAT), :class_of_service => class_of_service))
   item_count+=1
-}
-
-work_items.each {|item|
-  puts item.to_s
 }
 
 File.open("generated_work_items.json", "w") do |f|

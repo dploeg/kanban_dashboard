@@ -14,7 +14,7 @@ class StartedVsCompletedWidgetProcessor < WidgetProcessor
 
   private def build_options
     options = Hash.new
-    options['scales'] = {'yAxes'=> [{'stacked' => false, 'ticks' =>{'min' =>0, 'stepSize' => 1}}]}
+    options['scales'] = {'yAxes' => [{'stacked' => false, 'ticks' => {'min' => 0, 'stepSize' => 1}}]}
     options
   end
 
@@ -25,6 +25,7 @@ class StartedVsCompletedWidgetProcessor < WidgetProcessor
     completed = build_completed_output
     datasets.push(started)
     datasets.push(completed)
+    datasets
   end
 
   private def build_started_output
