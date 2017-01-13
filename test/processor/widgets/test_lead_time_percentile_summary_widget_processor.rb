@@ -73,10 +73,10 @@ class TestLeadTimePercentileSummaryWidgetProcessor < Minitest::Test
   private def check_output(output_map)
     output = output_map["items"]
     assert_equal 4, output.size
-    assert_equal output[0]["data"], TestConstants::STANDARD
-    assert_equal output[1]["data"], TestConstants::EXPEDITE
-    assert_equal output[2]["data"], TestConstants::FIXED_DATE
-    assert_equal output[3]["data"], TestConstants::INTANGIBLE
+    assert_equal output[0]["label"], TestConstants::STANDARD
+    assert_equal output[1]["label"], TestConstants::EXPEDITE
+    assert_equal output[2]["label"], TestConstants::FIXED_DATE
+    assert_equal output[3]["label"], TestConstants::INTANGIBLE
 
     assert_equal output[0]["value"], 32
     assert_equal output[1]["value"], 8
