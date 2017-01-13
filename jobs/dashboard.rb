@@ -4,7 +4,7 @@ require_relative '../lib/processor/data_processor'
 require_relative '../lib/processor/widgets/lead_time_percentile_summary_widget_processor'
 require_relative '../lib/processor/widgets/lead_time_distribution_widget_processor'
 require_relative '../lib/processor/widgets/control_chart_widget_processor'
-require_relative '../lib/processor/widgets/started_vs_finished_widget_processor'
+require_relative '../lib/processor/widgets/started_vs_completed_widget_processor'
 require_relative '../lib/processor/widgets/net_flow_widget_processor'
 require_relative '../lib/processor/threshold_processor'
 require_relative '../lib/processor/threshold/percentile_threshold_value_processor'
@@ -18,7 +18,7 @@ SCHEDULER.every '10s' do
   threshold_processor = ThresholdProcessor.new(threshold_reader, threshold_value_processors)
 
   widget_processors = [LeadTimePercentileSummaryWidgetProcessor.new, LeadTimeDistributionWidgetProcessor.new,
-                       ControlChartWidgetProcessor.new, StartedVsFinishedWidgetProcessor.new,
+                       ControlChartWidgetProcessor.new, StartedVsCompletedWidgetProcessor.new,
                        NetFlowWidgetProcessor.new, CumulativeFlowWidgetProcessor.new,
                        ThresholdWidgetProcessor.new(threshold_processor)]
   processor = DataProcessor.new(work_item_reader, widget_processors)

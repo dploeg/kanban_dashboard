@@ -4,7 +4,7 @@ require 'shoulda/matchers'
 require 'shoulda/context'
 
 require_relative '../../../lib/model/work_item'
-require_relative '../../../lib/processor/widgets/data/started_vs_finished_data_processor'
+require_relative '../../../lib/processor/widgets/data/started_vs_completed_data_processor'
 require_relative '../../../lib/processor/widgets/net_flow_widget_processor'
 require_relative 'started_vs_finished_test_helper'
 

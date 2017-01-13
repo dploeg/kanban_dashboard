@@ -4,7 +4,7 @@ require 'shoulda/matchers'
 require 'shoulda/context'
 
 require_relative '../../../lib/model/work_item'
-require_relative '../../../lib/processor/widgets/started_vs_finished_widget_processor'
+require_relative '../../../lib/processor/widgets/started_vs_completed_widget_processor'
 
 module StartedVsFinishedTestHelper
 

@@ -1,11 +1,11 @@
 require_relative '../../../lib/processor/widgets/widget_processor'
-require_relative '../../../lib/processor/widgets/data/started_vs_finished_data_processor'
+require_relative '../../../lib/processor/widgets/data/started_vs_completed_data_processor'
 require_relative '../../../lib/processor/widgets/data/chart_data_builder'
 
 require 'dashing/app'
 
 class NetFlowWidgetProcessor < WidgetProcessor
-  include StartedVsFinishedDataProcessor, ChartDataBuilder
+  include StartedVsCompletedDataProcessor, ChartDataBuilder
 
   def initialize
     super('net_flow')

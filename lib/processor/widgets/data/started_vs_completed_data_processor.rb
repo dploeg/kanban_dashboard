@@ -1,6 +1,6 @@
 require_relative '../../processor_utils'
 
-module StartedVsFinishedDataProcessor
+module StartedVsCompletedDataProcessor
   include ProcessorUtils
 
   def process(work_items)
