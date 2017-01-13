@@ -29,6 +29,18 @@ class WorkItem
     "Start Date: " + @start_date + ", Complete Date: " + @complete_date + ", Class of Service: " + @class_of_service
   end
 
+  def as_json(options={})
+      {
+          start_date: @start_date,
+          complete_date: @complete_date,
+          class_of_service: @class_of_service,
+      }
+  end
+
+  def to_json(*options)
+      as_json(*options).to_json(*options)
+  end
+
   def complete_week_string
     convert_to_week_string(@complete_date)
   end
