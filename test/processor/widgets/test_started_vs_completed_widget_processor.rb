@@ -40,6 +40,20 @@ class TestStartedVsCompletedWidgetProcessor < Minitest::Test
       assert_equal [0,1], completed['data']
     end
 
+    should "create a base output hash of data where item crosses year boundary" do
+      @work_items = [WorkItem.new(:start_date => "23/12/16", :complete_date => "8/01/17")]
+      output_hash = process_and_build_output_hash
+      assert_equal 2, output_hash['datasets'].size
+      started = output_hash['datasets'][0]
+      assert_equal started['label'], 'Started'
+      completed = output_hash['datasets'][1]
+      assert_equal completed['label'], 'Completed'
+
+      assert_equal [1,0,0,0], started['data']
+      assert_equal [0,0,0,1], completed['data']
+    end
+
+
     should "color started and completed for a single item" do
       output_hash = process_and_build_output_hash
 

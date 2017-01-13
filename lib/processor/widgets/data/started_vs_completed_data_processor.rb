@@ -15,36 +15,35 @@ module StartedVsCompletedDataProcessor
   end
 
 
-
   private def populate_keys(work_items)
-     items_by_started = order_work_items_by_started(work_items)
-     start_date = Date.strptime(items_by_started[0].start_date, WorkItem::DATE_FORMAT)
-     first_week = start_date.strftime('%U').to_i
-     first_year = start_date.strftime('%Y').to_i
+    items_by_started = order_work_items_by_started(work_items)
+    start_date = Date.strptime(items_by_started[0].start_date, WorkItem::DATE_FORMAT)
+    first_week = start_date.strftime('%U').to_i
+    first_year = start_date.strftime('%Y').to_i
 
-     items_by_completed = order_work_items_by_completed(work_items)
-     completed_date = Date.strptime(items_by_completed.last.complete_date, WorkItem::DATE_FORMAT)
-     last_week = completed_date.strftime('%U').to_i
-     last_year = completed_date.strftime('%Y').to_i
+    items_by_completed = order_work_items_by_completed(work_items)
+    completed_date = Date.strptime(items_by_completed.last.complete_date, WorkItem::DATE_FORMAT)
+    last_week = completed_date.strftime('%U').to_i
+    last_year = completed_date.strftime('%Y').to_i
 
-     current_week = first_week.to_i
-     current_year = first_year.to_i
+    current_week = first_week.to_i
+    current_year = first_year.to_i
 
-     while current_year<=last_year && current_week <= last_week do
-       key = current_year.to_s + "-" + '%02i' % current_week
+    while (current_year<last_year ) || (current_week <= last_week) do
+      key = current_year.to_s + "-" + '%02i' % current_week
 
-       @started[key] = 0
-       @completed[key] = 0
+      @started[key] = 0
+      @completed[key] = 0
 
-       if current_week < 53
-         current_week+=1
-       else
-         current_year +=1
-         current_week = 1
-       end
-     end
+      if current_week < 52
+        current_week+=1
+      else
+        current_year +=1
+        current_week = 1
+      end
+    end
 
-   end
+  end
 
   private def populate_values(work_items)
     populate_started_values(work_items)
