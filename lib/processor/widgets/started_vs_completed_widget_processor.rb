@@ -16,7 +16,11 @@ class StartedVsCompletedWidgetProcessor < WidgetProcessor
     max_started = @started.max_by { |k, v| v }[1]
     max_completed = @completed.max_by { |k, v| v }[1]
     max_y = max_started >= max_completed ? max_started : max_completed
-    roundup(max_y)
+    if max_y > 10
+      roundup(max_y)
+    else
+      max_y
+    end
   end
 
   private def build_datasets

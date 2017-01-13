@@ -71,7 +71,21 @@ class TestStartedVsCompletedWidgetProcessor < Minitest::Test
       output_hash = process_and_build_output_hash
 
       assert_equal 1, output_hash[:options].size
+      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
       assert_equal 1, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+      assert_equal 1, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+      assert_equal false, output_hash[:options][:scales][:yAxes][0][:stacked]
+
+    end
+
+    should "set options with single step for y axis: max <15 " do
+      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")] * 11
+      output_hash = process_and_build_output_hash
+
+      assert_equal 1, output_hash[:options].size
+      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+      assert_equal 2, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+      assert_equal 20, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
       assert_equal false, output_hash[:options][:scales][:yAxes][0][:stacked]
 
     end

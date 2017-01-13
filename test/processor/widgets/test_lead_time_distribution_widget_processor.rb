@@ -40,25 +40,36 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
 
 
     should "set options with multiple steps for y axis:  max <10 " do
-      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 81
+      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 1
       output_hash = process_and_build_output_hash
 
       assert_equal 1, output_hash[:options].size
       assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
-      assert_equal 9, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
-      assert_equal 90, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+      assert_equal 1, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+      assert_equal 1, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
       assert_equal false, output_hash[:options][:scales][:yAxes][0][:stacked]
 
     end
 
+    should "set options with multiple steps for y axis:  max  >10 " do
+      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 11
+      output_hash = process_and_build_output_hash
+
+      assert_equal 1, output_hash[:options].size
+      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+      assert_equal 2, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+      assert_equal 20, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+      assert_equal false, output_hash[:options][:scales][:yAxes][0][:stacked]
+
+    end
+
+
     should "set options with multiple steps for y axis:  max < 100" do
-      # @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => (Date.strptime("10/3/16", WorkItem::DATE_FORMAT) + 81).strftime(WorkItem::DATE_FORMAT))]
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")] * 81
       output_hash = process_and_build_output_hash
 
       assert_equal 1, output_hash[:options].size
       assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
-      # assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
       assert_equal 9, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
       assert_equal 90, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
       assert_equal false, output_hash[:options][:scales][:yAxes][0][:stacked]

@@ -45,7 +45,11 @@ class LeadTimeDistributionWidgetProcessor < WidgetProcessor
   end
 
   def determine_max_y_axis
-    roundup(add_lead_time_data.max)
+    if add_lead_time_data.max < 10
+      return add_lead_time_data.max
+    else
+      return roundup(add_lead_time_data.max)
+    end
   end
 
   def build_datasets
