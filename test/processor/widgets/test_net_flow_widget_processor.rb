@@ -19,11 +19,11 @@ class TestNetFlowWidgetProcessor < Minitest::Test
 
     should "create a base output hash of data for a single item" do
       output_hash = process_and_build_output_hash
-      assert_equal 1, output_hash['datasets'].size
-      flow = output_hash['datasets'][0]
-      assert_equal flow['label'], 'Net Flow'
+      assert_equal 1, output_hash[:datasets].size
+      flow = output_hash[:datasets][0]
+      assert_equal flow[:label], 'Net Flow'
 
-      assert_equal [-1, 0, 1], flow['data']
+      assert_equal [-1, 0, 1], flow[:data]
     end
 
     should "set labels for a single item" do
@@ -35,19 +35,19 @@ class TestNetFlowWidgetProcessor < Minitest::Test
     should "color flow for a single item" do
       output_hash = process_and_build_output_hash
 
-      flow = output_hash['datasets'][0]
+      flow = output_hash[:datasets][0]
       flow_index = 0
-      flow['data'].each { |flow_value|
+      flow[:data].each { |flow_value|
         if flow_value < 0
-          assert_equal 'rgba(255, 99, 132, 0.2)', flow['backgroundColor'][flow_index]
-          assert_equal 'rgba(255, 99, 132, 1)', flow['borderColor'][flow_index]
+          assert_equal 'rgba(255, 99, 132, 0.2)', flow[:backgroundColor][flow_index]
+          assert_equal 'rgba(255, 99, 132, 1)', flow[:borderColor][flow_index]
         else
-          assert_equal 'rgba(92, 255, 127, 0.2)', flow['backgroundColor'][flow_index]
-          assert_equal 'rgba(92, 255, 127, 1)', flow['borderColor'][flow_index]
+          assert_equal 'rgba(92, 255, 127, 0.2)', flow[:backgroundColor][flow_index]
+          assert_equal 'rgba(92, 255, 127, 1)', flow[:borderColor][flow_index]
         end
         flow_index+=1
       }
-      assert_equal 1, flow['borderWidth']
+      assert_equal 1, flow[:borderWidth]
 
     end
 

@@ -41,11 +41,11 @@ class NetFlowWidgetProcessor < WidgetProcessor
 
   def build_flow_hash(background_colors, border_colors, flow_data)
     flow = Hash.new
-    flow['label'] = 'Net Flow'
-    flow['data'] = flow_data
-    flow['backgroundColor'] = background_colors
-    flow['borderColor'] = border_colors
-    flow['borderWidth'] = 1
+    flow[:label] = 'Net Flow'
+    flow[:data] = flow_data
+    flow[:backgroundColor] = background_colors
+    flow[:borderColor] = border_colors
+    flow[:borderWidth] = 1
     flow
   end
 

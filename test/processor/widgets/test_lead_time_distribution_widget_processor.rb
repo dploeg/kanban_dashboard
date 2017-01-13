@@ -113,19 +113,19 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
   end
 
   def check_datasets(output)
-    assert_equal 1, output['datasets'].size
-    planned = output['datasets'][0]
-    assert_equal planned['label'], 'Planned'
+    assert_equal 1, output[:datasets].size
+    planned = output[:datasets][0]
+    assert_equal planned[:label], 'Planned'
 
-    assert_same_elements [1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0], planned['data']
+    assert_same_elements [1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0], planned[:data]
 
     check_formatting(planned)
   end
 
   def check_formatting(planned)
-    check_settings(planned['backgroundColor'], 'rgba(255, 206, 86, 0.2)')
-    check_settings(planned['borderColor'], 'rgba(255, 206, 86, 1)')
-    assert_equal 1, planned['borderWidth']
+    check_settings(planned[:backgroundColor], 'rgba(255, 206, 86, 0.2)')
+    check_settings(planned[:borderColor], 'rgba(255, 206, 86, 1)')
+    assert_equal 1, planned[:borderWidth]
   end
 
   def check_settings(setting_array, setting)
@@ -136,7 +136,7 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
   end
 
   def check_output_labels(output)
-    labels = output['labels']
+    labels = output[:labels]
     assert_equal 20, labels.size
     counter = 0
     min = 6

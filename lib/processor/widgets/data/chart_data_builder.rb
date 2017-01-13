@@ -9,15 +9,15 @@ module ChartDataBuilder
       background_colors.push(background)
       border_colors.push(border)
     }
-    data['backgroundColor'] = background_colors
-    data['borderColor'] = border_colors
-    data['borderWidth'] = 1
+    data[:backgroundColor] = background_colors
+    data[:borderColor] = border_colors
+    data[:borderWidth] = 1
   end
 
   def build_output_hash
     output = Hash.new
-    output['labels'] = build_labels
-    output['datasets'] = build_datasets
+    output[:labels] = build_labels
+    output[:datasets] = build_datasets
     output[:options] = build_options
     output
   end

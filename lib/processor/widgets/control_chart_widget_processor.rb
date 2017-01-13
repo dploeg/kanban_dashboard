@@ -24,8 +24,8 @@ class ControlChartWidgetProcessor < WidgetProcessor
   def build_output_hash
     output = Hash.new
 
-    output['datasets'] = build_datasets
-    output['options'] = build_options
+    output[:datasets] = build_datasets
+    output[:options] = build_options
 
     output
   end

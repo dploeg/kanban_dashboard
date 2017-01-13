@@ -19,10 +19,10 @@ class TestControlChartWidgetProcessor < Minitest::Test
       output_hash = process_and_build_output_hash
 
       assert_equal 2, output_hash.size
-      assert_equal 1, output_hash['datasets'][0][:data].size
+      assert_equal 1, output_hash[:datasets][0][:data].size
 
-      assert_equal 1, output_hash['datasets'][0][:data][0][:x]
-      assert_equal 11, output_hash['datasets'][0][:data][0][:y]
+      assert_equal 1, output_hash[:datasets][0][:data][0][:x]
+      assert_equal 11, output_hash[:datasets][0][:data][0][:y]
 
     end
 
@@ -30,15 +30,15 @@ class TestControlChartWidgetProcessor < Minitest::Test
       output_hash = process_and_build_output_hash
 
       assert_equal 2, output_hash.size
-      assert_equal "Standard", output_hash['datasets'][0][:label]
-      assert_equal "#F7464A", output_hash['datasets'][0][:backgroundColor]
-      assert_equal "#FF6384", output_hash['datasets'][0][:hoverBackgroundColor]
+      assert_equal "Standard", output_hash[:datasets][0][:label]
+      assert_equal "#F7464A", output_hash[:datasets][0][:backgroundColor]
+      assert_equal "#FF6384", output_hash[:datasets][0][:hoverBackgroundColor]
     end
 
     should "add options" do
       output_hash = process_and_build_output_hash
 
-      refute_nil output_hash['options']
+      refute_nil output_hash[:options]
       expected_options =     {
               scales: {
                   xAxes: [{
@@ -64,7 +64,7 @@ class TestControlChartWidgetProcessor < Minitest::Test
                           }]
               }
           }
-      assert_equal expected_options, output_hash['options']
+      assert_equal expected_options, output_hash[:options]
 
     end
 
@@ -79,20 +79,20 @@ class TestControlChartWidgetProcessor < Minitest::Test
 
       output_hash = process_and_build_output_hash
 
-      assert_equal 7, output_hash['datasets'][0][:data].size
+      assert_equal 7, output_hash[:datasets][0][:data].size
 
       for i in 1..6
-        assert_equal i, output_hash['datasets'][0][:data][i-1][:x]
-        assert_equal 5, output_hash['datasets'][0][:data][i][:r]
+        assert_equal i, output_hash[:datasets][0][:data][i-1][:x]
+        assert_equal 5, output_hash[:datasets][0][:data][i][:r]
       end
 
-      assert_equal 11, output_hash['datasets'][0][:data][0][:y]
-      assert_equal 7, output_hash['datasets'][0][:data][1][:y]
-      assert_equal 33, output_hash['datasets'][0][:data][2][:y]
-      assert_equal 27, output_hash['datasets'][0][:data][3][:y]
-      assert_equal 23, output_hash['datasets'][0][:data][4][:y]
-      assert_equal 31, output_hash['datasets'][0][:data][5][:y]
-      assert_equal 25, output_hash['datasets'][0][:data][6][:y]
+      assert_equal 11, output_hash[:datasets][0][:data][0][:y]
+      assert_equal 7, output_hash[:datasets][0][:data][1][:y]
+      assert_equal 33, output_hash[:datasets][0][:data][2][:y]
+      assert_equal 27, output_hash[:datasets][0][:data][3][:y]
+      assert_equal 23, output_hash[:datasets][0][:data][4][:y]
+      assert_equal 31, output_hash[:datasets][0][:data][5][:y]
+      assert_equal 25, output_hash[:datasets][0][:data][6][:y]
 
     end
 
@@ -132,7 +132,7 @@ class TestControlChartWidgetProcessor < Minitest::Test
       widget.process @work_items
 
       output_hash = widget.build_output_hash
-      assert_equal 4, output_hash['datasets'].size
+      assert_equal 4, output_hash[:datasets].size
 
       check_CoS_labels(output_hash)
       check_CoS_background_colors(output_hash)
@@ -147,9 +147,9 @@ class TestControlChartWidgetProcessor < Minitest::Test
   end
 
   def check_x_positions(output_hash)
-    assert_equal 8, output_hash['datasets'][0][:data][3][:x] #7
-    assert_equal 6, output_hash['datasets'][1][:data][1][:x] #7
-    assert_equal 14, output_hash['datasets'][2][:data][1][:x]
+    assert_equal 8, output_hash[:datasets][0][:data][3][:x] #7
+    assert_equal 6, output_hash[:datasets][1][:data][1][:x] #7
+    assert_equal 14, output_hash[:datasets][2][:data][1][:x]
   end
 
   def process_and_build_output_hash
@@ -160,24 +160,24 @@ class TestControlChartWidgetProcessor < Minitest::Test
   end
 
   def check_CoS_labels(output_hash)
-    assert_equal STANDARD, output_hash['datasets'][0][:label]
-    assert_equal EXPEDITE, output_hash['datasets'][1][:label]
-    assert_equal FIXED_DATE, output_hash['datasets'][2][:label]
-    assert_equal INTANGIBLE, output_hash['datasets'][3][:label]
+    assert_equal STANDARD, output_hash[:datasets][0][:label]
+    assert_equal EXPEDITE, output_hash[:datasets][1][:label]
+    assert_equal FIXED_DATE, output_hash[:datasets][2][:label]
+    assert_equal INTANGIBLE, output_hash[:datasets][3][:label]
   end
 
   def check_CoS_background_colors(output_hash)
-    assert_equal "#F7464A", output_hash['datasets'][0][:backgroundColor]
-    assert_equal "#F79B46", output_hash['datasets'][1][:backgroundColor]
-    assert_equal "#464AF7", output_hash['datasets'][2][:backgroundColor]
-    assert_equal "#F7F446", output_hash['datasets'][3][:backgroundColor]
+    assert_equal "#F7464A", output_hash[:datasets][0][:backgroundColor]
+    assert_equal "#F79B46", output_hash[:datasets][1][:backgroundColor]
+    assert_equal "#464AF7", output_hash[:datasets][2][:backgroundColor]
+    assert_equal "#F7F446", output_hash[:datasets][3][:backgroundColor]
   end
 
   def check_CoS_hover_background_colors(output_hash)
-    assert_equal "#FF6384", output_hash['datasets'][0][:hoverBackgroundColor]
-    assert_equal "#FF9063", output_hash['datasets'][1][:hoverBackgroundColor]
-    assert_equal "#6384FF", output_hash['datasets'][2][:hoverBackgroundColor]
-    assert_equal "#F9F777", output_hash['datasets'][3][:hoverBackgroundColor]
+    assert_equal "#FF6384", output_hash[:datasets][0][:hoverBackgroundColor]
+    assert_equal "#FF9063", output_hash[:datasets][1][:hoverBackgroundColor]
+    assert_equal "#6384FF", output_hash[:datasets][2][:hoverBackgroundColor]
+    assert_equal "#F9F777", output_hash[:datasets][3][:hoverBackgroundColor]
   end
 
 end

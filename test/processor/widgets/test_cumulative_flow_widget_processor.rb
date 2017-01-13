@@ -19,14 +19,14 @@ class TestCumulativeFlowWidgetProcessor < Minitest::Test
 
     should "create a base output hash for a single item" do
       output_hash = process_and_build_output_hash
-      assert_equal 2, output_hash['datasets'].size
-      started = output_hash['datasets'][1]
-      assert_equal started['label'], 'Started'
-      completed = output_hash['datasets'][0]
-      assert_equal completed['label'], 'Completed'
+      assert_equal 2, output_hash[:datasets].size
+      started = output_hash[:datasets][1]
+      assert_equal started[:label], 'Started'
+      completed = output_hash[:datasets][0]
+      assert_equal completed[:label], 'Completed'
 
-      assert_equal [1,1,1], started['data']
-      assert_equal [0,0,1], completed['data']
+      assert_equal [1,1,1], started[:data]
+      assert_equal [0,0,1], completed[:data]
 
     end
 
@@ -47,8 +47,8 @@ class TestCumulativeFlowWidgetProcessor < Minitest::Test
       output_hash = process_and_build_output_hash
 
       #note - order is reversed because completed should appear on top of started
-      check_formatting_started(output_hash['datasets'][1])
-      check_formatting_completed(output_hash['datasets'][0])
+      check_formatting_started(output_hash[:datasets][1])
+      check_formatting_completed(output_hash[:datasets][0])
     end
 
     should "set labels for a single item" do
@@ -60,10 +60,9 @@ class TestCumulativeFlowWidgetProcessor < Minitest::Test
     should "set draw straight lines" do
       output_hash = process_and_build_output_hash
 
-      assert_equal 0, output_hash['datasets'][0]['lineTension']
-      assert_equal 0, output_hash['datasets'][1]['lineTension']
+      assert_equal 0, output_hash[:datasets][0][:lineTension]
+      assert_equal 0, output_hash[:datasets][1][:lineTension]
     end
-
 
     should "set options for a single item" do
       expected = {
@@ -74,7 +73,6 @@ class TestCumulativeFlowWidgetProcessor < Minitest::Test
           }
       }
       output_hash = process_and_build_output_hash
-      puts output_hash.to_s
 
       assert_equal expected, output_hash[:options]
     end

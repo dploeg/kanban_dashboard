@@ -51,8 +51,8 @@ class LeadTimeDistributionWidgetProcessor < WidgetProcessor
   def build_datasets
     datasets = Array.new
     planned = Hash.new
-    planned['label'] = 'Planned'
-    planned['data'] = add_lead_time_data
+    planned[:label] = 'Planned'
+    planned[:data] = add_lead_time_data
     add_formatting_to_dataset(planned, 'rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 1)', @num_x_axis_labels)
     datasets.push(planned)
   end
