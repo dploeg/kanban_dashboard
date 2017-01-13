@@ -28,7 +28,7 @@ puts "Last date: " + last_date.strftime(WorkItem::DATE_FORMAT)
 EXPEDITE = "Expedite"
 STANDARD = "Standard"
 FIXED_DATE = "Fixed Date"
-INTANGIBLE = "Intagible"
+INTANGIBLE = "Intangible"
 
 classes_of_service_max_days = {EXPEDITE => 10, STANDARD => 42, FIXED_DATE => 30, INTANGIBLE => 50}
 
