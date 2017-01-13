@@ -17,6 +17,33 @@ class LeadTimeDistributionWidgetProcessor < WidgetProcessor
     }
   end
 
+  def build_options
+    {
+        scales: {
+            xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: "Lead Time Values (calendar days from start to complete)"
+                        }
+
+                    }],
+            yAxes: [{
+                        stacked: false,
+                        ticks: {
+                            min: 0,
+                            stepSize: determine_y_axis_step_size,
+                            max: determine_max_y_axis
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: "Item Count"
+                        }
+
+                    }]
+        }
+    }
+  end
+
   def determine_max_y_axis
     roundup(add_lead_time_data.max)
   end

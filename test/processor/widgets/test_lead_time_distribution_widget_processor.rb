@@ -43,11 +43,11 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 81
       output_hash = process_and_build_output_hash
 
-      assert_equal 1, output_hash['options'].size
-      assert_equal 0, output_hash['options']['scales']['yAxes'][0]['ticks']['min']
-      assert_equal 9, output_hash['options']['scales']['yAxes'][0]['ticks']['stepSize']
-      assert_equal 90, output_hash['options']['scales']['yAxes'][0]['ticks']['max']
-      assert_equal false, output_hash['options']['scales']['yAxes'][0]['stacked']
+      assert_equal 1, output_hash[:options].size
+      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+      assert_equal 9, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+      assert_equal 90, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+      assert_equal false, output_hash[:options][:scales][:yAxes][0][:stacked]
 
     end
 
@@ -56,11 +56,12 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")] * 81
       output_hash = process_and_build_output_hash
 
-      assert_equal 1, output_hash['options'].size
-      assert_equal 0, output_hash['options']['scales']['yAxes'][0]['ticks']['min']
-      assert_equal 9, output_hash['options']['scales']['yAxes'][0]['ticks']['stepSize']
-      assert_equal 90, output_hash['options']['scales']['yAxes'][0]['ticks']['max']
-      assert_equal false, output_hash['options']['scales']['yAxes'][0]['stacked']
+      assert_equal 1, output_hash[:options].size
+      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+      # assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+      assert_equal 9, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+      assert_equal 90, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+      assert_equal false, output_hash[:options][:scales][:yAxes][0][:stacked]
 
     end
 
@@ -69,11 +70,11 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
       # @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => (Date.strptime("10/3/16", WorkItem::DATE_FORMAT) + 112).strftime(WorkItem::DATE_FORMAT))]
       output_hash = process_and_build_output_hash
 
-      assert_equal 1, output_hash['options'].size
-      assert_equal 0, output_hash['options']['scales']['yAxes'][0]['ticks']['min']
-      assert_equal 12, output_hash['options']['scales']['yAxes'][0]['ticks']['stepSize']
-      assert_equal 120, output_hash['options']['scales']['yAxes'][0]['ticks']['max']
-      assert_equal false, output_hash['options']['scales']['yAxes'][0]['stacked']
+      assert_equal 1, output_hash[:options].size
+      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+      assert_equal 12, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+      assert_equal 120, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+      assert_equal false, output_hash[:options][:scales][:yAxes][0][:stacked]
 
     end
 
@@ -104,9 +105,9 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
     assert_equal 3, output.keys.size
 
     check_output_labels(output)
-    assert_equal 1, output['options'].size
-    assert_equal 1, output['options']['scales']['yAxes'][0]['ticks']['stepSize']
-    assert_equal false, output['options']['scales']['yAxes'][0]['stacked']
+    assert_equal 1, output[:options].size
+    assert_equal 1, output[:options][:scales][:yAxes][0][:ticks][:stepSize]
+    assert_equal false, output[:options][:scales][:yAxes][0][:stacked]
     check_datasets(output)
 
   end

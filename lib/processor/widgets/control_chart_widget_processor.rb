@@ -57,12 +57,21 @@ class ControlChartWidgetProcessor < WidgetProcessor
                         ticks: {
                             beginAtZero: true,
                             stepSize: 1.0
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: "Work Item"
                         }
+
                     }],
             yAxes: [{
                         ticks: {
                             beginAtZero: true,
                             fixedStepSize: 1.0
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: "Lead Time"
                         }
                     }]
         }

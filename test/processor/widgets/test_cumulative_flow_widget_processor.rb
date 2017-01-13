@@ -74,8 +74,9 @@ class TestCumulativeFlowWidgetProcessor < Minitest::Test
           }
       }
       output_hash = process_and_build_output_hash
+      puts output_hash.to_s
 
-      assert_equal expected, output_hash['options']
+      assert_equal expected, output_hash[:options]
     end
 
   end

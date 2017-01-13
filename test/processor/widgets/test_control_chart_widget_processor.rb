@@ -39,22 +39,31 @@ class TestControlChartWidgetProcessor < Minitest::Test
       output_hash = process_and_build_output_hash
 
       refute_nil output_hash['options']
-      expected_options = {
-                  scales: {
-                      xAxes: [{
-                          ticks: {
-                              beginAtZero: true,
-                              stepSize: 1.0
-                          }
-                      }],
-                      yAxes: [{
-                          ticks: {
-                              beginAtZero: true,
-                              fixedStepSize: 1.0
-                          }
-                      }]
-                  }
-      }
+      expected_options =     {
+              scales: {
+                  xAxes: [{
+                              ticks: {
+                                  beginAtZero: true,
+                                  stepSize: 1.0
+                              },
+                              scaleLabel: {
+                                  display: true,
+                                  labelString: "Work Item"
+                              }
+
+                          }],
+                  yAxes: [{
+                              ticks: {
+                                  beginAtZero: true,
+                                  fixedStepSize: 1.0
+                              },
+                              scaleLabel: {
+                                  display: true,
+                                  labelString: "Lead Time"
+                              }
+                          }]
+              }
+          }
       assert_equal expected_options, output_hash['options']
 
     end

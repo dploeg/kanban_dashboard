@@ -18,17 +18,26 @@ module ChartDataBuilder
     output = Hash.new
     output['labels'] = build_labels
     output['datasets'] = build_datasets
-    output['options'] = build_options
+    output[:options] = build_options
     output
   end
 
   def build_options
-    options = Hash.new
-    options['scales'] = {'yAxes' => [{'stacked' => false, 'ticks' => {'min' => 0, 'stepSize' => determine_step_size, 'max' => determine_max_y_axis}}]}
-    options
+    {
+        scales: {
+            yAxes: [{
+                        stacked: false,
+                        ticks: {
+                            min: 0,
+                            stepSize: determine_y_axis_step_size,
+                            max: determine_max_y_axis
+                        }
+                    }]
+        }
+    }
   end
 
-  def determine_step_size
+  def determine_y_axis_step_size
     rounded_max_y = determine_max_y_axis
 
     rounded_max_y / MAX_STEPS > 1 ? rounded_max_y / MAX_STEPS : 1
