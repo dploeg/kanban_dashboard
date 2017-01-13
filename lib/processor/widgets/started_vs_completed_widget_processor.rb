@@ -12,10 +12,11 @@ class StartedVsCompletedWidgetProcessor < WidgetProcessor
     super('started_vs_finished')
   end
 
-  private def build_options
-    options = Hash.new
-    options['scales'] = {'yAxes' => [{'stacked' => false, 'ticks' => {'min' => 0, 'stepSize' => 1}}]}
-    options
+  def determine_max_y_axis
+    max_started = @started.max_by { |k, v| v }[1]
+    max_completed = @completed.max_by { |k, v| v }[1]
+    max_y = max_started >= max_completed ? max_started : max_completed
+    roundup(max_y)
   end
 
   private def build_datasets

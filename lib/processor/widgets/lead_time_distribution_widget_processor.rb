@@ -5,9 +5,9 @@ require_relative '../../../lib/processor/widgets/data/chart_data_builder'
 class LeadTimeDistributionWidgetProcessor < WidgetProcessor
   include ChartDataBuilder
 
-  def initialize(number_of_labels = 20)
+  def initialize(number_of_x_axis_labels = 20)
     super('lead_time_distribution')
-    @num_labels = number_of_labels
+    @num_x_axis_labels = number_of_x_axis_labels
   end
 
   def process(work_items)
@@ -17,10 +17,8 @@ class LeadTimeDistributionWidgetProcessor < WidgetProcessor
     }
   end
 
-  def build_options
-    options = Hash.new
-    options['scales'] = {'yAxes' => [{'stacked' => false, 'ticks' => {'min' => 0, 'stepSize' => 1}}]}
-    options
+  def determine_max_y_axis
+    roundup(add_lead_time_data.max)
   end
 
   def build_datasets
@@ -28,14 +26,14 @@ class LeadTimeDistributionWidgetProcessor < WidgetProcessor
     planned = Hash.new
     planned['label'] = 'Planned'
     planned['data'] = add_lead_time_data
-    add_formatting_to_dataset(planned, 'rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 1)', @num_labels)
+    add_formatting_to_dataset(planned, 'rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 1)', @num_x_axis_labels)
     datasets.push(planned)
   end
 
   def add_lead_time_data
     lead_time_hash = Hash.new
-    increment = ((@lead_times.max - @lead_times.min) / @num_labels.to_f).ceil
-    for i in 0..@num_labels - 1
+    increment = ((@lead_times.max - @lead_times.min) / @num_x_axis_labels.to_f).ceil
+    for i in 0..@num_x_axis_labels - 1
       lead_time_hash[(@lead_times.min + i * increment)] = 0
     end
 
@@ -54,8 +52,8 @@ class LeadTimeDistributionWidgetProcessor < WidgetProcessor
 
   def build_labels()
     labels = Array.new
-    increment = ((@lead_times.max - @lead_times.min) / @num_labels.to_f).ceil
-    for i in 0..@num_labels - 1
+    increment = ((@lead_times.max - @lead_times.min) / @num_x_axis_labels.to_f).ceil
+    for i in 0..@num_x_axis_labels - 1
       labels.push(@lead_times.min + i * increment)
     end
     labels

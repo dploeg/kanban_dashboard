@@ -4,6 +4,7 @@ require 'shoulda/matchers'
 require 'shoulda/context'
 
 require_relative '../../../lib/processor/widgets/lead_time_percentile_summary_widget_processor'
+require_relative '../../../lib/model/work_item'
 require_relative '../../test_constants'
 
 class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
@@ -33,11 +34,47 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
     end
 
     should 'output hash' do
-      widget = LeadTimeDistributionWidgetProcessor.new
-      widget.process @work_items
-
-      output_hash = widget.build_output_hash
+      output_hash = process_and_build_output_hash
       check_output(output_hash)
+    end
+
+
+    should "set options with multiple steps for y axis:  max <10 " do
+      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 81
+      output_hash = process_and_build_output_hash
+
+      assert_equal 1, output_hash['options'].size
+      assert_equal 0, output_hash['options']['scales']['yAxes'][0]['ticks']['min']
+      assert_equal 9, output_hash['options']['scales']['yAxes'][0]['ticks']['stepSize']
+      assert_equal 90, output_hash['options']['scales']['yAxes'][0]['ticks']['max']
+      assert_equal false, output_hash['options']['scales']['yAxes'][0]['stacked']
+
+    end
+
+    should "set options with multiple steps for y axis:  max < 100" do
+      # @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => (Date.strptime("10/3/16", WorkItem::DATE_FORMAT) + 81).strftime(WorkItem::DATE_FORMAT))]
+      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")] * 81
+      output_hash = process_and_build_output_hash
+
+      assert_equal 1, output_hash['options'].size
+      assert_equal 0, output_hash['options']['scales']['yAxes'][0]['ticks']['min']
+      assert_equal 9, output_hash['options']['scales']['yAxes'][0]['ticks']['stepSize']
+      assert_equal 90, output_hash['options']['scales']['yAxes'][0]['ticks']['max']
+      assert_equal false, output_hash['options']['scales']['yAxes'][0]['stacked']
+
+    end
+
+    should "set options with multiple steps for y axis: max > 100" do
+      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")] * 112
+      # @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => (Date.strptime("10/3/16", WorkItem::DATE_FORMAT) + 112).strftime(WorkItem::DATE_FORMAT))]
+      output_hash = process_and_build_output_hash
+
+      assert_equal 1, output_hash['options'].size
+      assert_equal 0, output_hash['options']['scales']['yAxes'][0]['ticks']['min']
+      assert_equal 12, output_hash['options']['scales']['yAxes'][0]['ticks']['stepSize']
+      assert_equal 120, output_hash['options']['scales']['yAxes'][0]['ticks']['max']
+      assert_equal false, output_hash['options']['scales']['yAxes'][0]['stacked']
+
     end
 
     should 'call send_event' do
@@ -52,6 +89,15 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
 
       send_event.verify
     end
+
+
+  end
+
+  private def process_and_build_output_hash
+    widget = LeadTimeDistributionWidgetProcessor.new
+    widget.process @work_items
+
+    widget.build_output_hash
   end
 
   private def check_output(output)
