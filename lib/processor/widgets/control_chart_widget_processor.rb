@@ -1,10 +1,14 @@
 require 'dashing/app'
 
 require_relative '../../../lib/processor/widgets/widget_processor'
+require_relative '../../../lib/processor/widgets/data/chart_data_builder'
 require_relative '../processor_utils'
 
 class ControlChartWidgetProcessor < WidgetProcessor
-  include ProcessorUtils
+  include ProcessorUtils, ChartDataBuilder
+
+  MAX_X_AXIS_STEPS = 20
+  MAX_Y_AXIS_STEPS = 20
 
   def initialize
     super('control_chart')
@@ -56,7 +60,9 @@ class ControlChartWidgetProcessor < WidgetProcessor
             xAxes: [{
                         ticks: {
                             beginAtZero: true,
-                            stepSize: 1.0
+                            stepSize: determine_x_axis_step_size,
+                            min: 0,
+                            max: determine_max_x_axis
                         },
                         scaleLabel: {
                             display: true,
@@ -67,7 +73,9 @@ class ControlChartWidgetProcessor < WidgetProcessor
             yAxes: [{
                         ticks: {
                             beginAtZero: true,
-                            fixedStepSize: 1.0
+                            stepSize: determine_y_axis_step_size,
+                            min: 0,
+                            max: determine_max_y_axis
                         },
                         scaleLabel: {
                             display: true,
@@ -76,6 +84,46 @@ class ControlChartWidgetProcessor < WidgetProcessor
                     }]
         }
     }
+  end
+
+  private def determine_max_x_axis
+    max =0
+    @work_items_per_CoS.each{|key,value|
+      max += value.size
+    }
+    if max > MAX_X_AXIS_STEPS
+      max = roundup(max, MAX_X_AXIS_STEPS)
+    end
+    max
+
+  end
+
+  private def determine_x_axis_step_size
+    rounded_max_x = determine_max_x_axis
+
+    rounded_max_x / MAX_X_AXIS_STEPS > 1 ? rounded_max_x / MAX_X_AXIS_STEPS : 1
+  end
+
+  private def determine_max_y_axis
+    max =1
+    @work_items_per_CoS.each{|key,value|
+      value.each {|work_item|
+        if work_item.lead_time > max
+          max = work_item.lead_time
+        end
+      }
+    }
+    if max > MAX_Y_AXIS_STEPS
+      max = roundup(max, MAX_Y_AXIS_STEPS)
+    end
+    max
+  end
+
+
+  private def determine_y_axis_step_size
+    rounded_max_y = determine_max_y_axis
+
+    rounded_max_y / MAX_Y_AXIS_STEPS > 1 ? rounded_max_y / MAX_Y_AXIS_STEPS : 1
   end
 
   private def build_data(data_items, counter)

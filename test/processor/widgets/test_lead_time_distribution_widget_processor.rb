@@ -78,7 +78,6 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
 
     should "set options with multiple steps for y axis: max > 100" do
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")] * 112
-      # @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => (Date.strptime("10/3/16", WorkItem::DATE_FORMAT) + 112).strftime(WorkItem::DATE_FORMAT))]
       output_hash = process_and_build_output_hash
 
       assert_equal 1, output_hash[:options].size

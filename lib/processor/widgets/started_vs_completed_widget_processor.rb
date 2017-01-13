@@ -16,8 +16,8 @@ class StartedVsCompletedWidgetProcessor < WidgetProcessor
     max_started = @started.max_by { |k, v| v }[1]
     max_completed = @completed.max_by { |k, v| v }[1]
     max_y = max_started >= max_completed ? max_started : max_completed
-    if max_y > 10
-      roundup(max_y)
+    if max_y > MAX_Y_AXIS_STEPS
+      roundup(max_y, MAX_Y_AXIS_STEPS)
     else
       max_y
     end

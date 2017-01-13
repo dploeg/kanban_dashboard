@@ -1,6 +1,6 @@
 module ChartDataBuilder
 
-  MAX_STEPS = 10
+  MAX_Y_AXIS_STEPS = 10
 
   private def add_formatting_to_dataset(data, background, border, dataset_size)
     background_colors = Array.new
@@ -40,13 +40,13 @@ module ChartDataBuilder
   def determine_y_axis_step_size
     rounded_max_y = determine_max_y_axis
 
-    rounded_max_y / MAX_STEPS > 1 ? rounded_max_y / MAX_STEPS : 1
+    rounded_max_y / MAX_Y_AXIS_STEPS > 1 ? rounded_max_y / MAX_Y_AXIS_STEPS : 1
   end
 
 
-  def roundup(number)
-    return number if number % 10 == 0   # already a factor of 10
-    return number + 10 - (number % 10)  # go to nearest factor 10
+  def roundup(number, factor)
+    return number if number % factor == 0   # already a factor of 10
+    return number + factor - (number % factor)  # go to nearest factor 10
   end
 
 

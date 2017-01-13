@@ -4,6 +4,7 @@ require 'shoulda/matchers'
 require 'shoulda/context'
 
 require_relative '../../../lib/processor/widgets/control_chart_widget_processor'
+require_relative '../../../lib/model/work_item'
 require_relative '../../test_constants'
 
 class TestControlChartWidgetProcessor < Minitest::Test
@@ -39,43 +40,139 @@ class TestControlChartWidgetProcessor < Minitest::Test
       output_hash = process_and_build_output_hash
 
       refute_nil output_hash[:options]
-      expected_options =     {
-              scales: {
-                  xAxes: [{
-                              ticks: {
-                                  beginAtZero: true,
-                                  stepSize: 1.0
-                              },
-                              scaleLabel: {
-                                  display: true,
-                                  labelString: "Work Item"
-                              }
+      expected_options = {
+          scales: {
+              xAxes: [{
+                          ticks: {
+                              beginAtZero: true,
+                              :stepSize => 1,
+                              :min => 0,
+                              :max => 1
+                          },
+                          scaleLabel: {
+                              display: true,
+                              labelString: "Work Item"
+                          }
 
-                          }],
-                  yAxes: [{
-                              ticks: {
-                                  beginAtZero: true,
-                                  fixedStepSize: 1.0
-                              },
-                              scaleLabel: {
-                                  display: true,
-                                  labelString: "Lead Time"
-                              }
-                          }]
-              }
+                      }],
+              yAxes: [{
+                          ticks: {
+                              beginAtZero: true,
+                              :stepSize => 1,
+                              :min => 0,
+                              :max => 11
+                          },
+                          scaleLabel: {
+                              display: true,
+                              labelString: "Lead Time"
+                          }
+                      }]
           }
+      }
       assert_equal expected_options, output_hash[:options]
 
     end
 
+    should "set options with multiple steps for y axis:  max <10 " do
+      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 1
+      output_hash = process_and_build_output_hash
+
+      assert_equal 1, output_hash[:options].size
+      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+      assert_equal 1, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+      assert_equal 1, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+
+    end
+
+    should "set options with multiple steps for y axis:  max  >10 " do
+      set_work_items_to_increment_lead_time_with_instances(11)
+      output_hash = process_and_build_output_hash
+
+      assert_equal 1, output_hash[:options].size
+      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+      assert_equal 1, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+      assert_equal 11, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+
+    end
+
+    should "set options with multiple steps for y axis:  max < 100" do
+      set_work_items_to_increment_lead_time_with_instances(81)
+      output_hash = process_and_build_output_hash
+
+      assert_equal 1, output_hash[:options].size
+      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+      assert_equal 5, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+      assert_equal 100, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+
+    end
+
+    should "set options with multiple steps for y axis: max > 200" do
+      set_work_items_to_increment_lead_time_with_instances(225)
+      output_hash = process_and_build_output_hash
+
+      assert_equal 1, output_hash[:options].size
+      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+      assert_equal 12, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+      assert_equal 240, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+
+    end
+
+
+
+                                                 #X-AXIS
+    should "set options with multiple steps for x axis:  max <10 " do
+      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 1
+      output_hash = process_and_build_output_hash
+
+      assert_equal 1, output_hash[:options].size
+      assert_equal 0, output_hash[:options][:scales][:xAxes][0][:ticks][:min]
+      assert_equal 1, output_hash[:options][:scales][:xAxes][0][:ticks][:stepSize]
+      assert_equal 1, output_hash[:options][:scales][:xAxes][0][:ticks][:max]
+
+    end
+
+    should "set options with multiple steps for x axis:  max  >10 " do
+      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 11
+      output_hash = process_and_build_output_hash
+
+      assert_equal 1, output_hash[:options].size
+      assert_equal 0, output_hash[:options][:scales][:xAxes][0][:ticks][:min]
+      assert_equal 1, output_hash[:options][:scales][:xAxes][0][:ticks][:stepSize]
+      assert_equal 11, output_hash[:options][:scales][:xAxes][0][:ticks][:max]
+
+    end
+
+    should "set options with multiple steps for x axis:  max < 100" do
+      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 81
+      output_hash = process_and_build_output_hash
+
+      assert_equal 1, output_hash[:options].size
+      assert_equal 0, output_hash[:options][:scales][:xAxes][0][:ticks][:min]
+      assert_equal 5, output_hash[:options][:scales][:xAxes][0][:ticks][:stepSize]
+      assert_equal 100, output_hash[:options][:scales][:xAxes][0][:ticks][:max]
+
+    end
+
+    should "set options with multiple steps for x axis: max > 200" do
+      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 225
+      output_hash = process_and_build_output_hash
+
+      assert_equal 1, output_hash[:options].size
+      assert_equal 0, output_hash[:options][:scales][:xAxes][0][:ticks][:min]
+      assert_equal 12, output_hash[:options][:scales][:xAxes][0][:ticks][:stepSize]
+      assert_equal 240, output_hash[:options][:scales][:xAxes][0][:ticks][:max]
+
+    end
+
+
     should "order items based on complete date" do
-      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"),   #11
-                     WorkItem.new(:start_date => "19/3/16", :complete_date => "19/4/16"),   #31
-                     WorkItem.new(:start_date => "15/3/16", :complete_date => "22/3/16"),   #7
-                     WorkItem.new(:start_date => "21/3/16", :complete_date => "17/4/16"),   #27
-                     WorkItem.new(:start_date => "25/3/16", :complete_date => "17/4/16"),   #23
-                     WorkItem.new(:start_date => "12/3/16", :complete_date => "14/4/16"),   #33
-                     WorkItem.new(:start_date => "28/3/16", :complete_date => "22/4/16")]   #25
+      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"), #11
+                     WorkItem.new(:start_date => "19/3/16", :complete_date => "19/4/16"), #31
+                     WorkItem.new(:start_date => "15/3/16", :complete_date => "22/3/16"), #7
+                     WorkItem.new(:start_date => "21/3/16", :complete_date => "17/4/16"), #27
+                     WorkItem.new(:start_date => "25/3/16", :complete_date => "17/4/16"), #23
+                     WorkItem.new(:start_date => "12/3/16", :complete_date => "14/4/16"), #33
+                     WorkItem.new(:start_date => "28/3/16", :complete_date => "22/4/16")] #25
 
       output_hash = process_and_build_output_hash
 
@@ -110,22 +207,22 @@ class TestControlChartWidgetProcessor < Minitest::Test
     end
 
     should "add classes of service" do
-      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"),                                 #1
-                     WorkItem.new(:start_date => "15/3/16", :complete_date => "21/3/16"),                                 #2
-                     WorkItem.new(:start_date => "12/3/16", :complete_date => "14/4/16"),                                 #8
-                     WorkItem.new(:start_date => "19/3/16", :complete_date => "19/4/16"),                                 #10
-                     WorkItem.new(:start_date => "21/3/16", :complete_date => "17/4/16"),                                 #9
-                     WorkItem.new(:start_date => "28/3/16", :complete_date => "22/4/16"),                                 #11
-                     WorkItem.new(:start_date => "2/4/16", :complete_date => "25/4/16", :class_of_service => TestConstants::STANDARD),   #12
-                     WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16"),                                  #3
+      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"), #1
+                     WorkItem.new(:start_date => "15/3/16", :complete_date => "21/3/16"), #2
+                     WorkItem.new(:start_date => "12/3/16", :complete_date => "14/4/16"), #8
+                     WorkItem.new(:start_date => "19/3/16", :complete_date => "19/4/16"), #10
+                     WorkItem.new(:start_date => "21/3/16", :complete_date => "17/4/16"), #9
+                     WorkItem.new(:start_date => "28/3/16", :complete_date => "22/4/16"), #11
+                     WorkItem.new(:start_date => "2/4/16", :complete_date => "25/4/16", :class_of_service => TestConstants::STANDARD), #12
+                     WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16"), #3
 
-                     WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16", :class_of_service => TestConstants::EXPEDITE),   #4
+                     WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16", :class_of_service => TestConstants::EXPEDITE), #4
                      WorkItem.new(:start_date => "2/4/16", :complete_date => "13/4/16", :class_of_service => TestConstants::FIXED_DATE), #5
                      WorkItem.new(:start_date => "5/4/16", :complete_date => "25/4/16", :class_of_service => TestConstants::INTANGIBLE), #13
-                     WorkItem.new(:start_date => "6/4/16", :complete_date => "13/4/16", :class_of_service => TestConstants::EXPEDITE),   #6
-                     WorkItem.new(:start_date => "7/4/16", :complete_date => "14/4/16", :class_of_service => TestConstants::EXPEDITE),   #7
+                     WorkItem.new(:start_date => "6/4/16", :complete_date => "13/4/16", :class_of_service => TestConstants::EXPEDITE), #6
+                     WorkItem.new(:start_date => "7/4/16", :complete_date => "14/4/16", :class_of_service => TestConstants::EXPEDITE), #7
                      WorkItem.new(:start_date => "6/4/16", :complete_date => "28/4/16", :class_of_service => TestConstants::FIXED_DATE), #14
-                     WorkItem.new(:start_date => "13/4/16", :complete_date => "12/5/16", :class_of_service => TestConstants::INTANGIBLE),#15
+                     WorkItem.new(:start_date => "13/4/16", :complete_date => "12/5/16", :class_of_service => TestConstants::INTANGIBLE), #15
       ]
 
       widget = ControlChartWidgetProcessor.new
@@ -143,7 +240,16 @@ class TestControlChartWidgetProcessor < Minitest::Test
     end
 
 
+  end
 
+
+  def set_work_items_to_increment_lead_time_with_instances(instances)
+    items = Array.new
+    (1..instances).each { |counter|
+      items.push(WorkItem.new(:start_date => "10/3/16",
+                              :complete_date => (Date.strptime("10/3/16", WorkItem::DATE_FORMAT) + counter).strftime(WorkItem::DATE_FORMAT)))
+    }
+    @work_items = items
   end
 
   def check_x_positions(output_hash)

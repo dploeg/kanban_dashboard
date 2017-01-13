@@ -45,10 +45,10 @@ class LeadTimeDistributionWidgetProcessor < WidgetProcessor
   end
 
   def determine_max_y_axis
-    if add_lead_time_data.max < 10
+    if add_lead_time_data.max < MAX_Y_AXIS_STEPS
       return add_lead_time_data.max
     else
-      return roundup(add_lead_time_data.max)
+      return roundup(add_lead_time_data.max, MAX_Y_AXIS_STEPS)
     end
   end
 
