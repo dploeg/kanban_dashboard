@@ -17,7 +17,7 @@ class LeadTimeDistributionWidgetProcessor < WidgetProcessor
     }
   end
 
-  def build_options
+  private def build_options
     {
         scales: {
             xAxes: [{

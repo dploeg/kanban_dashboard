@@ -38,55 +38,56 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
       check_output(output_hash)
     end
 
+    context "y axis" do
+      should "set options with multiple steps with max <10 " do
+        @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 1
+        output_hash = process_and_build_output_hash
 
-    should "set options with multiple steps for y axis:  max <10 " do
-      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 1
-      output_hash = process_and_build_output_hash
+        assert_equal 1, output_hash[:options].size
+        assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+        assert_equal 1, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+        assert_equal 1, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+        assert_equal false, output_hash[:options][:scales][:yAxes][0][:stacked]
 
-      assert_equal 1, output_hash[:options].size
-      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
-      assert_equal 1, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
-      assert_equal 1, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
-      assert_equal false, output_hash[:options][:scales][:yAxes][0][:stacked]
+      end
 
+      should "set options with multiple steps for with max  >10 " do
+        @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 11
+        output_hash = process_and_build_output_hash
+
+        assert_equal 1, output_hash[:options].size
+        assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+        assert_equal 2, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+        assert_equal 20, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+        assert_equal false, output_hash[:options][:scales][:yAxes][0][:stacked]
+
+      end
+
+      should "set options with multiple steps for with max < 100" do
+        @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")] * 81
+        output_hash = process_and_build_output_hash
+
+        assert_equal 1, output_hash[:options].size
+        assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+        assert_equal 9, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+        assert_equal 90, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+        assert_equal false, output_hash[:options][:scales][:yAxes][0][:stacked]
+
+      end
+
+      should "set options with multiple steps for with max > 100" do
+        @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")] * 112
+        output_hash = process_and_build_output_hash
+
+        assert_equal 1, output_hash[:options].size
+        assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+        assert_equal 12, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+        assert_equal 120, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+        assert_equal false, output_hash[:options][:scales][:yAxes][0][:stacked]
+
+      end
     end
 
-    should "set options with multiple steps for y axis:  max  >10 " do
-      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 11
-      output_hash = process_and_build_output_hash
-
-      assert_equal 1, output_hash[:options].size
-      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
-      assert_equal 2, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
-      assert_equal 20, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
-      assert_equal false, output_hash[:options][:scales][:yAxes][0][:stacked]
-
-    end
-
-
-    should "set options with multiple steps for y axis:  max < 100" do
-      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")] * 81
-      output_hash = process_and_build_output_hash
-
-      assert_equal 1, output_hash[:options].size
-      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
-      assert_equal 9, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
-      assert_equal 90, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
-      assert_equal false, output_hash[:options][:scales][:yAxes][0][:stacked]
-
-    end
-
-    should "set options with multiple steps for y axis: max > 100" do
-      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")] * 112
-      output_hash = process_and_build_output_hash
-
-      assert_equal 1, output_hash[:options].size
-      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
-      assert_equal 12, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
-      assert_equal 120, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
-      assert_equal false, output_hash[:options][:scales][:yAxes][0][:stacked]
-
-    end
 
     should 'call send_event' do
       widget = LeadTimeDistributionWidgetProcessor.new

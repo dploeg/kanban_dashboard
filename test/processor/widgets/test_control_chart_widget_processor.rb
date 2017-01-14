@@ -73,97 +73,97 @@ class TestControlChartWidgetProcessor < Minitest::Test
 
     end
 
-    should "set options with multiple steps for y axis:  max <10 " do
-      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 1
-      output_hash = process_and_build_output_hash
+    context "y axis" do
+      should "set options with multiple steps for with max <10 " do
+        @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 1
+        output_hash = process_and_build_output_hash
 
-      assert_equal 1, output_hash[:options].size
-      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
-      assert_equal 1, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
-      assert_equal 1, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+        assert_equal 1, output_hash[:options].size
+        assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+        assert_equal 1, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+        assert_equal 1, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
 
+      end
+
+      should "set options with multiple steps for with max  >10 " do
+        set_work_items_to_increment_lead_time_with_instances(11)
+        output_hash = process_and_build_output_hash
+
+        assert_equal 1, output_hash[:options].size
+        assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+        assert_equal 1, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+        assert_equal 11, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+
+      end
+
+      should "set options with multiple steps for with max < 100" do
+        set_work_items_to_increment_lead_time_with_instances(81)
+        output_hash = process_and_build_output_hash
+
+        assert_equal 1, output_hash[:options].size
+        assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+        assert_equal 5, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+        assert_equal 100, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+
+      end
+
+      should "set options with multiple steps for with max > 200" do
+        set_work_items_to_increment_lead_time_with_instances(225)
+        output_hash = process_and_build_output_hash
+
+        assert_equal 1, output_hash[:options].size
+        assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
+        assert_equal 12, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
+        assert_equal 240, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+
+      end
     end
 
-    should "set options with multiple steps for y axis:  max  >10 " do
-      set_work_items_to_increment_lead_time_with_instances(11)
-      output_hash = process_and_build_output_hash
+    context "x axis" do
+      should "set options with multiple steps for with max <10 " do
+        @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 1
+        output_hash = process_and_build_output_hash
 
-      assert_equal 1, output_hash[:options].size
-      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
-      assert_equal 1, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
-      assert_equal 11, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
+        assert_equal 1, output_hash[:options].size
+        assert_equal 0, output_hash[:options][:scales][:xAxes][0][:ticks][:min]
+        assert_equal 1, output_hash[:options][:scales][:xAxes][0][:ticks][:stepSize]
+        assert_equal 1, output_hash[:options][:scales][:xAxes][0][:ticks][:max]
 
+      end
+
+      should "set options with multiple steps for with max  >10 " do
+        @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 11
+        output_hash = process_and_build_output_hash
+
+        assert_equal 1, output_hash[:options].size
+        assert_equal 0, output_hash[:options][:scales][:xAxes][0][:ticks][:min]
+        assert_equal 1, output_hash[:options][:scales][:xAxes][0][:ticks][:stepSize]
+        assert_equal 11, output_hash[:options][:scales][:xAxes][0][:ticks][:max]
+
+      end
+
+      should "set options with multiple steps for with max < 100" do
+        @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 81
+        output_hash = process_and_build_output_hash
+
+        assert_equal 1, output_hash[:options].size
+        assert_equal 0, output_hash[:options][:scales][:xAxes][0][:ticks][:min]
+        assert_equal 5, output_hash[:options][:scales][:xAxes][0][:ticks][:stepSize]
+        assert_equal 100, output_hash[:options][:scales][:xAxes][0][:ticks][:max]
+
+      end
+
+      should "set options with multiple steps for with max > 200" do
+        @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 225
+        output_hash = process_and_build_output_hash
+
+        assert_equal 1, output_hash[:options].size
+        assert_equal 0, output_hash[:options][:scales][:xAxes][0][:ticks][:min]
+        assert_equal 12, output_hash[:options][:scales][:xAxes][0][:ticks][:stepSize]
+        assert_equal 240, output_hash[:options][:scales][:xAxes][0][:ticks][:max]
+
+      end
     end
-
-    should "set options with multiple steps for y axis:  max < 100" do
-      set_work_items_to_increment_lead_time_with_instances(81)
-      output_hash = process_and_build_output_hash
-
-      assert_equal 1, output_hash[:options].size
-      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
-      assert_equal 5, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
-      assert_equal 100, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
-
-    end
-
-    should "set options with multiple steps for y axis: max > 200" do
-      set_work_items_to_increment_lead_time_with_instances(225)
-      output_hash = process_and_build_output_hash
-
-      assert_equal 1, output_hash[:options].size
-      assert_equal 0, output_hash[:options][:scales][:yAxes][0][:ticks][:min]
-      assert_equal 12, output_hash[:options][:scales][:yAxes][0][:ticks][:stepSize]
-      assert_equal 240, output_hash[:options][:scales][:yAxes][0][:ticks][:max]
-
-    end
-
-
-
-                                                 #X-AXIS
-    should "set options with multiple steps for x axis:  max <10 " do
-      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 1
-      output_hash = process_and_build_output_hash
-
-      assert_equal 1, output_hash[:options].size
-      assert_equal 0, output_hash[:options][:scales][:xAxes][0][:ticks][:min]
-      assert_equal 1, output_hash[:options][:scales][:xAxes][0][:ticks][:stepSize]
-      assert_equal 1, output_hash[:options][:scales][:xAxes][0][:ticks][:max]
-
-    end
-
-    should "set options with multiple steps for x axis:  max  >10 " do
-      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 11
-      output_hash = process_and_build_output_hash
-
-      assert_equal 1, output_hash[:options].size
-      assert_equal 0, output_hash[:options][:scales][:xAxes][0][:ticks][:min]
-      assert_equal 1, output_hash[:options][:scales][:xAxes][0][:ticks][:stepSize]
-      assert_equal 11, output_hash[:options][:scales][:xAxes][0][:ticks][:max]
-
-    end
-
-    should "set options with multiple steps for x axis:  max < 100" do
-      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 81
-      output_hash = process_and_build_output_hash
-
-      assert_equal 1, output_hash[:options].size
-      assert_equal 0, output_hash[:options][:scales][:xAxes][0][:ticks][:min]
-      assert_equal 5, output_hash[:options][:scales][:xAxes][0][:ticks][:stepSize]
-      assert_equal 100, output_hash[:options][:scales][:xAxes][0][:ticks][:max]
-
-    end
-
-    should "set options with multiple steps for x axis: max > 200" do
-      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 225
-      output_hash = process_and_build_output_hash
-
-      assert_equal 1, output_hash[:options].size
-      assert_equal 0, output_hash[:options][:scales][:xAxes][0][:ticks][:min]
-      assert_equal 12, output_hash[:options][:scales][:xAxes][0][:ticks][:stepSize]
-      assert_equal 240, output_hash[:options][:scales][:xAxes][0][:ticks][:max]
-
-    end
-
 
     should "order items based on complete date" do
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"), #11
@@ -243,7 +243,7 @@ class TestControlChartWidgetProcessor < Minitest::Test
   end
 
 
-  def set_work_items_to_increment_lead_time_with_instances(instances)
+  private def set_work_items_to_increment_lead_time_with_instances(instances)
     items = Array.new
     (1..instances).each { |counter|
       items.push(WorkItem.new(:start_date => "10/3/16",
@@ -252,34 +252,34 @@ class TestControlChartWidgetProcessor < Minitest::Test
     @work_items = items
   end
 
-  def check_x_positions(output_hash)
+  private def check_x_positions(output_hash)
     assert_equal 8, output_hash[:datasets][0][:data][3][:x] #7
     assert_equal 6, output_hash[:datasets][1][:data][1][:x] #7
     assert_equal 14, output_hash[:datasets][2][:data][1][:x]
   end
 
-  def process_and_build_output_hash
+  private def process_and_build_output_hash
     widget = ControlChartWidgetProcessor.new
     widget.process @work_items
 
     widget.build_output_hash
   end
 
-  def check_CoS_labels(output_hash)
+  private def check_CoS_labels(output_hash)
     assert_equal STANDARD, output_hash[:datasets][0][:label]
     assert_equal EXPEDITE, output_hash[:datasets][1][:label]
     assert_equal FIXED_DATE, output_hash[:datasets][2][:label]
     assert_equal INTANGIBLE, output_hash[:datasets][3][:label]
   end
 
-  def check_CoS_background_colors(output_hash)
+  private def check_CoS_background_colors(output_hash)
     assert_equal "#F7464A", output_hash[:datasets][0][:backgroundColor]
     assert_equal "#F79B46", output_hash[:datasets][1][:backgroundColor]
     assert_equal "#464AF7", output_hash[:datasets][2][:backgroundColor]
     assert_equal "#F7F446", output_hash[:datasets][3][:backgroundColor]
   end
 
-  def check_CoS_hover_background_colors(output_hash)
+  private def check_CoS_hover_background_colors(output_hash)
     assert_equal "#FF6384", output_hash[:datasets][0][:hoverBackgroundColor]
     assert_equal "#FF9063", output_hash[:datasets][1][:hoverBackgroundColor]
     assert_equal "#6384FF", output_hash[:datasets][2][:hoverBackgroundColor]
