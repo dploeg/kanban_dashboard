@@ -14,27 +14,10 @@ class TestThroughputWidgetProcessor < Minitest::Test
   context 'ThroughputWidgetProcessor' do
 
     setup do
-      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"),
-                     WorkItem.new(:start_date => "15/3/16", :complete_date => "21/3/16"),
-                     WorkItem.new(:start_date => "12/3/16", :complete_date => "14/4/16"),
-                     WorkItem.new(:start_date => "19/3/16", :complete_date => "19/4/16"),
-                     WorkItem.new(:start_date => "21/3/16", :complete_date => "17/4/16"),
-                     WorkItem.new(:start_date => "28/3/16", :complete_date => "22/4/16"),
-                     WorkItem.new(:start_date => "2/4/16", :complete_date => "25/4/16", :class_of_service => TestConstants::STANDARD),
-                     WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16"),
-
-                     WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16", :class_of_service => TestConstants::EXPEDITE),
-                     WorkItem.new(:start_date => "2/4/16", :complete_date => "13/4/16", :class_of_service => TestConstants::FIXED_DATE),
-                     WorkItem.new(:start_date => "5/4/16", :complete_date => "25/4/16", :class_of_service => TestConstants::INTANGIBLE),
-                     WorkItem.new(:start_date => "6/4/16", :complete_date => "13/4/16", :class_of_service => TestConstants::EXPEDITE),
-                     WorkItem.new(:start_date => "7/4/16", :complete_date => "14/4/16", :class_of_service => TestConstants::EXPEDITE),
-                     WorkItem.new(:start_date => "6/4/16", :complete_date => "28/4/16", :class_of_service => TestConstants::FIXED_DATE),
-                     WorkItem.new(:start_date => "13/4/16", :complete_date => "12/5/16", :class_of_service => TestConstants::INTANGIBLE),
-      ]
+      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")]
     end
 
     should 'output hash for single item' do
-      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")]
       output_hash = process_and_build_output_hash
       check_output(output_hash)
     end
