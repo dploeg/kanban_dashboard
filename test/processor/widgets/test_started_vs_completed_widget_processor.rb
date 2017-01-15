@@ -5,10 +5,10 @@ require 'shoulda/context'
 
 require_relative '../../../lib/model/work_item'
 require_relative '../../../lib/processor/widgets/started_vs_completed_widget_processor'
-require_relative '../../../test/processor/widgets/started_vs_finished_test_helper'
+require_relative '../../../test/processor/widgets/started_vs_completed_test_helper'
 
 class TestStartedVsCompletedWidgetProcessor < Minitest::Test
-  include StartedVsFinishedTestHelper
+  include StartedVsCompletedTestHelper
 
   context 'StartedVsCompletedWidgetProcessor' do
     setup do
@@ -121,7 +121,7 @@ class TestStartedVsCompletedWidgetProcessor < Minitest::Test
       widget.process @work_items
 
       send_event = MiniTest::Mock.new
-      send_event.expect :call, nil, ['started_vs_finished', widget.build_output_hash]
+      send_event.expect :call, nil, ['started_vs_completed', widget.build_output_hash]
       widget.stub :send_event, send_event do
         widget.output
       end

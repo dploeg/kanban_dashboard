@@ -9,7 +9,7 @@ class StartedVsCompletedWidgetProcessor < WidgetProcessor
   include StartedVsCompletedDataProcessor, ChartDataBuilder
 
   def initialize
-    super('started_vs_finished')
+    super('started_vs_completed')
   end
 
   def determine_max_y_axis

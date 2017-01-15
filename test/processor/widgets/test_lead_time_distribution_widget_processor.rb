@@ -119,6 +119,12 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
     assert_equal 1, output[:options].size
     assert_equal 1, output[:options][:scales][:yAxes][0][:ticks][:stepSize]
     assert_equal false, output[:options][:scales][:yAxes][0][:stacked]
+    assert_equal true, output[:options][:scales][:yAxes][0][:scaleLabel][:display]
+    assert_equal "Item Count", output[:options][:scales][:yAxes][0][:scaleLabel][:labelString]
+
+    assert_equal true, output[:options][:scales][:xAxes][0][:scaleLabel][:display]
+    assert_equal "Lead Time Values (calendar days from start to complete)", output[:options][:scales][:xAxes][0][:scaleLabel][:labelString]
+
     check_datasets(output)
 
   end

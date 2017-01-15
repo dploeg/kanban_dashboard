@@ -6,10 +6,10 @@ require 'shoulda/context'
 require_relative '../../../lib/model/work_item'
 require_relative '../../test_constants'
 require_relative '../../../lib/processor/widgets/cumulative_flow_widget_processor'
-require_relative '../../../test/processor/widgets/started_vs_finished_test_helper'
+require_relative '../../../test/processor/widgets/started_vs_completed_test_helper'
 
 class TestCumulativeFlowWidgetProcessor < Minitest::Test
-  include TestConstants, StartedVsFinishedTestHelper
+  include TestConstants, StartedVsCompletedTestHelper
 
   context 'CumulativeFlowWidgetProcessor' do
 

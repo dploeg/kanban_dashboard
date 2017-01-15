@@ -16,7 +16,7 @@ module ChartDataBuilder
 
   def build_output_hash
     output = Hash.new
-    output[:labels] = build_labels
+    output[:labels] = build_labels #labels on the x axis
     output[:datasets] = build_datasets
     output[:options] = build_options
     output
