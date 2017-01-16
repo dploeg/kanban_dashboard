@@ -38,7 +38,6 @@ class ForecastWidgetProcessor < WidgetProcessor
     output
   end
 
-
   private def build_heading_rows
     [
         { :cols => [{:value => 'Likelihood'}, {:value => 'Duration (weeks)'}, {:value => 'Completion Date'}]}
@@ -46,15 +45,19 @@ class ForecastWidgetProcessor < WidgetProcessor
   end
 
   private def build_rows_data
-    [
-        { :cols => [{:value => @forecasts[:percentile85].percentile}, {:value => @forecasts[:percentile85].duration_weeks}, {:value => @forecasts[:percentile85].complete_date}]}
-    ]
+     rows = Array.new
+     @forecasts.to_a.reverse.to_h.each{|key, value|
+        rows.push({ :cols => [{:value => value.percentile}, {:value => value.duration_weeks}, {:value => value.complete_date}]})
+     }
+    rows
   end
 
   private def populate_forecasts(forecast_input, samples)
-    duration_weeks = samples.percentile(85).to_i
-    complete_date = Date.strptime(forecast_input.start_date, WorkItem::DATE_FORMAT) + duration_weeks*7
-    @forecasts[:percentile85] = Forecast.new(:percentile => 85, :duration_weeks => duration_weeks, :complete_date => complete_date.strftime(WorkItem::DATE_FORMAT))
+    (0..100).step(5) do |percentile_value|
+      duration_weeks = samples.percentile(percentile_value).to_i
+      complete_date = Date.strptime(forecast_input.start_date, WorkItem::DATE_FORMAT) + duration_weeks*7
+      @forecasts[("percentile" + percentile_value.to_s).to_sym] = Forecast.new(:percentile => percentile_value, :duration_weeks => duration_weeks, :complete_date => complete_date.strftime(WorkItem::DATE_FORMAT))
+    end
   end
 
   private def generate_samples(forecast_input, completed_items)

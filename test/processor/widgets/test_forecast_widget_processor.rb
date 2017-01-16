@@ -53,7 +53,10 @@ class TestForecastWidgetProcessor < Minitest::Test
         widget.forecast(@forecast_input, @completed_items)
       end
 
-      assert_equal Forecast.new(:percentile => 85, :duration_weeks => 8, :complete_date => "05/05/16"), widget.forecasts[:percentile85]
+      (0..100).step(5) do |value|
+        percentile_symbol = ("percentile" + value.to_s).to_sym
+        assert_equal Forecast.new(:percentile => value, :duration_weeks => 8, :complete_date => "05/05/16"), widget.forecasts[percentile_symbol]
+      end
     end
 
     should 'call send_event' do
@@ -76,12 +79,21 @@ class TestForecastWidgetProcessor < Minitest::Test
   end
 
   def check_data_rows(output_hash)
-    assert_equal 1, output_hash[:rows].size
-    assert_equal 3, output_hash[:rows][0][:cols].size
-    assert_equal 85, output_hash[:rows][0][:cols][0][:value]
-    assert_equal 8, output_hash[:rows][0][:cols][1][:value]
-    assert_equal "05/05/16", output_hash[:rows][0][:cols][2][:value]
+    assert_equal 21, output_hash[:rows].size
+    counter =0
+    check_reverse_order(output_hash)
+    (100..5).step(5) do |percentile_value|
+      assert_equal 3, output_hash[:rows][counter][:cols].size
+      assert_equal percentile_value, output_hash[:rows][counter][:cols][0][:value]
+      assert_equal 8, output_hash[:rows][counter][:cols][1][:value]
+      assert_equal "05/05/16", output_hash[:rows][counter][:cols][2][:value]
+      counter+=1
+    end
+  end
 
+  def check_reverse_order(output_hash)
+    assert_equal 100, output_hash[:rows][0][:cols][0][:value]
+    assert_equal 0, output_hash[:rows][20][:cols][0][:value]
   end
 
   def check_heading_row(output_hash)
