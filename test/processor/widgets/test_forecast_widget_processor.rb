@@ -81,19 +81,31 @@ class TestForecastWidgetProcessor < Minitest::Test
   def check_data_rows(output_hash)
     assert_equal 21, output_hash[:rows].size
     counter =0
-    check_reverse_order(output_hash)
-    (100..5).step(5) do |percentile_value|
+    check_reverse_order(output_hash) #    p 10.step(by: -1).take(4)
+    10.step(0, -2)
+    100.step(0, -5) { |percentile_value|
       assert_equal 3, output_hash[:rows][counter][:cols].size
-      assert_equal percentile_value, output_hash[:rows][counter][:cols][0][:value]
+      assert_equal percentile_value.to_s + "%", output_hash[:rows][counter][:cols][0][:value]
       assert_equal 8, output_hash[:rows][counter][:cols][1][:value]
       assert_equal "05/05/16", output_hash[:rows][counter][:cols][2][:value]
+      check_colors(output_hash[:rows][counter])
       counter+=1
+    }
+  end
+
+  def check_colors(row)
+    if row[:cols][0][:value].split("%")[0].to_i < 50
+      assert_equal 'background-color:#f5e5d7;', row[:style]
+    elsif row[:cols][0][:value].split("%")[0].to_i < 85
+      assert_equal 'background-color:#fbf2cd;', row[:style]
+    else
+      assert_equal 'background-color:#cedeb5;', row[:style]
     end
   end
 
   def check_reverse_order(output_hash)
-    assert_equal 100, output_hash[:rows][0][:cols][0][:value]
-    assert_equal 0, output_hash[:rows][20][:cols][0][:value]
+    assert_equal 100.to_s + "%", output_hash[:rows][0][:cols][0][:value]
+    assert_equal 0.to_s + "%", output_hash[:rows][20][:cols][0][:value]
   end
 
   def check_heading_row(output_hash)

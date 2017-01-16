@@ -47,7 +47,17 @@ class ForecastWidgetProcessor < WidgetProcessor
   private def build_rows_data
      rows = Array.new
      @forecasts.to_a.reverse.to_h.each{|key, value|
-        rows.push({ :cols => [{:value => value.percentile}, {:value => value.duration_weeks}, {:value => value.complete_date}]})
+       background_color = case
+                            when value.percentile < 50
+                              'background-color:#f5e5d7;'
+                            when value.percentile < 85
+                              'background-color:#fbf2cd;'
+                            else
+                              'background-color:#cedeb5;'
+                        end
+
+        rows.push({ :cols => [{:value => value.percentile.to_s + "%"}, {:value => value.duration_weeks}, {:value => value.complete_date}],
+                    :style => background_color})
      }
     rows
   end

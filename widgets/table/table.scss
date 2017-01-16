@@ -5,7 +5,7 @@ $background-color:  #12b0c5;
 $value-color:       #fff;
 
 $title-color:       rgba(255, 255, 255, 0.7);
-$label-color:       rgba(255, 255, 255, 0.7);
+$label-color:       rgba(0, 0, 0, 0.7);
 $moreinfo-color:    rgba(255, 255, 255, 0.7);
 
 $th-background-color:       #222;
@@ -19,6 +19,9 @@ $tr-hover-background-color: #858585;
 .widget-table {
 
   background-color: $background-color;
+  border-style: solid;
+  border-color: $background-color;
+  border-width: 5px;
 
   .title {
     color: $title-color;
@@ -59,6 +62,7 @@ $tr-hover-background-color: #858585;
     margin: 0 15px;
     text-align: center;
     color: $label-color;
+    border-bottom: 1pt solid black;
   }
 
   .left {
