@@ -71,13 +71,24 @@ class TestForecastWidgetProcessor < Minitest::Test
   end
 
   private def check_output(output_hash)
-    assert_equal 1, output_hash[:datasets].size
-    assert_equal "Forecast", output_hash[:datasets][0][:label]
-    data = output_hash[:datasets][0][:data]
-    assert_equal 1, data.size
-    assert_equal Date.strptime("05/05/16", WorkItem::DATE_FORMAT),data[0][:x]
-    assert_equal 85,data[0][:y]
-    assert_equal 5,data[0][:r]
+    check_heading_row(output_hash)
+    check_data_rows(output_hash)
+  end
 
+  def check_data_rows(output_hash)
+    assert_equal 1, output_hash[:rows].size
+    assert_equal 3, output_hash[:rows][0][:cols].size
+    assert_equal 85, output_hash[:rows][0][:cols][0][:value]
+    assert_equal 8, output_hash[:rows][0][:cols][1][:value]
+    assert_equal "05/05/16", output_hash[:rows][0][:cols][2][:value]
+
+  end
+
+  def check_heading_row(output_hash)
+    assert_equal 1, output_hash[:hrows].size
+    assert_equal 3, output_hash[:hrows][0][:cols].size
+    assert_equal "Likelihood", output_hash[:hrows][0][:cols][0][:value]
+    assert_equal "Duration (weeks)", output_hash[:hrows][0][:cols][1][:value]
+    assert_equal "Completion Date", output_hash[:hrows][0][:cols][2][:value]
   end
 end

@@ -1,0 +1,71 @@
+// ----------------------------------------------------------------------------
+// Sass declarations
+// ----------------------------------------------------------------------------
+$background-color:  #12b0c5;
+$value-color:       #fff;
+
+$title-color:       rgba(255, 255, 255, 0.7);
+$label-color:       rgba(255, 255, 255, 0.7);
+$moreinfo-color:    rgba(255, 255, 255, 0.7);
+
+$th-background-color:       #222;
+$tr-odd-background-color:   #12a0c5;
+$tr-even-background-color:  #47bbb3;
+$tr-hover-background-color: #858585;
+
+// ----------------------------------------------------------------------------
+// Widget-table styles
+// ----------------------------------------------------------------------------
+.widget-table {
+
+  background-color: $background-color;
+
+  .title {
+    color: $title-color;
+  }
+
+  .value {
+    margin-left: 12px;
+    font-weight: 600;
+    color: $value-color;
+  }
+
+  .updated-at {
+    color: rgba(0, 0, 0, 0.3);
+  }
+
+  .more-info {
+    color: $moreinfo-color;
+  }
+
+  // Specify a table border for the table, header and cell elements
+  // table { border-collapse: collapse; }
+  // table, th, td { border: 1px solid black; }
+
+  // Just a border around the table, nothing else
+  // table { border: 1px solid black; }
+
+  // Set the background color for the header row
+  th { background-color: $th-background-color; }
+
+  // If you want a stripped table set the color for both odd and even rows
+  tr:nth-child(odd) { background-color: $tr-odd-background-color; }
+  tr:nth-child(even) { background-color: $tr-even-background-color; }
+
+  // Highlight table rows on mouse over
+  tr:hover { background-color: $tr-hover-background-color; }
+
+  td {
+    margin: 0 15px;
+    text-align: center;
+    color: $label-color;
+  }
+
+  .left {
+    text-align: left;
+  }
+  .right {
+    text-align: right;
+  }
+
+}

@@ -32,12 +32,24 @@ class ForecastWidgetProcessor < WidgetProcessor
   def build_output_hash
     output = Hash.new
 
-    output[:datasets] = build_datasets
-    output[:options] = build_options
+    output[:hrows] = build_heading_rows
+    output[:rows] = build_rows_data
 
     output
   end
 
+
+  private def build_heading_rows
+    [
+        { :cols => [{:value => 'Likelihood'}, {:value => 'Duration (weeks)'}, {:value => 'Completion Date'}]}
+    ]
+  end
+
+  private def build_rows_data
+    [
+        { :cols => [{:value => @forecasts[:percentile85].percentile}, {:value => @forecasts[:percentile85].duration_weeks}, {:value => @forecasts[:percentile85].complete_date}]}
+    ]
+  end
 
   private def populate_forecasts(forecast_input, samples)
     duration_weeks = samples.percentile(85).to_i
@@ -66,23 +78,4 @@ class ForecastWidgetProcessor < WidgetProcessor
     completed_values.sample
   end
 
-  private def build_datasets
-    datasets = Array.new
-    forecasts = Hash.new
-    forecasts[:label] = "Forecast"
-    current_forecast = @forecasts[:percentile85]
-    points = Array.new
-    points.push({:x => Date.strptime(current_forecast.complete_date, WorkItem::DATE_FORMAT), :y => current_forecast.percentile, :r => 5})
-    forecasts[:data] = points
-    forecasts[:backgroundColor] = "#F7464A"
-    forecasts[:hoverBackgroundColor] = "#FF6384"
-    datasets.push(forecasts)
-    datasets
-  end
-
-  private def build_options
-    {
-
-    }
-  end
 end
