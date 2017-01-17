@@ -12,7 +12,8 @@ class TestForecastWidgetProcessor < Minitest::Test
     setup do
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")]
       @completed_items = {"2016-11" => 2, "2016-12" => 6, "2016-13" => 1, "2016-14" => 4, "2016-15" => 5, "2016-16" => 0, "2016-17" => 7, "2016-18" => 4}
-      @forecast_input = ForecastInput.new(:start_date => "10/3/16", :number_of_stories => 30)
+      @configuration = {:forecast_config=>{:start_date=>"10/3/16", :number_of_stories=>30}}
+      @forecast_input = ForecastInput.new(@configuration[:forecast_config])
     end
 
     should 'build output hash' do
@@ -32,7 +33,7 @@ class TestForecastWidgetProcessor < Minitest::Test
         sample.expect :call, 4, [@completed_items.values]
       }
       widget.stub :sample, sample do
-        widget.process(@work_items)
+        widget.process(@work_items, @configuration)
       end
 
       output_hash = widget.build_output_hash
@@ -61,7 +62,7 @@ class TestForecastWidgetProcessor < Minitest::Test
 
     should 'call send_event' do
       widget = ForecastWidgetProcessor.new
-      widget.process @work_items
+      widget.process(@work_items, @configuration)
 
       send_event = MiniTest::Mock.new
       send_event.expect :call, nil, ['forecast', widget.build_output_hash]
@@ -82,7 +83,6 @@ class TestForecastWidgetProcessor < Minitest::Test
     assert_equal 21, output_hash[:rows].size
     counter =0
     check_reverse_order(output_hash) #    p 10.step(by: -1).take(4)
-    10.step(0, -2)
     100.step(0, -5) { |percentile_value|
       assert_equal 3, output_hash[:rows][counter][:cols].size
       assert_equal percentile_value.to_s + "%", output_hash[:rows][counter][:cols][0][:value]

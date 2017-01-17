@@ -18,7 +18,7 @@ class ControlChartWidgetProcessor < WidgetProcessor
   end
 
 
-  def process(work_items)
+  def process(work_items, configuration = Hash.new)
     ordered_work_items = order_work_items_by_completed(work_items)
     decorate_with_x_position(ordered_work_items)
     @work_items_per_CoS = sort_into_classes_of_service(ordered_work_items)

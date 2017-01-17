@@ -11,7 +11,7 @@ class ThroughputWidgetProcessor < WidgetProcessor
     @number_of_x_axis_labels = 20
   end
 
-  def process(work_items)
+  def process(work_items, configuration = Hash.new)
     super(work_items)
     @throughput = Hash.new
     @completed.each_value { |number_completed|

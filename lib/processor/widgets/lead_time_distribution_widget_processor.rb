@@ -10,7 +10,7 @@ class LeadTimeDistributionWidgetProcessor < WidgetProcessor
     @num_x_axis_labels = number_of_x_axis_labels
   end
 
-  def process(work_items)
+  def process(work_items, configuration = Hash.new)
     @lead_times = Array.new
     work_items.each { |item|
       @lead_times.push(item.lead_time)

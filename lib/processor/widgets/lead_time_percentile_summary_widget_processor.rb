@@ -15,7 +15,7 @@ class LeadTimePercentileSummaryWidgetProcessor < WidgetProcessor
     @percentile_values = Hash.new
   end
 
-  def process(work_items)
+  def process(work_items, configuration = Hash.new)
     classes_of_service_items = sort_into_classes_of_service(work_items)
     @percentile_values = populate_percentile_lead_times_from_work_items(classes_of_service_items, @percentile)
   end

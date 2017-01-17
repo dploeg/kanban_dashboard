@@ -1,5 +1,6 @@
 require_relative '../lib/readers/file_work_item_reader'
 require_relative '../lib/readers/file_threshold_reader'
+require_relative '../lib/readers/file_config_reader'
 require_relative '../lib/processor/data_processor'
 require_relative '../lib/processor/widgets/lead_time_percentile_summary_widget_processor'
 require_relative '../lib/processor/widgets/lead_time_distribution_widget_processor'
@@ -16,6 +17,7 @@ require_relative '../lib/processor/widgets/forecast_widget_processor'
 SCHEDULER.every '10s' do
   work_item_reader = FileWorkItemReader.new('assets/dashboard_data/sample_data.json')
   threshold_reader = FileThresholdReader.new('assets/dashboard_data/sample_thresholds.json')
+  config_reader = FileConfigReader.new('assets/dashboard_data/dashboard_config.yaml')
   threshold_value_processors = [PercentileThresholdValueProcessor.new]
   threshold_processor = ThresholdProcessor.new(threshold_reader, threshold_value_processors)
 
@@ -24,7 +26,7 @@ SCHEDULER.every '10s' do
                        NetFlowWidgetProcessor.new, CumulativeFlowWidgetProcessor.new,
                        ThroughputWidgetProcessor.new, ForecastWidgetProcessor.new,
                        ThresholdWidgetProcessor.new(threshold_processor)]
-  processor = DataProcessor.new(work_item_reader, widget_processors)
+  processor = DataProcessor.new(work_item_reader, config_reader, widget_processors)
   processor.process_data
 
 end

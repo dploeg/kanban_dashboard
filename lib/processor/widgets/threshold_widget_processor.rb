@@ -8,7 +8,7 @@ class ThresholdWidgetProcessor < WidgetProcessor
     @threshold_processor = threshold_processor
   end
 
-  def process(work_items)
+  def process(work_items, configuration = Hash.new)
     @warnings = @threshold_processor.process(work_items)
   end
 

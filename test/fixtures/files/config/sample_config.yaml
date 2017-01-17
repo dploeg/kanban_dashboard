@@ -1,0 +1,8 @@
+:migration:
+  :customer: Example Customer
+  :test:     false
+:sources:
+- :name:     Use the Source
+  :engine:   Foo
+- :name:     Sourcey
+  :engine:   Bar

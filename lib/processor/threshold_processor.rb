@@ -6,7 +6,7 @@ class ThresholdProcessor
     @threshold_processors = threshold_value_processors
   end
 
-  def process(work_items)
+  def process(work_items, configuration = Hash.new)
     thresholds = @threshold_reader.read_thresholds
     warnings = Array.new
     @threshold_processors.each { |threshold_value_processor|

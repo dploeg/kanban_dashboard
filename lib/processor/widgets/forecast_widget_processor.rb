@@ -17,9 +17,9 @@ class ForecastWidgetProcessor < WidgetProcessor
     @forecasts = Hash.new
   end
 
-  def process(work_items)
+  def process(work_items, configuration = Hash.new)
     super(work_items)
-    forecast_input = ForecastInput.new(:start_date => "10/3/16", :number_of_stories => 30)
+    forecast_input = ForecastInput.new(configuration[:forecast_config])
     forecast(forecast_input, @completed)
   end
 
