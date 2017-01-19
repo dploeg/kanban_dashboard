@@ -2,8 +2,8 @@ require 'minitest/autorun'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../lib/model/threshold'
-require_relative '../../lib/readers/file_threshold_reader'
+require_relative '../../../lib/model/threshold'
+require_relative '../../../lib/readers/threshold/file_threshold_reader'
 
 class TestFileThresholdReader < Minitest::Test
 

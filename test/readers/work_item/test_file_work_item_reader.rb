@@ -2,8 +2,8 @@ require 'minitest/autorun'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../lib/model/work_item'
-require_relative '../../lib/readers/file_work_item_reader'
+require_relative '../../../lib/model/work_item'
+require_relative '../../../lib/readers/work_item/file_work_item_reader'
 
 class TestFileWorkItemReader < Minitest::Test
 

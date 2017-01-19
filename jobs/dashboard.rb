@@ -1,5 +1,5 @@
-require_relative '../lib/readers/file_work_item_reader'
-require_relative '../lib/readers/file_threshold_reader'
+require_relative '../lib/readers/work_item/file_work_item_reader'
+require_relative '../lib/readers/threshold/file_threshold_reader'
 require_relative '../lib/readers/file_config_reader'
 require_relative '../lib/processor/data_processor'
 require_relative '../lib/processor/widgets/lead_time_percentile_summary_widget_processor'

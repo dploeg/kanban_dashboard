@@ -20,13 +20,10 @@ class WorkItem
     end
     lead_time
   end
-  
-  def start_week_string
-    convert_to_week_string(@start_date)
-  end
+
 
   def to_s
-    "Start Date: " + @start_date + ", Complete Date: " + @complete_date + ", Class of Service: " + @class_of_service
+    "Start Date: #{@start_date}, Complete Date: #{@complete_date}, Class of Service: #{@class_of_service}, object_id: #{"0x00%x" % (object_id << 1)})"
   end
 
   def as_json(options={})
@@ -39,6 +36,10 @@ class WorkItem
 
   def to_json(*options)
       as_json(*options).to_json(*options)
+  end
+
+  def start_week_string
+    convert_to_week_string(@start_date)
   end
 
   def complete_week_string

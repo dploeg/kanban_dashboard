@@ -22,7 +22,7 @@ class TestWorkItem < Minitest::Test
 
     should 'generate to_s' do
       work_item = WorkItem.new(:start_date => "15/10/16", :complete_date => "5/11/16", :class_of_service => "Fixed Date")
-      assert_equal "Start Date: 15/10/16, Complete Date: 5/11/16, Class of Service: Fixed Date", work_item.to_s
+      assert work_item.to_s.start_with? "Start Date: 15/10/16, Complete Date: 5/11/16, Class of Service: Fixed Date"
     end
 
     should 'mark lead time as one where lead time is zero' do
