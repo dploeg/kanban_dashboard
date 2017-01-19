@@ -10,7 +10,7 @@ class TestJiraWorkItemReader < Minitest::Test
   context 'JiraWorkItemReader' do
 
     should 'return an item for query using mocks' do
-      @config = {:jira_config => {:props => {:url => URI.parse('https://sample.atlassian.net/'), :username => 'username', :password => 'password'}, :query => 'project = "KanbanDashboard" and status = "Done"'}}
+      @config = {:jira_config => {:props => {:url => 'https://sample.atlassian.net/', :username => 'username', :password => 'password'}, :query => 'project = "KanbanDashboard" and status = "Done"'}}
 
       issues = [JIRA::Resource::Issue.new(nil, {:attrs => {'fields' => {'created' => "2017-01-17T17:48:08.000+1100", 'resolutiondate' => "2017-01-19T12:02:29.000+1100"}}}),
                 JIRA::Resource::Issue.new(nil, {:attrs => {'fields' => {'created' => "2017-01-17T17:48:01.000+1100", 'resolutiondate' => "2017-01-19T12:02:29.000+1100"}}}),
@@ -37,7 +37,7 @@ class TestJiraWorkItemReader < Minitest::Test
     end
 
     should 'throw exception if configuration not matching endpoint' do
-      @config = {:jira_config => {:props => {:url => URI.parse('https://localhost:8080'), :username => 'username', :password => 'password'}, :query => 'project = "MyProject"'}}
+      @config = {:jira_config => {:props => {:url => 'https://localhost:8080', :username => 'username', :password => 'password'}, :query => 'project = "MyProject"'}}
       raises_exception = -> { raise ArgumentError.new }
       reader = JiraWorkItemReader.new(@config)
 

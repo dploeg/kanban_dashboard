@@ -8,14 +8,15 @@ class JiraWorkItemReader
 
   def initialize(configuration)
     jira_props = configuration[:jira_config][:props]
+    url = URI.parse(jira_props[:url])
     @jira_options = {
         :username => jira_props[:username],
         :password => jira_props[:password],
-        :context_path => jira_props[:url].path,
-        :site => jira_props[:url].scheme + "://" + jira_props[:url].host,
+        :context_path => url.path,
+        :site => url.scheme + "://" + url.host,
         :auth_type => :basic,
         :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE,
-        :use_ssl => jira_props[:url].scheme == 'https' ? true : false,
+        :use_ssl => url.scheme == 'https' ? true : false,
         :proxy_address => jira_props[:proxy_address],
         :proxy_port => jira_props[:proxy_port]
     }
