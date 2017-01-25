@@ -14,6 +14,9 @@ class WorkItem
   end
 
   def lead_time
+    if @complete_date.nil?
+      return -1
+    end
     lead_time = (Date.strptime(@complete_date, DATE_FORMAT) - Date.strptime(@start_date, DATE_FORMAT)).to_i
     if lead_time == 0
       lead_time = 1

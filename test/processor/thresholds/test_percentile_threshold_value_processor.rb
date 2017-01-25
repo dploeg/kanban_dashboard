@@ -3,6 +3,10 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
+require_relative '../../../lib/model/work_item'
+require_relative '../../../lib/model/threshold'
+require_relative '../../../lib/processor/threshold/percentile_threshold_value_processor'
+require_relative '../../test_constants'
 
 class TestPercentileThresholdValueProcessor < Minitest::Test
 
@@ -77,6 +81,17 @@ class TestPercentileThresholdValueProcessor < Minitest::Test
       assert_equal "has exceeded upper control limit threshold of 9 with value of 32", warnings[0].value
       assert_equal "Lead Time 95 percentile - Expedite", warnings[1].label
       assert_equal "has exceeded upper control limit threshold of 7 with value of 8", warnings[1].value
+    end
+
+    context "incomplete data" do
+
+      should "filter items without a complete date" do
+        @work_items.push(WorkItem.new(:start_date => "10/3/16"))
+        processor = PercentileThresholdValueProcessor.new
+        warnings = processor.process(@work_items, *[@threshold1, @threshold2])
+
+        assert_equal 0, warnings.size
+      end
     end
 
     should "accept optional percentile value for constructor" do

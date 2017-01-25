@@ -22,6 +22,15 @@ class TestThroughputWidgetProcessor < Minitest::Test
       check_output(output_hash)
     end
 
+    context "incomplete data" do
+
+      should "filter items without a complete date" do
+        @work_items.push(WorkItem.new(:start_date => "10/3/16"))
+        output_hash = process_and_build_output_hash
+        check_output(output_hash)
+      end
+    end
+
     should 'call send_event' do
       widget = ThroughputWidgetProcessor.new
       widget.process @work_items

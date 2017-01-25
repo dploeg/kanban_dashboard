@@ -21,7 +21,8 @@ module StartedVsCompletedDataProcessor
     first_week = start_date.strftime('%U').to_i
     first_year = start_date.strftime('%Y').to_i
 
-    items_by_completed = order_work_items_by_completed(work_items)
+    filtered = filter_incomplete_items(work_items)
+    items_by_completed = order_work_items_by_completed(filtered)
     completed_date = Date.strptime(items_by_completed.last.complete_date, WorkItem::DATE_FORMAT)
     last_week = completed_date.strftime('%U').to_i
     last_year = completed_date.strftime('%Y').to_i
@@ -54,8 +55,10 @@ module StartedVsCompletedDataProcessor
     @completed.keys.each { |key|
       count = 0
       work_items.each { |item|
-        if item.complete_week_string == key
-          count+=1
+        unless item.complete_date.nil?
+          if item.complete_week_string == key
+            count+=1
+          end
         end
       }
       @completed[key] = count

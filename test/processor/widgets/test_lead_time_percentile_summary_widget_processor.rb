@@ -43,6 +43,21 @@ class TestLeadTimePercentileSummaryWidgetProcessor < Minitest::Test
       assert_equal 28, widget.lead_time_95th_percentile(INTANGIBLE)
     end
 
+    context "incomplete data" do
+
+      should "filter items without a complete date" do
+        @work_items.push(WorkItem.new(:start_date => "12/4/16"), WorkItem.new(:start_date => "12/4/16"), WorkItem.new(:start_date => "12/4/16"), WorkItem.new(:start_date => "12/4/16"))
+        widget = LeadTimePercentileSummaryWidgetProcessor.new
+        widget.process @work_items
+
+        assert_equal 32, widget.lead_time_95th_percentile
+        assert_equal 32, widget.lead_time_95th_percentile(STANDARD)
+        assert_equal 8, widget.lead_time_95th_percentile(EXPEDITE)
+        assert_equal 21, widget.lead_time_95th_percentile(FIXED_DATE)
+        assert_equal 28, widget.lead_time_95th_percentile(INTANGIBLE)
+      end
+    end
+
     should 'builds output map' do
       widget = LeadTimePercentileSummaryWidgetProcessor.new
 

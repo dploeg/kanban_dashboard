@@ -13,7 +13,9 @@ class LeadTimeDistributionWidgetProcessor < WidgetProcessor
   def process(work_items, configuration = Hash.new)
     @lead_times = Array.new
     work_items.each { |item|
-      @lead_times.push(item.lead_time)
+      unless item.complete_date.nil?
+        @lead_times.push(item.lead_time)
+      end
     }
   end
 

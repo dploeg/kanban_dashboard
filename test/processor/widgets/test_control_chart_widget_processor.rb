@@ -239,6 +239,21 @@ class TestControlChartWidgetProcessor < Minitest::Test
 
     end
 
+    context "incomplete data" do
+
+      should "filter items without a complete date" do
+        @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"),
+                       WorkItem.new(:start_date => "12/3/16")]
+        output_hash = process_and_build_output_hash
+
+        assert_equal 2, output_hash.size
+        assert_equal 1, output_hash[:datasets][0][:data].size
+
+        assert_equal 1, output_hash[:datasets][0][:data][0][:x]
+        assert_equal 11, output_hash[:datasets][0][:data][0][:y]
+
+      end
+    end
 
   end
 

@@ -88,6 +88,15 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
       end
     end
 
+    context "incomplete data" do
+
+      should "filter items without a complete date" do
+        @work_items.push(WorkItem.new(:start_date => "12/3/16"))
+        output_hash = process_and_build_output_hash
+        check_output(output_hash)
+      end
+    end
+
 
     should 'call send_event' do
       widget = LeadTimeDistributionWidgetProcessor.new

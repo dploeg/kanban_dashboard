@@ -1,4 +1,5 @@
 require_relative '../processor_utils'
+require_relative '../../../lib/model/threshold_warning'
 
 class PercentileThresholdValueProcessor
   include ProcessorUtils

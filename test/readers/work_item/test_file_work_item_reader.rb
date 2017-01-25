@@ -40,6 +40,16 @@ class TestFileWorkItemReader < Minitest::Test
       end
     end
 
+    should 'read items without a complete date' do
+      reader = FileWorkItemReader.new('test/fixtures/files/no_complete_date.json')
+      reader.read_data
+      input_data = reader.work_items
+      assert_equal 3, input_data.size
+      input_data.each { | work_item|
+        assert_nil work_item.complete_date
+      }
+    end
+
   end
 
 end

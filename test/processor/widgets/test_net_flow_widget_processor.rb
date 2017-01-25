@@ -26,29 +26,43 @@ class TestNetFlowWidgetProcessor < Minitest::Test
       assert_equal [-1, 0, 1], flow[:data]
     end
 
-    should "set labels for a single item" do
-      output_hash = process_and_build_output_hash
+    context "incomplete data" do
 
-      check_labels(output_hash)
+      should "filter items without a complete date" do
+        @work_items.push(WorkItem.new(:start_date => "10/3/16"))
+        output_hash = process_and_build_output_hash
+        assert_equal 1, output_hash[:datasets].size
+        flow = output_hash[:datasets][0]
+        assert_equal flow[:label], 'Net Flow'
+
+        assert_equal [-2, 0, 1], flow[:data]
+      end
     end
+    context "output formatting" do
+      should "set labels for a single item" do
+        output_hash = process_and_build_output_hash
 
-    should "color flow for a single item" do
-      output_hash = process_and_build_output_hash
+        check_labels(output_hash)
+      end
 
-      flow = output_hash[:datasets][0]
-      flow_index = 0
-      flow[:data].each { |flow_value|
-        if flow_value < 0
-          assert_equal 'rgba(255, 99, 132, 0.2)', flow[:backgroundColor][flow_index]
-          assert_equal 'rgba(255, 99, 132, 1)', flow[:borderColor][flow_index]
-        else
-          assert_equal 'rgba(92, 255, 127, 0.2)', flow[:backgroundColor][flow_index]
-          assert_equal 'rgba(92, 255, 127, 1)', flow[:borderColor][flow_index]
-        end
-        flow_index+=1
-      }
-      assert_equal 1, flow[:borderWidth]
+      should "color flow for a single item" do
+        output_hash = process_and_build_output_hash
 
+        flow = output_hash[:datasets][0]
+        flow_index = 0
+        flow[:data].each { |flow_value|
+          if flow_value < 0
+            assert_equal 'rgba(255, 99, 132, 0.2)', flow[:backgroundColor][flow_index]
+            assert_equal 'rgba(255, 99, 132, 1)', flow[:borderColor][flow_index]
+          else
+            assert_equal 'rgba(92, 255, 127, 0.2)', flow[:backgroundColor][flow_index]
+            assert_equal 'rgba(92, 255, 127, 1)', flow[:borderColor][flow_index]
+          end
+          flow_index+=1
+        }
+        assert_equal 1, flow[:borderWidth]
+
+      end
     end
 
     should "create output" do

@@ -60,6 +60,38 @@ class TestForecastWidgetProcessor < Minitest::Test
       end
     end
 
+    context "incomplete data" do
+
+      should "filter items without a complete date" do
+        @work_items = [[WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 2,
+                       [WorkItem.new(:start_date => "10/3/16", :complete_date => "18/3/16")] * 6,
+                       [WorkItem.new(:start_date => "10/3/16", :complete_date => "25/3/16")] * 1,
+                       [WorkItem.new(:start_date => "10/3/16", :complete_date => "1/4/16")] * 4,
+                       [WorkItem.new(:start_date => "10/3/16", :complete_date => "8/4/16")] * 5,
+                       [WorkItem.new(:start_date => "10/3/16", :complete_date => "22/4/16")] * 7,
+                       [WorkItem.new(:start_date => "10/3/16")] * 4
+        ].flatten
+        @completed_items = {"2016-11" => 2, "2016-12" => 6, "2016-13" => 1, "2016-14" => 4, "2016-15" => 5, "2016-16" => 0, "2016-17" => 7}
+        widget = ForecastWidgetProcessor.new
+
+        sample = MiniTest::Mock.new
+        #mocking doesn't allow to specify always just do this, so doing it a whole bunch of times
+        (1..10000).each {
+          sample.expect :call, 4, [@completed_items.values]
+        }
+        widget.stub :sample, sample do
+          widget.process(@work_items, @configuration)
+        end
+
+        output_hash = widget.build_output_hash
+
+        assert_equal 2, output_hash.size
+        check_output(output_hash)
+
+      end
+    end
+
+
     should 'call send_event' do
       widget = ForecastWidgetProcessor.new
       widget.process(@work_items, @configuration)

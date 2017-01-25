@@ -10,17 +10,6 @@ class Forecast
 
   def ==(other)
     self.percentile == other.percentile && self.duration_weeks == other.duration_weeks && self.complete_date == other.complete_date
-=begin
-    return true if self===other
-    return false if other.class != self.class
-
-    if (self.percentile.nil? !@:)
-
-    if (one != null ? !one.equals(test.one) : test.one != null) return false;
-    if (two != null ? !two.equals(test.two) : test.two != null) return false;
-    return three != null ? three.equals(test.three) : test.three == null;
-
-=end
   end
 
   def to_s

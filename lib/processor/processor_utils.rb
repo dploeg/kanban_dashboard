@@ -1,3 +1,4 @@
+require 'descriptive_statistics'
 
 module ProcessorUtils
   STANDARD_CLASS_OF_SERVICE = "Standard"
@@ -26,6 +27,16 @@ module ProcessorUtils
     work_items.sort { |a, b| Date.strptime(a.complete_date, WorkItem::DATE_FORMAT) <=> Date.strptime(b.complete_date, WorkItem::DATE_FORMAT) }
   end
 
+  def filter_incomplete_items(work_items)
+    filtered = Array.new
+    work_items.each {|item|
+      unless item.complete_date.nil?
+        filtered.push(item)
+      end
+    }
+    filtered
+  end
+
   def order_work_items_by_started(work_items)
     work_items.sort { |a, b| Date.strptime(a.start_date, WorkItem::DATE_FORMAT) <=> Date.strptime(b.start_date, WorkItem::DATE_FORMAT) }
   end
@@ -38,7 +49,9 @@ module ProcessorUtils
       lead_times = Array.new
       classes_of_service_items[class_of_service].each {
           |item|
-        lead_times.push(item.lead_time)
+        unless item.complete_date.nil?
+          lead_times.push(item.lead_time)
+        end
       }
 
       percentile_values[class_of_service] = lead_times.percentile(percentile).to_i

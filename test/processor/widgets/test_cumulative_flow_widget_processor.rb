@@ -43,38 +43,58 @@ class TestCumulativeFlowWidgetProcessor < Minitest::Test
       send_event.verify
     end
 
-    should "color started and completed for a single item" do
-      output_hash = process_and_build_output_hash
+    context "formatting" do
+      should "color started and completed for a single item" do
+        output_hash = process_and_build_output_hash
 
-      #note - order is reversed because completed should appear on top of started
-      check_formatting_started(output_hash[:datasets][1])
-      check_formatting_completed(output_hash[:datasets][0])
+        #note - order is reversed because completed should appear on top of started
+        check_formatting_started(output_hash[:datasets][1])
+        check_formatting_completed(output_hash[:datasets][0])
+      end
+
+      should "set labels for a single item" do
+        output_hash = process_and_build_output_hash
+
+        check_labels(output_hash)
+      end
+
+      should "set draw straight lines" do
+        output_hash = process_and_build_output_hash
+
+        assert_equal 0, output_hash[:datasets][0][:lineTension]
+        assert_equal 0, output_hash[:datasets][1][:lineTension]
+      end
+
+      should "set options for a single item" do
+        expected = {
+            scales: {
+                yAxes: [{
+                            stacked: false
+                        }]
+            }
+        }
+        output_hash = process_and_build_output_hash
+
+        assert_equal expected, output_hash[:options]
+      end
+
     end
 
-    should "set labels for a single item" do
-      output_hash = process_and_build_output_hash
+    context "incomplete data" do
 
-      check_labels(output_hash)
-    end
+      should "not filter items without a complete date" do
+        @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"),
+                       WorkItem.new(:start_date => "10/3/16")]
+        output_hash = process_and_build_output_hash
+        assert_equal 2, output_hash[:datasets].size
+        started = output_hash[:datasets][1]
+        assert_equal started[:label], 'Started'
+        completed = output_hash[:datasets][0]
+        assert_equal completed[:label], 'Completed'
 
-    should "set draw straight lines" do
-      output_hash = process_and_build_output_hash
-
-      assert_equal 0, output_hash[:datasets][0][:lineTension]
-      assert_equal 0, output_hash[:datasets][1][:lineTension]
-    end
-
-    should "set options for a single item" do
-      expected = {
-          scales: {
-              yAxes: [{
-                          stacked: false
-                      }]
-          }
-      }
-      output_hash = process_and_build_output_hash
-
-      assert_equal expected, output_hash[:options]
+        assert_equal [2,2,2], started[:data]
+        assert_equal [0,0,1], completed[:data]
+      end
     end
 
   end
