@@ -3,6 +3,7 @@ require 'descriptive_statistics'
 module ProcessorUtils
   STANDARD_CLASS_OF_SERVICE = "Standard"
   PERCENTILE_THRESHOLD_VALUE_PROCESSOR = "percentile"
+  CURRENT_ITEMS_THRESHOLD_VALUE_PROCESSOR = "current_items"
 
   def sort_into_classes_of_service(work_items)
     classes_of_service = Hash.new

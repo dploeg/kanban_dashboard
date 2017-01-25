@@ -9,6 +9,7 @@ require_relative '../lib/processor/widgets/started_vs_completed_widget_processor
 require_relative '../lib/processor/widgets/net_flow_widget_processor'
 require_relative '../lib/processor/threshold_processor'
 require_relative '../lib/processor/threshold/percentile_threshold_value_processor'
+require_relative '../lib/processor/threshold/current_items_threshold_value_processor'
 require_relative '../lib/processor/widgets/threshold_widget_processor'
 require_relative '../lib/processor/widgets/cumulative_flow_widget_processor'
 require_relative '../lib/processor/widgets/throughput_widget_processor'
@@ -18,7 +19,7 @@ SCHEDULER.every '10s' do
   work_item_reader = FileWorkItemReader.new('assets/dashboard_data/sample_data.json')
   threshold_reader = FileThresholdReader.new('assets/dashboard_data/sample_thresholds.json')
   config_reader = FileConfigReader.new('assets/dashboard_data/dashboard_config.yaml')
-  threshold_value_processors = [PercentileThresholdValueProcessor.new]
+  threshold_value_processors = [PercentileThresholdValueProcessor.new, CurrentItemsThresholdValueProcessor.new]
   threshold_processor = ThresholdProcessor.new(threshold_reader, threshold_value_processors)
 
   widget_processors = [LeadTimePercentileSummaryWidgetProcessor.new, LeadTimeDistributionWidgetProcessor.new,
