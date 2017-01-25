@@ -49,7 +49,7 @@ module ProcessorUtils
       lead_times = Array.new
       classes_of_service_items[class_of_service].each {
           |item|
-        unless item.complete_date.nil?
+        unless item.lead_time.nil?
           lead_times.push(item.lead_time)
         end
       }

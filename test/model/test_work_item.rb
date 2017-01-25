@@ -24,7 +24,7 @@ class TestWorkItem < Minitest::Test
     should 'not calculate lead time if no complete date' do
       work_item = WorkItem.new(:start_date => "15/10/16")
 
-      assert_equal -1, work_item.lead_time
+      assert_nil work_item.lead_time
     end
 
 
