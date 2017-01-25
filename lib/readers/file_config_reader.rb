@@ -1,4 +1,4 @@
-require 'YAML'
+require 'yaml'
 
 class FileConfigReader
 
