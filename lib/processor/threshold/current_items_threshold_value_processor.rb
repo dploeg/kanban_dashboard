@@ -45,19 +45,19 @@ class CurrentItemsThresholdValueProcessor
   private def build_warning(count, threshold)
     if threshold.class_of_service.nil?
       if count > 1
-        ThresholdWarning.new(count.to_s + " current work items",
-                             "have exceeded the in progress " + threshold.type.downcase + " threshold of " + threshold.value.to_s + " days")
+        ThresholdWarning.new("In Progress time",
+                             "has exceeded the " + threshold.type.downcase + " threshold of " + threshold.value.to_s + " days for " + count.to_s + " items")
       else
-        ThresholdWarning.new(count.to_s + " current work items",
-                             "has exceeded the in progress " + threshold.type.downcase + " threshold of " + threshold.value.to_s + " days")
+        ThresholdWarning.new("In Progress time",
+                             "has exceeded the " + threshold.type.downcase + " threshold of " + threshold.value.to_s + " days for " + count.to_s + " item")
       end
     else
       if count > 1
-        ThresholdWarning.new(count.to_s + " current work items - " + threshold.class_of_service,
-                             "have exceeded the in progress " + threshold.type.downcase + " threshold of " + threshold.value.to_s + " days")
+        ThresholdWarning.new("In Progress time - " + threshold.class_of_service,
+                             "has exceeded the " + threshold.type.downcase + " threshold of " + threshold.value.to_s + " days for " + count.to_s + " items")
       else
-        ThresholdWarning.new(count.to_s + " current work items - " + threshold.class_of_service,
-                             "has exceeded the in progress " + threshold.type.downcase + " threshold of " + threshold.value.to_s + " days")
+        ThresholdWarning.new("In Progress time - " + threshold.class_of_service,
+                             "has exceeded the " + threshold.type.downcase + " threshold of " + threshold.value.to_s + " days for " + count.to_s + " item")
       end
     end
   end

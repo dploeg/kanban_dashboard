@@ -55,8 +55,8 @@ class TestCurrentItemsThresholdValueProcessor < Minitest::Test
           warnings = processor.process(@work_items, *[@threshold2])
 
           assert_equal 1, warnings.size
-          assert_equal "1 current work items", warnings[0].label
-          assert_equal "has exceeded the in progress upper control limit threshold of 4 days", warnings[0].value
+          assert_equal "In Progress time", warnings[0].label
+          assert_equal "has exceeded the upper control limit threshold of 4 days for 1 item", warnings[0].value
         end
 
       end
@@ -70,8 +70,8 @@ class TestCurrentItemsThresholdValueProcessor < Minitest::Test
           warnings = processor.process(@work_items, *[@threshold2])
 
           assert_equal 1, warnings.size
-          assert_equal "2 current work items", warnings[0].label
-          assert_equal "have exceeded the in progress upper control limit threshold of 4 days", warnings[0].value
+          assert_equal "In Progress time", warnings[0].label
+          assert_equal "has exceeded the upper control limit threshold of 4 days for 2 items", warnings[0].value
         end
 
         should 'handle multiple classes of service' do
@@ -81,10 +81,10 @@ class TestCurrentItemsThresholdValueProcessor < Minitest::Test
           warnings = processor.process(@work_items, *[@threshold1, @threshold3, @threshold4])
 
           assert_equal 2, warnings.size
-          assert_equal "1 current work items - Standard", warnings[0].label
-          assert_equal "has exceeded the in progress upper control limit threshold of 7 days", warnings[0].value
-          assert_equal "1 current work items - Expedite", warnings[1].label
-          assert_equal "has exceeded the in progress upper control limit threshold of 3 days", warnings[1].value
+          assert_equal "In Progress time - Standard", warnings[0].label
+          assert_equal "has exceeded the upper control limit threshold of 7 days for 1 item", warnings[0].value
+          assert_equal "In Progress time - Expedite", warnings[1].label
+          assert_equal "has exceeded the upper control limit threshold of 3 days for 1 item", warnings[1].value
         end
 
       end
