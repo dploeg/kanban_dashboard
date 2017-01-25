@@ -55,7 +55,7 @@ class TestCurrentItemsThresholdValueProcessor < Minitest::Test
           warnings = processor.process(@work_items, *[@threshold2])
 
           assert_equal 1, warnings.size
-          assert_equal "In Progress time", warnings[0].label
+          assert_equal "In Progress time (incomplete items)", warnings[0].label
           assert_equal "has exceeded the upper control limit threshold of 4 days for 1 item", warnings[0].value
         end
 
@@ -70,7 +70,7 @@ class TestCurrentItemsThresholdValueProcessor < Minitest::Test
           warnings = processor.process(@work_items, *[@threshold2])
 
           assert_equal 1, warnings.size
-          assert_equal "In Progress time", warnings[0].label
+          assert_equal "In Progress time (incomplete items)", warnings[0].label
           assert_equal "has exceeded the upper control limit threshold of 4 days for 2 items", warnings[0].value
         end
 
@@ -81,9 +81,9 @@ class TestCurrentItemsThresholdValueProcessor < Minitest::Test
           warnings = processor.process(@work_items, *[@threshold1, @threshold3, @threshold4])
 
           assert_equal 2, warnings.size
-          assert_equal "In Progress time - Standard", warnings[0].label
+          assert_equal "In Progress time (incomplete items) - Standard", warnings[0].label
           assert_equal "has exceeded the upper control limit threshold of 7 days for 1 item", warnings[0].value
-          assert_equal "In Progress time - Expedite", warnings[1].label
+          assert_equal "In Progress time (incomplete items) - Expedite", warnings[1].label
           assert_equal "has exceeded the upper control limit threshold of 3 days for 1 item", warnings[1].value
         end
 

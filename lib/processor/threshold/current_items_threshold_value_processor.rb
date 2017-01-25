@@ -45,19 +45,19 @@ class CurrentItemsThresholdValueProcessor
   private def build_warning(count, threshold)
     if threshold.class_of_service.nil?
       if count > 1
-        ThresholdWarning.new("In Progress time",
-                             "has exceeded the " + threshold.type.downcase + " threshold of " + threshold.value.to_s + " days for " + count.to_s + " items")
+        ThresholdWarning.new("In Progress time (incomplete items)",
+                             "has exceeded the %s threshold of %d days for %d items" % [threshold.type.downcase, threshold.value, count])
       else
-        ThresholdWarning.new("In Progress time",
-                             "has exceeded the " + threshold.type.downcase + " threshold of " + threshold.value.to_s + " days for " + count.to_s + " item")
+        ThresholdWarning.new("In Progress time (incomplete items)",
+                             "has exceeded the %s threshold of %d days for 1 item" % [threshold.type.downcase, threshold.value])
       end
     else
       if count > 1
-        ThresholdWarning.new("In Progress time - " + threshold.class_of_service,
-                             "has exceeded the " + threshold.type.downcase + " threshold of " + threshold.value.to_s + " days for " + count.to_s + " items")
+        ThresholdWarning.new("In Progress time (incomplete items) - %s" % [threshold.class_of_service],
+                             "has exceeded the %s threshold of %d days for %d items" % [threshold.type.downcase, threshold.value, count])
       else
-        ThresholdWarning.new("In Progress time - " + threshold.class_of_service,
-                             "has exceeded the " + threshold.type.downcase + " threshold of " + threshold.value.to_s + " days for " + count.to_s + " item")
+        ThresholdWarning.new("In Progress time (incomplete items) - %s" % [threshold.class_of_service],
+                             "has exceeded the %s threshold of %d days for 1 item" % [threshold.type.downcase, threshold.value])
       end
     end
   end
