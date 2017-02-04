@@ -27,19 +27,23 @@ class CurrentItemsThresholdValueProcessor
     count = 0
     if threshold.class_of_service.nil?
       work_items.each { |work_item|
-        if Date.strptime(work_item.start_date, WorkItem::DATE_FORMAT) < Date.today - threshold.value
+        if work_item.complete_date.nil? && threshold_value_exceeded(threshold, work_item)
           count +=1
         end
       }
     else
       class_of_service_items = sort_into_classes_of_service(work_items)
       class_of_service_items[threshold.class_of_service].each { |work_item|
-        if Date.strptime(work_item.start_date, WorkItem::DATE_FORMAT) < Date.today - threshold.value
+        if work_item.complete_date.nil? && threshold_value_exceeded(threshold, work_item)
           count +=1
         end
       }
     end
     count
+  end
+
+  def threshold_value_exceeded(threshold, work_item)
+    Date.strptime(work_item.start_date, WorkItem::DATE_FORMAT) < Date.today - threshold.value
   end
 
   private def build_warning(count, threshold)

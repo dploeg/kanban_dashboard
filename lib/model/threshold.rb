@@ -19,7 +19,7 @@ class Threshold
   end
 
   def to_s
-    "Threshold(Type: #{@type}, value: #{@value}, class_of_service: #{@class_of_service},processor: #{@processor}, object_id: #{"0x00%x" % (object_id << 1)})"
+    "Threshold(Type: #{@type}, value: #{@value}, class_of_service: #{@class_of_service}, processor: #{@processor}, object_id: #{"0x00%x" % (object_id << 1)})"
   end
 
 end

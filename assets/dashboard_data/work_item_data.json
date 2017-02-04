@@ -4,6 +4,10 @@
     "class_of_service": "Standard"
   },
   {
+    "start_date": "10/01/17",
+    "class_of_service": "Expedite"
+  },
+  {
     "start_date": "06/04/16",
     "complete_date": "23/05/16",
     "class_of_service": "Intangible"
