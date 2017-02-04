@@ -38,6 +38,20 @@ all that exists so far.
 The <code>dashboard.rb</code> file is where all of the items are wired in together. Note, presently this is set to 10 seconds to aid development, however for deployment you may want to set this higher (say every 5-10 minutes). 
 Date format is currently set to %d/%m/%y. If you wish to change this, please refer to the constant WorkItem::DATE_FORMAT
 
+###Starting the application 
+Once you've cloned the repository, start the smashing dashboard:
+<code>smashing start</code>
+
+Point your browser to localhost:3030 and the default dashboard will be displayed. At present, there are 3 dashboards:
+
+localhost:3030/dashboard  - dumping group for all charts used for development
+localhost:3030/lead_times - A collection of lead time charts
+localhost:3030/flow - A collection of flow based charts 
+ 
+###Customising your view
+In the <code>dashboards</code> folder there are a series of erb files with the views in them. If you wanted to create your own
+ construct another file with the same layout as the existing files (the smashing layout for views)
+
 ###Implementing a new Threshold
 Have a look in the <code>lib/processor/threshold</code> folder for examples. You will need to create a new threshold class and implement the <code>process(work_items, *thresholds)</code> function.
 Make sure to name the threshold when its initialized(this is how it matches the threshold configuration to the class)
@@ -63,7 +77,7 @@ Create your own work item reader and implement the <code>read_data</code> functi
 
 ###Wiring it together
 When you've implemented your alternate implementations, you can wire them in with the <code>dashboard.rb</code> file.
- 
+        
  
 ##License
  
