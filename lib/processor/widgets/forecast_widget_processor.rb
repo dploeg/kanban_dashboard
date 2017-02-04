@@ -40,25 +40,25 @@ class ForecastWidgetProcessor < WidgetProcessor
 
   private def build_heading_rows
     [
-        { :cols => [{:value => 'Likelihood'}, {:value => 'Duration (weeks)'}, {:value => 'Completion Date'}]}
+        {:cols => [{:value => 'Likelihood'}, {:value => 'Duration (weeks)'}, {:value => 'Completion Date'}]}
     ]
   end
 
   private def build_rows_data
-     rows = Array.new
-     @forecasts.to_a.reverse.to_h.each{|key, value|
-       background_color = case
-                            when value.percentile < 50
-                              'background-color:#f5e5d7;'
-                            when value.percentile < 85
-                              'background-color:#fbf2cd;'
-                            else
-                              'background-color:#cedeb5;'
-                        end
+    rows = Array.new
+    @forecasts.to_a.reverse.to_h.each { |key, value|
+      background_color = case
+                           when value.percentile < 50
+                             'background-color:#f5e5d7;'
+                           when value.percentile < 85
+                             'background-color:#fbf2cd;'
+                           else
+                             'background-color:#cedeb5;'
+                         end
 
-        rows.push({ :cols => [{:value => value.percentile.to_s + "%"}, {:value => value.duration_weeks}, {:value => value.complete_date}],
-                    :style => background_color})
-     }
+      rows.push({:cols => [{:value => value.percentile.to_s + "%"}, {:value => value.duration_weeks}, {:value => value.complete_date}],
+                 :style => background_color})
+    }
     rows
   end
 
@@ -75,7 +75,7 @@ class ForecastWidgetProcessor < WidgetProcessor
     completed_values = completed_items.values
 
     (1..MAX_SAMPLES).each {
-      stories_left = forecast_input.number_of_stories
+      stories_left = calculate_stories_to_sample(forecast_input)
       weeks_taken = 0
       while stories_left >= 0
         stories_left = stories_left - sample(completed_values)
@@ -86,9 +86,27 @@ class ForecastWidgetProcessor < WidgetProcessor
     samples
   end
 
+  def calculate_stories_to_sample(forecast_input)
+    unless forecast_input.story_split_rate_low.nil? || forecast_input.story_split_rate_high.nil?
+      forecast_input.number_of_stories * random_split(forecast_input)
+    else
+      forecast_input.number_of_stories
+    end
+  end
+
   #pulled this out into a separate method to create seam in order to mock random values
   private def sample(completed_values)
     completed_values.sample
   end
+
+  #pulled this out into a separate method to create seam in order to mock random values
+  private def random_split(forecast_input)
+    if forecast_input.story_split_rate_high > forecast_input.story_split_rate_low
+      rand(forecast_input.story_split_rate_low...forecast_input.story_split_rate_high)
+    else
+      forecast_input.story_split_rate_low
+    end
+  end
+
 
 end
