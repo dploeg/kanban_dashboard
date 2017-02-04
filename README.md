@@ -36,17 +36,20 @@ all that exists so far.
 ##Technical stuff
  
 The <code>dashboard.rb</code> file is where all of the items are wired in together. Note, presently this is set to 10 seconds to aid development, however for deployment you may want to set this higher (say every 5-10 minutes). 
-Date format is currently set to %d/%m/%y. If you wish to change this, please refer to the constant WorkItem::DATE_FORMAT
+Date format is currently set to <code>%d/%m/%y</code>. If you wish to change this, please refer to the constant <code>WorkItem::DATE_FORMAT</code>
 
 ###Starting the application 
 Once you've cloned the repository, start the smashing dashboard:
+
 <code>smashing start</code>
 
-Point your browser to localhost:3030 and the default dashboard will be displayed. At present, there are 3 dashboards:
+Point your browser to <code>localhost:3030</code> and the default dashboard will be displayed. At present, there are 3 dashboards:
 
-localhost:3030/dashboard  - dumping group for all charts used for development
-localhost:3030/lead_times - A collection of lead time charts
-localhost:3030/flow - A collection of flow based charts 
+<ul>
+<li><code>localhost:3030/dashboard</code>  - dumping group for all charts used for development</li>
+<li><code>localhost:3030/lead_times</code> - A collection of lead time charts</li>
+<li><code>localhost:3030/flow</code> - A collection of flow based charts</li> 
+</ul>
  
 ###Customising your view
 In the <code>dashboards</code> folder there are a series of erb files with the views in them. If you wanted to create your own
