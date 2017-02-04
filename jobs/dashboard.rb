@@ -16,8 +16,8 @@ require_relative '../lib/processor/widgets/throughput_widget_processor'
 require_relative '../lib/processor/widgets/forecast_widget_processor'
 
 SCHEDULER.every '10s' do
-  work_item_reader = FileWorkItemReader.new('assets/dashboard_data/sample_data.json')
-  threshold_reader = FileThresholdReader.new('assets/dashboard_data/sample_thresholds.json')
+  work_item_reader = FileWorkItemReader.new('assets/dashboard_data/work_item_data.json')
+  threshold_reader = FileThresholdReader.new('assets/dashboard_data/thresholds.json')
   config_reader = FileConfigReader.new('assets/dashboard_data/dashboard_config.yaml')
   threshold_value_processors = [PercentileThresholdValueProcessor.new, CurrentItemsThresholdValueProcessor.new]
   threshold_processor = ThresholdProcessor.new(threshold_reader, threshold_value_processors)
