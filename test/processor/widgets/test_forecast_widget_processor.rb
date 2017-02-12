@@ -12,7 +12,7 @@ class TestForecastWidgetProcessor < Minitest::Test
     setup do
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")]
       @completed_items = {"2016-11" => 2, "2016-12" => 6, "2016-13" => 1, "2016-14" => 4, "2016-15" => 5, "2016-16" => 0, "2016-17" => 7, "2016-18" => 4}
-      @configuration = {:forecast_config => {:start_date => "10/3/16", :number_of_stories => 30}}
+      @configuration = {:forecast_config => {:start_date => "10/3/16", :min_number_of_stories => 30, :max_number_of_stories => 30}}
       @forecast_input = ForecastInput.new(@configuration[:forecast_config])
     end
 
@@ -61,7 +61,7 @@ class TestForecastWidgetProcessor < Minitest::Test
     end
 
     should 'calculate forecast with story split rate' do
-      @configuration = {:forecast_config => {:start_date => "10/3/16", :number_of_stories => 30, :story_split_rate_low => 2.0, :story_split_rate_high => 3.5}}
+      @configuration = {:forecast_config => {:start_date => "10/3/16", :min_number_of_stories => 30, :max_number_of_stories => 30, :story_split_rate_low => 2.0, :story_split_rate_high => 3.5}}
       @forecast_input = ForecastInput.new(@configuration[:forecast_config])
       widget = ForecastWidgetProcessor.new
 
@@ -86,6 +86,36 @@ class TestForecastWidgetProcessor < Minitest::Test
         assert_equal Forecast.new(:percentile => value, :duration_weeks => 19, :complete_date => "21/07/16"), widget.forecasts[percentile_symbol]
       end
     end
+
+    context 'story range' do
+      should 'calculate forecast with different min and max values' do
+        widget = ForecastWidgetProcessor.new
+        @configuration = {:forecast_config => {:start_date => "10/3/16", :min_number_of_stories => 10, :max_number_of_stories => 50}}
+        @forecast_input = ForecastInput.new(@configuration[:forecast_config])
+
+        sample = MiniTest::Mock.new
+        random_story_value_from_range = MiniTest::Mock.new
+        #mocking doesn't allow to specify always just do this, so doing it a whole bunch of times
+        (1..10000).each {
+          sample.expect :call, 4, [@completed_items.values]
+        }
+        (1..10000).each {
+          random_story_value_from_range.expect :call, 30, [@configuration[:forecast_config][:min_number_of_stories], @configuration[:forecast_config][:max_number_of_stories]]
+        }
+        widget.stub :sample, sample do
+          widget.stub :random_story_value_from_range, random_story_value_from_range do
+            widget.forecast(@forecast_input, @completed_items)
+          end
+        end
+
+        (0..100).step(5) do |value|
+          percentile_symbol = ("percentile" + value.to_s).to_sym
+          assert_equal Forecast.new(:percentile => value, :duration_weeks => 8, :complete_date => "05/05/16"), widget.forecasts[percentile_symbol]
+        end
+      end
+
+    end
+
 
     context "incomplete data" do
 

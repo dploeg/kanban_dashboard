@@ -1,5 +1,6 @@
 :forecast_config:
   :start_date:        10/3/16
-  :number_of_stories: 30
+  :min_number_of_stories: 30
+  :max_number_of_stories: 30
   :story_split_rate_low:   1.0
   :story_split_rate_high:  1.0

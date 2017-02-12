@@ -88,9 +88,9 @@ class ForecastWidgetProcessor < WidgetProcessor
 
   def calculate_stories_to_sample(forecast_input)
     unless forecast_input.story_split_rate_low.nil? || forecast_input.story_split_rate_high.nil?
-      forecast_input.number_of_stories * random_split(forecast_input)
+      random_story_value_from_range(forecast_input.min_number_of_stories, forecast_input.max_number_of_stories) * random_split(forecast_input)
     else
-      forecast_input.number_of_stories
+      random_story_value_from_range(forecast_input.min_number_of_stories, forecast_input.max_number_of_stories)
     end
   end
 
@@ -108,5 +108,13 @@ class ForecastWidgetProcessor < WidgetProcessor
     end
   end
 
+  #pulled this out into a separate method to create seam in order to mock random values
+  private def random_story_value_from_range(min, max)
+    if min == max || max.nil?
+      min
+    else
+      rand(min..max)
+    end
+  end
 
 end

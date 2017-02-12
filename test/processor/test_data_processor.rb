@@ -52,7 +52,7 @@ class TestDataProcessor < Minitest::Test
   private def setup_work_items
     @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"),
                    WorkItem.new(:start_date => "15/3/16", :complete_date => "21/3/16")]
-    @config = {:forecast_config => {:start_date => "10/3/16", :number_of_stories => 30}}
+    @config = {:forecast_config => {:start_date => "10/3/16", :min_number_of_stories => 30, :max_number_of_stories => 50}}
   end
 
 end
