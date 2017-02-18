@@ -37,7 +37,7 @@ class ControlChartWidgetProcessor < WidgetProcessor
 
   private def decorate_with_x_position(work_items)
     position = 1
-    work_items.each {|item|
+    work_items.each { |item|
       item.additional_values[:x_position] = position
       position+=1
     }
@@ -52,6 +52,41 @@ class ControlChartWidgetProcessor < WidgetProcessor
       colour_counter+=1
       x_counter += array.size
     }
+
+    #add line chart details here
+=begin
+    datasets.push({
+        :type => 'line',
+        :label => '95th Percentile',
+        :data => Array.new(x_counter) { 32 },
+        :backgroundColor => [ '#0f6e02' ] * x_counter,
+        :borderColor => [ '#0f6e02' ] * x_counter,
+        :borderWidth => 1,
+      })
+=end
+
+    datasets.push({
+                      :type => 'line',
+                      :label => '95th Percentile',
+                      :data => [{:x => 0, :y => 32}, {:x => x_counter, :y => 32}],
+                      # :backgroundColor => [ '#303030' ],
+                      :borderColor => ['#0f6e02'],
+                      :borderWidth => 5,
+                      :fill => false,
+                      :pointRadius => 0,
+                  },
+                  {
+                      :type => 'line',
+                      :label => '95th Percentile',
+                      :data => [{:x => 0, :y => 25}, {:x => x_counter, :y => 25}],
+                      # :backgroundColor => [ '#303030' ],
+                      :borderColor => ['#F79B46'],
+                      :borderWidth => 5,
+                      :fill => false,
+                      :pointRadius => 0,
+                  }
+    )
+    puts 'data for control chart' + datasets.to_s
     datasets
   end
 
@@ -89,7 +124,7 @@ class ControlChartWidgetProcessor < WidgetProcessor
 
   private def determine_max_x_axis
     max =0
-    @work_items_per_CoS.each{|key,value|
+    @work_items_per_CoS.each { |key, value|
       max += value.size
     }
     if max > MAX_X_AXIS_STEPS
@@ -107,8 +142,8 @@ class ControlChartWidgetProcessor < WidgetProcessor
 
   private def determine_max_y_axis
     max =1
-    @work_items_per_CoS.each{|key,value|
-      value.each {|work_item|
+    @work_items_per_CoS.each { |key, value|
+      value.each { |work_item|
         if work_item.lead_time > max
           max = work_item.lead_time
         end
