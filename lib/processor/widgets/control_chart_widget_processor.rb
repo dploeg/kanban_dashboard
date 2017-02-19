@@ -47,6 +47,12 @@ class ControlChartWidgetProcessor < WidgetProcessor
 
   private def build_datasets
     datasets = Array.new
+    total_work_items = add_work_item_data(datasets)
+    add_percentile_data(datasets, total_work_items)
+    datasets
+  end
+
+  private def add_work_item_data(datasets)
     colour_counter = 0
     x_counter = 1
     @work_items_per_CoS.each { |key, array|
@@ -54,40 +60,17 @@ class ControlChartWidgetProcessor < WidgetProcessor
       colour_counter+=1
       x_counter += array.size
     }
+    x_counter
+  end
 
+  private def add_percentile_data(datasets, x_counter)
     colour_counter = 0
     @work_items_per_CoS.each { |key, array|
-      datasets.push({:type => 'line', :label => key + " 95%", :data => build_percentile_data(array, x_counter),
-                     :borderColor => @background_colors[colour_counter], :borderWidth => 5, :fill => false,
+      datasets.push({:type => 'line', :label => key + " " + @percentile.to_s + "%", :data => build_percentile_data(array, x_counter),
+                     :borderColor => @background_colors[colour_counter], :borderWidth => 1, :fill => false,
                      :pointRadius => 0})
       colour_counter+=1
     }
-
-    #add line chart details here
-=begin
-    datasets.push({
-                      :type => 'line',
-                      :label => '95th Percentile',
-                      :data => [{:x => 0, :y => 32}, {:x => x_counter, :y => 32}],
-                      # :backgroundColor => [ '#303030' ],
-                      :borderColor => ['#0f6e02'],
-                      :borderWidth => 5,
-                      :fill => false,
-                      :pointRadius => 0,
-                  },
-                  {
-                      :type => 'line',
-                      :label => '95th Percentile',
-                      :data => [{:x => 0, :y => 25}, {:x => x_counter, :y => 25}],
-                      # :backgroundColor => [ '#303030' ],
-                      :borderColor => ['#F79B46'],
-                      :borderWidth => 5,
-                      :fill => false,
-                      :pointRadius => 0,
-                  }
-    )
-=end
-    datasets
   end
 
   private def build_options

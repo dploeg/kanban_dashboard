@@ -368,7 +368,7 @@ class TestControlChartWidgetProcessor < Minitest::Test
     assert_equal "line", percentile_data[:type]
     assert_equal class_of_service + " 95%", percentile_data[:label]
     assert_equal color, percentile_data[:borderColor]
-    assert_equal 5, percentile_data[:borderWidth]
+    assert_equal 1, percentile_data[:borderWidth]
     assert_equal false, percentile_data[:fill]
     assert_equal 0, percentile_data[:pointRadius]
   end
