@@ -229,7 +229,7 @@ class TestControlChartWidgetProcessor < Minitest::Test
       widget.process @work_items
 
       output_hash = widget.build_output_hash
-      assert_equal 4, output_hash[:datasets].size
+      assert_equal 8, output_hash[:datasets].size
 
       check_CoS_labels(output_hash)
       check_CoS_background_colors(output_hash)
@@ -252,6 +252,62 @@ class TestControlChartWidgetProcessor < Minitest::Test
         assert_equal 1, output_hash[:datasets][0][:data][0][:x]
         assert_equal 11, output_hash[:datasets][0][:data][0][:y]
 
+      end
+    end
+
+    context "percentile line" do
+
+      should "add a percentile line for single class of service" do
+        @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"),
+                       WorkItem.new(:start_date => "15/3/16", :complete_date => "21/3/16"),
+                       WorkItem.new(:start_date => "12/3/16", :complete_date => "14/4/16"),
+                       WorkItem.new(:start_date => "19/3/16", :complete_date => "19/4/16"),
+                       WorkItem.new(:start_date => "21/3/16", :complete_date => "17/4/16"),
+                       WorkItem.new(:start_date => "28/3/16", :complete_date => "22/4/16"),
+                       WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16")
+        ]
+
+        widget = ControlChartWidgetProcessor.new
+        widget.process @work_items
+        output_hash = widget.build_output_hash
+        assert_equal 2, output_hash[:datasets].size
+
+        check_percentile_line_base_data(output_hash[:datasets][1], STANDARD, "#F7464A")
+        check_percentile_data(output_hash, 32, 8, 1)
+      end
+
+      should "add multiple percentile lines - one per class of service" do
+        @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"), #1
+                       WorkItem.new(:start_date => "15/3/16", :complete_date => "21/3/16"), #2
+                       WorkItem.new(:start_date => "12/3/16", :complete_date => "14/4/16"), #8
+                       WorkItem.new(:start_date => "19/3/16", :complete_date => "19/4/16"), #10
+                       WorkItem.new(:start_date => "21/3/16", :complete_date => "17/4/16"), #9
+                       WorkItem.new(:start_date => "28/3/16", :complete_date => "22/4/16"), #11
+                       WorkItem.new(:start_date => "2/4/16", :complete_date => "25/4/16", :class_of_service => TestConstants::STANDARD), #12
+                       WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16"), #3
+
+                       WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16", :class_of_service => TestConstants::EXPEDITE), #4
+                       WorkItem.new(:start_date => "2/4/16", :complete_date => "13/4/16", :class_of_service => TestConstants::FIXED_DATE), #5
+                       WorkItem.new(:start_date => "5/4/16", :complete_date => "25/4/16", :class_of_service => TestConstants::INTANGIBLE), #13
+                       WorkItem.new(:start_date => "6/4/16", :complete_date => "13/4/16", :class_of_service => TestConstants::EXPEDITE), #6
+                       WorkItem.new(:start_date => "7/4/16", :complete_date => "14/4/16", :class_of_service => TestConstants::EXPEDITE), #7
+                       WorkItem.new(:start_date => "6/4/16", :complete_date => "28/4/16", :class_of_service => TestConstants::FIXED_DATE), #14
+                       WorkItem.new(:start_date => "13/4/16", :complete_date => "12/5/16", :class_of_service => TestConstants::INTANGIBLE), #15
+        ]
+
+        widget = ControlChartWidgetProcessor.new
+        widget.process @work_items
+
+        output_hash = widget.build_output_hash
+        assert_equal 8, output_hash[:datasets].size
+        check_percentile_line_base_data(output_hash[:datasets][4], STANDARD, "#F7464A")
+        check_percentile_line_base_data(output_hash[:datasets][5], EXPEDITE, "#F79B46")
+        check_percentile_line_base_data(output_hash[:datasets][6], FIXED_DATE, "#464AF7")
+        check_percentile_line_base_data(output_hash[:datasets][7], INTANGIBLE, "#F7F446")
+        check_percentile_data(output_hash, 32, 16, 4)
+        check_percentile_data(output_hash, 8, 16, 5)
+        check_percentile_data(output_hash, 21, 16, 6)
+        check_percentile_data(output_hash, 28, 16, 7)
       end
     end
 
@@ -300,5 +356,22 @@ class TestControlChartWidgetProcessor < Minitest::Test
     assert_equal "#6384FF", output_hash[:datasets][2][:hoverBackgroundColor]
     assert_equal "#F9F777", output_hash[:datasets][3][:hoverBackgroundColor]
   end
+
+  private def check_percentile_data(output_hash, percentile, number_of_items, class_of_service_index)
+    assert_equal 1, output_hash[:datasets][class_of_service_index][:data][0][:x]
+    assert_equal percentile, output_hash[:datasets][class_of_service_index][:data][0][:y]
+    assert_equal number_of_items, output_hash[:datasets][class_of_service_index][:data][1][:x]
+    assert_equal percentile, output_hash[:datasets][class_of_service_index][:data][1][:y]
+  end
+
+  private def check_percentile_line_base_data(percentile_data, class_of_service, color)
+    assert_equal "line", percentile_data[:type]
+    assert_equal class_of_service + " 95%", percentile_data[:label]
+    assert_equal color, percentile_data[:borderColor]
+    assert_equal 5, percentile_data[:borderWidth]
+    assert_equal false, percentile_data[:fill]
+    assert_equal 0, percentile_data[:pointRadius]
+  end
+
 
 end

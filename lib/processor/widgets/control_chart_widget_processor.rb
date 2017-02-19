@@ -1,4 +1,5 @@
 require 'dashing/app'
+require 'descriptive_statistics'
 
 require_relative '../../../lib/processor/widgets/widget_processor'
 require_relative '../../../lib/processor/widgets/data/chart_data_builder'
@@ -10,11 +11,12 @@ class ControlChartWidgetProcessor < WidgetProcessor
   MAX_X_AXIS_STEPS = 20
   MAX_Y_AXIS_STEPS = 20
 
-  def initialize
+  def initialize(percentile = 95)
     super('control_chart')
     @work_items_per_CoS = Hash.new
     @background_colors = ["#F7464A", "#F79B46", "#464AF7", "#F7F446", "#F446F7"]
     @hover_background_colors = ["#FF6384", "#FF9063", "#6384FF", "#F9F777", "#F777F9"]
+    @percentile = percentile
   end
 
 
@@ -53,18 +55,16 @@ class ControlChartWidgetProcessor < WidgetProcessor
       x_counter += array.size
     }
 
+    colour_counter = 0
+    @work_items_per_CoS.each { |key, array|
+      datasets.push({:type => 'line', :label => key + " 95%", :data => build_percentile_data(array, x_counter),
+                     :borderColor => @background_colors[colour_counter], :borderWidth => 5, :fill => false,
+                     :pointRadius => 0})
+      colour_counter+=1
+    }
+
     #add line chart details here
 =begin
-    datasets.push({
-        :type => 'line',
-        :label => '95th Percentile',
-        :data => Array.new(x_counter) { 32 },
-        :backgroundColor => [ '#0f6e02' ] * x_counter,
-        :borderColor => [ '#0f6e02' ] * x_counter,
-        :borderWidth => 1,
-      })
-=end
-
     datasets.push({
                       :type => 'line',
                       :label => '95th Percentile',
@@ -86,7 +86,7 @@ class ControlChartWidgetProcessor < WidgetProcessor
                       :pointRadius => 0,
                   }
     )
-    puts 'data for control chart' + datasets.to_s
+=end
     datasets
   end
 
@@ -171,6 +171,11 @@ class ControlChartWidgetProcessor < WidgetProcessor
       counter += 1
     }
     data
+  end
+
+  private def build_percentile_data(data_items, total_data_points)
+    percentile_array = data_items.map { |item| item.lead_time }
+    [{:x => 1, :y => percentile_array.percentile(@percentile).to_i}, {:x => total_data_points, :y => percentile_array.percentile(@percentile).to_i}]
   end
 
 end
