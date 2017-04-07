@@ -27,7 +27,7 @@ SCHEDULER.every '10s' do
                        NetFlowWidgetProcessor.new, CumulativeFlowWidgetProcessor.new,
                        ThroughputWidgetProcessor.new, ForecastWidgetProcessor.new,
                        ThresholdWidgetProcessor.new(threshold_processor)]
-  processor = DashboardProcessor.new(work_item_reader, config_reader, widget_processors)
-  processor.process_data
+  processor = DashboardProcessor.new(work_item_reader, config_reader, widget_processors, Hash.new)
+  processor.process_dashboards
 
 end

@@ -17,7 +17,7 @@ class ForecastWidgetProcessor < WidgetProcessor
     @forecasts = Hash.new
   end
 
-  def process(work_items, configuration = Hash.new)
+  def process(work_items, configuration = Hash.new, data = Hash.new)
     super(work_items)
     forecast_input = ForecastInput.new(configuration[:forecast_config])
     forecast(forecast_input, @completed)

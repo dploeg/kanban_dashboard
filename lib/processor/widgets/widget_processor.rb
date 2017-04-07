@@ -5,7 +5,7 @@ class WidgetProcessor
     @widget_name = widget_name
   end
 
-  def process(work_items, configuration = Hash.new)
+  def process(work_items, configuration = Hash.new, data = Hash.new)
 
   end
 

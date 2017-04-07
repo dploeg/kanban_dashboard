@@ -20,7 +20,7 @@ class ControlChartWidgetProcessor < WidgetProcessor
   end
 
 
-  def process(work_items, configuration = Hash.new)
+  def process(work_items, configuration = Hash.new, data = Hash.new)
     filtered_items = filter_incomplete_items(work_items)
     ordered_work_items = order_work_items_by_completed(filtered_items)
     decorate_with_x_position(ordered_work_items)

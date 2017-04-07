@@ -3,7 +3,7 @@ require_relative '../../processor_utils'
 module StartedVsCompletedDataProcessor
   include ProcessorUtils
 
-  def process(work_items, configuration = Hash.new)
+  def process(work_items, configuration = Hash.new, data = Hash.new)
     @started = Hash.new
     @completed = Hash.new
     populate_keys(work_items)
