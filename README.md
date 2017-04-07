@@ -14,7 +14,7 @@ There are two existing github projects that this work is based on:
 You can customise this by writing custom adapters so that you can read this data from your particular electronic kanban system - 
 so long as there is a way to access the data (eg an API) then you should be able to pull data into the system.
 
-##Key features 
+## Key features 
 
 
 <li><b>Thresholds</b></li>
@@ -33,12 +33,12 @@ This has been written in such a way that we can potentially hook this up to any 
 all that exists so far.
  
 
-##Technical stuff
+## Technical stuff
  
 The <code>dashboard.rb</code> file is where all of the items are wired in together. Note, presently this is set to 10 seconds to aid development, however for deployment you may want to set this higher (say every 5-10 minutes). 
 Date format is currently set to <code>%d/%m/%y</code>. If you wish to change this, please refer to the constant <code>WorkItem::DATE_FORMAT</code>
 
-###Starting the application 
+### Starting the application 
 Once you've cloned the repository, start the smashing dashboard:
 
 <code>smashing start</code>
@@ -51,17 +51,17 @@ Point your browser to <code>localhost:3030</code> and the default dashboard will
 <li><code>localhost:3030/flow</code> - A collection of flow based charts</li> 
 </ul>
  
-###Customising your view
+### Customising your view
 In the <code>dashboards</code> folder there are a series of erb files with the views in them. If you wanted to create your own
  construct another file with the same layout as the existing files (the smashing layout for views)
 
-###Implementing a new Threshold
+### Implementing a new Threshold
 Have a look in the <code>lib/processor/threshold</code> folder for examples. You will need to create a new threshold class and implement the <code>process(work_items, *thresholds)</code> function.
 Make sure to name the threshold when its initialized(this is how it matches the threshold configuration to the class)
 Once you've done that, configure the thresholds in the <code>assets/dashboard_data/thresholds.json</code> folder.
  
 
-###Implementing a new widget / graph
+### Implementing a new widget / graph
 Have a look in the <code>lib/processor/widgets</code> folder for examples. You will need to create a new <code>WidgetProcessor</code> (subclass) class and implement:
 
 <ul>
@@ -74,15 +74,15 @@ Make sure to name the widget when its initialized(this is how it matches the wid
 Once you've done that, add the widget to the <code>dashboard.erb</code> folder.
 If your processor needs configurations add the to the <code>assets/dashboard_data/dashboard_config.yaml</code>
 
-###Implementing a new source data adapter
+### Implementing a new source data adapter
 Have a look in the <code>lib/readers/work_item</code> folder for examples. You will need to create a new reader class to access items from alternate data sources.
 Create your own work item reader and implement the <code>read_data</code> function.   
 
-###Wiring it together
+### Wiring it together
 When you've implemented your alternate implementations, you can wire them in with the <code>dashboard.rb</code> file.
         
  
-##License
+## License
  
 Distributed under the [MIT license](License.txt).
  
