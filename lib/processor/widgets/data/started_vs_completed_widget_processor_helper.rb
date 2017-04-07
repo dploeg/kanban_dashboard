@@ -1,6 +1,6 @@
 require_relative '../../processor_utils'
 
-module StartedVsCompletedDataProcessor
+module StartedVsCompletedWidgetProcessorHelper
   include ProcessorUtils
 
   def process(work_items, configuration = Hash.new, data = Hash.new)

@@ -1,12 +1,12 @@
 require 'dashing/app'
 
 require_relative '../../../lib/processor/widgets/widget_processor'
-require_relative '../../../lib/processor/widgets/data/started_vs_completed_data_processor'
+require_relative '../../../lib/processor/widgets/data/started_vs_completed_widget_processor_helper'
 require_relative '../../../lib/processor/widgets/data/chart_data_builder'
 require_relative '../processor_utils'
 
 class StartedVsCompletedWidgetProcessor < WidgetProcessor
-  include StartedVsCompletedDataProcessor, ChartDataBuilder
+  include StartedVsCompletedWidgetProcessorHelper, ChartDataBuilder
 
   def initialize
     super('started_vs_completed')

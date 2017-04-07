@@ -3,10 +3,10 @@ require_relative 'widget_processor'
 require_relative '../../../lib/model/work_item'
 require_relative '../../../lib/model/forecast'
 require_relative '../../../lib/model/forecast_input'
-require_relative '../../../lib/processor/widgets/data/started_vs_completed_data_processor'
+require_relative '../../../lib/processor/widgets/data/started_vs_completed_widget_processor_helper'
 
 class ForecastWidgetProcessor < WidgetProcessor
-  include StartedVsCompletedDataProcessor
+  include StartedVsCompletedWidgetProcessorHelper
 
   attr_reader :forecasts
 
