@@ -3,10 +3,10 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../lib/processor/data_processor'
+require_relative '../../lib/processor/dashboard_processor'
 require_relative '../../lib/model/work_item'
 
-class TestDataProcessor < Minitest::Test
+class TestDashboardProcessor < Minitest::Test
 
   context 'DataProcessor' do
 
@@ -17,7 +17,7 @@ class TestDataProcessor < Minitest::Test
     end
 
     should 'read data from file' do
-      @processor = DataProcessor.new(@data_reader, @config_reader, @widget_processors)
+      @processor = DashboardProcessor.new(@data_reader, @config_reader, @widget_processors)
       @processor.process_data
 
       @data_reader.verify

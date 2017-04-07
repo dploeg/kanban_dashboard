@@ -1,6 +1,6 @@
 
 
-class DataProcessor
+class DashboardProcessor
 
   def initialize(data_reader, config_reader, widget_processors)
     @data_reader = data_reader

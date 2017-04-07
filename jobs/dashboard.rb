@@ -1,7 +1,7 @@
 require_relative '../lib/readers/work_item/file_work_item_reader'
 require_relative '../lib/readers/threshold/file_threshold_reader'
 require_relative '../lib/readers/file_config_reader'
-require_relative '../lib/processor/data_processor'
+require_relative '../lib/processor/dashboard_processor'
 require_relative '../lib/processor/widgets/lead_time_percentile_summary_widget_processor'
 require_relative '../lib/processor/widgets/lead_time_distribution_widget_processor'
 require_relative '../lib/processor/widgets/control_chart_widget_processor'
@@ -27,7 +27,7 @@ SCHEDULER.every '10s' do
                        NetFlowWidgetProcessor.new, CumulativeFlowWidgetProcessor.new,
                        ThroughputWidgetProcessor.new, ForecastWidgetProcessor.new,
                        ThresholdWidgetProcessor.new(threshold_processor)]
-  processor = DataProcessor.new(work_item_reader, config_reader, widget_processors)
+  processor = DashboardProcessor.new(work_item_reader, config_reader, widget_processors)
   processor.process_data
 
 end
