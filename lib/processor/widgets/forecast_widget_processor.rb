@@ -3,10 +3,8 @@ require_relative 'widget_processor'
 require_relative '../../../lib/model/work_item'
 require_relative '../../../lib/model/forecast'
 require_relative '../../../lib/model/forecast_input'
-require_relative '../../../lib/processor/widgets/data/started_vs_completed_widget_processor_helper'
 
 class ForecastWidgetProcessor < WidgetProcessor
-  include StartedVsCompletedWidgetProcessorHelper
 
   attr_reader :forecasts
 
@@ -18,9 +16,8 @@ class ForecastWidgetProcessor < WidgetProcessor
   end
 
   def process(work_items, configuration = Hash.new, data = Hash.new)
-    super(work_items)
     forecast_input = ForecastInput.new(configuration[:forecast_config])
-    forecast(forecast_input, @completed)
+    forecast(forecast_input, data[:completed])
   end
 
   def forecast(forecast_input, completed_items)

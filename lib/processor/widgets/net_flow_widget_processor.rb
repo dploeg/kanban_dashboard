@@ -1,14 +1,18 @@
 require_relative '../../../lib/processor/widgets/widget_processor'
-require_relative '../../../lib/processor/widgets/data/started_vs_completed_widget_processor_helper'
 require_relative '../../../lib/processor/widgets/data/chart_data_builder'
 
 require 'dashing/app'
 
 class NetFlowWidgetProcessor < WidgetProcessor
-  include StartedVsCompletedWidgetProcessorHelper, ChartDataBuilder
+  include ChartDataBuilder
 
   def initialize
     super('net_flow')
+  end
+
+  def process(work_items, configuration = Hash.new, data = Hash.new)
+    @started = data[:started]
+    @completed = data[:completed]
   end
 
   private def build_datasets
@@ -51,5 +55,9 @@ class NetFlowWidgetProcessor < WidgetProcessor
 
   private def build_options
 
+  end
+
+  private def build_labels
+    @started.keys
   end
 end

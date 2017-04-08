@@ -33,7 +33,7 @@ class TestForecastWidgetProcessor < Minitest::Test
         sample.expect :call, 4, [@completed_items.values]
       }
       widget.stub :sample, sample do
-        widget.process(@work_items, @configuration)
+        widget.process(@work_items, @configuration, {:completed => @completed_items})
       end
 
       output_hash = widget.build_output_hash
@@ -137,7 +137,7 @@ class TestForecastWidgetProcessor < Minitest::Test
           sample.expect :call, 4, [@completed_items.values]
         }
         widget.stub :sample, sample do
-          widget.process(@work_items, @configuration)
+          widget.process(@work_items, @configuration, {:completed => @completed_items})
         end
 
         output_hash = widget.build_output_hash
@@ -150,8 +150,10 @@ class TestForecastWidgetProcessor < Minitest::Test
 
 
     should 'call send_event' do
+      @completed_items = {"2016-10"=>0, "2016-11"=>0, "2016-12"=>1}
+
       widget = ForecastWidgetProcessor.new
-      widget.process(@work_items, @configuration)
+      widget.process(@work_items, @configuration, {:completed => @completed_items})
 
       send_event = MiniTest::Mock.new
       send_event.expect :call, nil, ['forecast', widget.build_output_hash]

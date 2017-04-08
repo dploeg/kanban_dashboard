@@ -44,8 +44,8 @@ class TestDashboardProcessor < Minitest::Test
   private def setup_data_processors
     @first_data_processor = MiniTest::Mock.new
     @second_data_processor = MiniTest::Mock.new
-    @data.merge(process_data_items(@first_data_processor))
-    @data.merge(process_data_items(@second_data_processor))
+    @data = @data.merge(process_data_items(@first_data_processor))
+    @data = @data.merge(process_data_items(@second_data_processor))
 
     @data_processors = [@first_data_processor, @second_data_processor]
   end

@@ -1,14 +1,18 @@
 require 'dashing/app'
 
 require_relative '../../../lib/processor/widgets/widget_processor'
-require_relative '../../../lib/processor/widgets/data/started_vs_completed_widget_processor_helper'
 require_relative '../../../lib/processor/widgets/data/chart_data_builder'
 
 class CumulativeFlowWidgetProcessor < WidgetProcessor
-  include StartedVsCompletedWidgetProcessorHelper, ChartDataBuilder
+  include ChartDataBuilder
 
   def initialize
     super('cumulative_flow')
+  end
+
+  def process(work_items, configuration = Hash.new, data = Hash.new)
+    @started = data[:started]
+    @completed = data[:completed]
   end
 
   private def build_datasets
@@ -46,6 +50,10 @@ class CumulativeFlowWidgetProcessor < WidgetProcessor
     add_formatting_to_dataset(completed, 'rgba(161, 192, 229, 1)', 'rgba(44, 96, 160, 1)', @started.length)
     completed[:lineTension] = 0
     completed
+  end
+
+  private def build_labels
+    @started.keys
   end
 
   def accumulate_values(values)

@@ -14,6 +14,7 @@ require_relative '../lib/processor/widgets/threshold_widget_processor'
 require_relative '../lib/processor/widgets/cumulative_flow_widget_processor'
 require_relative '../lib/processor/widgets/throughput_widget_processor'
 require_relative '../lib/processor/widgets/forecast_widget_processor'
+require_relative '../lib/processor/data/started_vs_completed_data_processor'
 
 SCHEDULER.every '10s' do
   work_item_reader = FileWorkItemReader.new('assets/dashboard_data/work_item_data.json')
@@ -22,12 +23,15 @@ SCHEDULER.every '10s' do
   threshold_value_processors = [PercentileThresholdValueProcessor.new, CurrentItemsThresholdValueProcessor.new]
   threshold_processor = ThresholdProcessor.new(threshold_reader, threshold_value_processors)
 
+  data_processors = [StartedVsCompletedDataProcessor.new]
+
   widget_processors = [LeadTimePercentileSummaryWidgetProcessor.new, LeadTimeDistributionWidgetProcessor.new,
                        ControlChartWidgetProcessor.new, StartedVsCompletedWidgetProcessor.new,
                        NetFlowWidgetProcessor.new, CumulativeFlowWidgetProcessor.new,
                        ThroughputWidgetProcessor.new, ForecastWidgetProcessor.new,
                        ThresholdWidgetProcessor.new(threshold_processor)]
-  processor = DashboardProcessor.new(work_item_reader, config_reader, widget_processors, Hash.new)
+
+  processor = DashboardProcessor.new(work_item_reader, config_reader, widget_processors, data_processors)
   processor.process_dashboards
 
 end

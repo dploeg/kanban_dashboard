@@ -4,7 +4,6 @@ require 'shoulda/matchers'
 require 'shoulda/context'
 
 require_relative '../../../lib/model/work_item'
-require_relative '../../../lib/processor/widgets/data/started_vs_completed_widget_processor_helper'
 require_relative '../../../lib/processor/widgets/net_flow_widget_processor'
 require_relative 'started_vs_completed_test_helper'
 
@@ -15,6 +14,7 @@ class TestNetFlowWidgetProcessor < Minitest::Test
 
     setup do
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")]
+      @data = {:started => {"2016-10"=>1, "2016-11"=>0, "2016-12"=>0}, :completed => {"2016-10"=>0, "2016-11"=>0, "2016-12"=>1}}
     end
 
     should "create a base output hash of data for a single item" do
@@ -30,6 +30,7 @@ class TestNetFlowWidgetProcessor < Minitest::Test
 
       should "filter items without a complete date" do
         @work_items.push(WorkItem.new(:start_date => "10/3/16"))
+        @data = {:started => {"2016-10"=>2, "2016-11"=>0, "2016-12"=>0}, :completed => {"2016-10"=>0, "2016-11"=>0, "2016-12"=>1}}
         output_hash = process_and_build_output_hash
         assert_equal 1, output_hash[:datasets].size
         flow = output_hash[:datasets][0]
@@ -67,7 +68,7 @@ class TestNetFlowWidgetProcessor < Minitest::Test
 
     should "create output" do
       widget = NetFlowWidgetProcessor.new
-      widget.process @work_items
+      widget.process @work_items, nil, @data
 
       send_event = MiniTest::Mock.new
       send_event.expect :call, nil, ['net_flow', widget.build_output_hash]
@@ -82,7 +83,7 @@ class TestNetFlowWidgetProcessor < Minitest::Test
 
   private def process_and_build_output_hash
     widget = NetFlowWidgetProcessor.new
-    widget.process @work_items
+    widget.process @work_items, nil, @data
 
     widget.build_output_hash
   end

@@ -15,6 +15,7 @@ class TestThroughputWidgetProcessor < Minitest::Test
 
     setup do
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")]
+      @data = {:completed => {"2016-10"=>0, "2016-11"=>0, "2016-12"=>1}}
     end
 
     should 'output hash for single item' do
@@ -33,7 +34,7 @@ class TestThroughputWidgetProcessor < Minitest::Test
 
     should 'call send_event' do
       widget = ThroughputWidgetProcessor.new
-      widget.process @work_items
+      widget.process @work_items, nil, @data
 
       send_event = MiniTest::Mock.new
       send_event.expect :call, nil, ['throughput', widget.build_output_hash]
@@ -47,7 +48,7 @@ class TestThroughputWidgetProcessor < Minitest::Test
 
   private def process_and_build_output_hash
     widget = ThroughputWidgetProcessor.new
-    widget.process @work_items
+    widget.process @work_items, nil, @data
 
     widget.build_output_hash
   end

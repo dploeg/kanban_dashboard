@@ -1,10 +1,9 @@
 require 'dashing/app'
 require_relative '../../../lib/processor/widgets/widget_processor'
 require_relative '../../../lib/processor/widgets/data/chart_data_builder'
-require_relative '../../../lib/processor/widgets/data/started_vs_completed_widget_processor_helper'
 
 class ThroughputWidgetProcessor < WidgetProcessor
-  include ChartDataBuilder, StartedVsCompletedWidgetProcessorHelper
+  include ChartDataBuilder
 
   def initialize(number_of_x_axis_labels = 20)
     super('throughput')
@@ -12,9 +11,8 @@ class ThroughputWidgetProcessor < WidgetProcessor
   end
 
   def process(work_items, configuration = Hash.new, data = Hash.new)
-    super(work_items)
     @throughput = Hash.new
-    @completed.each_value { |number_completed|
+    data[:completed].each_value { |number_completed|
       if @throughput[number_completed].nil?
         @throughput[number_completed] = 1
       else

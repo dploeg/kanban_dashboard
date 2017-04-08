@@ -15,6 +15,7 @@ class TestCumulativeFlowWidgetProcessor < Minitest::Test
 
     setup do
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")]
+      @data = {:started => {"2016-10"=>1, "2016-11"=>0, "2016-12"=>0}, :completed => {"2016-10"=>0, "2016-11"=>0, "2016-12"=>1}}
     end
 
     should "create a base output hash for a single item" do
@@ -32,7 +33,7 @@ class TestCumulativeFlowWidgetProcessor < Minitest::Test
 
     should "create output" do
       widget = CumulativeFlowWidgetProcessor.new
-      widget.process @work_items
+      widget.process @work_items, nil, @data
 
       send_event = MiniTest::Mock.new
       send_event.expect :call, nil, ['cumulative_flow', widget.build_output_hash]
@@ -85,6 +86,7 @@ class TestCumulativeFlowWidgetProcessor < Minitest::Test
       should "not filter items without a complete date" do
         @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"),
                        WorkItem.new(:start_date => "10/3/16")]
+        @data = {:started => {"2016-10"=>2, "2016-11"=>0, "2016-12"=>0}, :completed => {"2016-10"=>0, "2016-11"=>0, "2016-12"=>1}}
         output_hash = process_and_build_output_hash
         assert_equal 2, output_hash[:datasets].size
         started = output_hash[:datasets][1]
@@ -97,11 +99,12 @@ class TestCumulativeFlowWidgetProcessor < Minitest::Test
       end
     end
 
+
   end
 
   private def process_and_build_output_hash
     widget = CumulativeFlowWidgetProcessor.new
-    widget.process @work_items
+    widget.process @work_items, nil, @data
 
     widget.build_output_hash
   end
