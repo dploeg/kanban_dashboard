@@ -15,7 +15,7 @@ class TestStartedVsCompletedDataProcessor < Minitest::Test
 
       should 'populate started and completed data' do
         processor = StartedVsCompletedDataProcessor.new
-        data = processor.process @work_items
+        data = processor.process @work_items, nil, Hash.new
 
         started = {"2016-10" => 1, "2016-11" => 0, "2016-12" => 0}
         completed = {"2016-10" => 0, "2016-11" => 0, "2016-12" => 1}

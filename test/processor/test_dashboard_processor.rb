@@ -66,7 +66,7 @@ class TestDashboardProcessor < Minitest::Test
 
   private def process_data_items(data_processor)
     data = {@data_key_counter.alph => @data_counter}
-    data_processor.expect :process, data, [@work_items, @config]
+    data_processor.expect :process, data, [@work_items, @config, @data]
     @data_counter+=1
     @data_key_counter+=1
     data
