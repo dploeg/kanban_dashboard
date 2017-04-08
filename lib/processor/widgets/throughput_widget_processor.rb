@@ -7,7 +7,7 @@ class ThroughputWidgetProcessor < WidgetProcessor
 
   def initialize(number_of_x_axis_labels = 20)
     super('throughput')
-    @number_of_x_axis_labels = 20
+    @number_of_x_axis_labels = number_of_x_axis_labels
   end
 
   def process(work_items, configuration = Hash.new, data = Hash.new)

@@ -23,6 +23,15 @@ class TestThroughputWidgetProcessor < Minitest::Test
       check_output(output_hash)
     end
 
+    should 'allow alternate x axis values' do
+      widget = ThroughputWidgetProcessor.new(10)
+      widget.process @work_items, nil, @data
+
+      output = widget.build_output_hash
+
+      assert_equal 10, output[:labels].size
+    end
+
     context "incomplete data" do
 
       should "filter items without a complete date" do
@@ -44,6 +53,7 @@ class TestThroughputWidgetProcessor < Minitest::Test
 
       send_event.verify
     end
+
   end
 
   private def process_and_build_output_hash
