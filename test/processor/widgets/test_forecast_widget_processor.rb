@@ -4,156 +4,54 @@ require 'shoulda/matchers'
 require 'shoulda/context'
 
 require_relative '../../../lib/processor/widgets/forecast_widget_processor'
+require_relative '../../../lib/model/forecast'
 
 class TestForecastWidgetProcessor < Minitest::Test
 
   context 'ForecastWidgetProcessor' do
 
     setup do
-      @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")]
-      @completed_items = {"2016-11" => 2, "2016-12" => 6, "2016-13" => 1, "2016-14" => 4, "2016-15" => 5, "2016-16" => 0, "2016-17" => 7, "2016-18" => 4}
-      @configuration = {:forecast_config => {:start_date => "10/3/16", :min_number_of_stories => 30, :max_number_of_stories => 30}}
-      @forecast_input = ForecastInput.new(@configuration[:forecast_config])
+      @work_items = []
+      @forecasts = {:percentile0 => Forecast.new(:percentile => 0, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile5 => Forecast.new(:percentile => 5, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile10 => Forecast.new(:percentile => 10, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile15 => Forecast.new(:percentile => 15, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile20 => Forecast.new(:percentile => 20, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile25 => Forecast.new(:percentile => 25, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile30 => Forecast.new(:percentile => 30, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile35 => Forecast.new(:percentile => 35, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile40 => Forecast.new(:percentile => 40, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile45 => Forecast.new(:percentile => 45, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile50 => Forecast.new(:percentile => 50, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile55 => Forecast.new(:percentile => 55, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile60 => Forecast.new(:percentile => 60, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile65 => Forecast.new(:percentile => 65, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile70 => Forecast.new(:percentile => 70, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile75 => Forecast.new(:percentile => 75, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile80 => Forecast.new(:percentile => 80, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile85 => Forecast.new(:percentile => 85, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile90 => Forecast.new(:percentile => 90, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile95 => Forecast.new(:percentile => 95, :duration_weeks => 8, :complete_date => "05/05/16"),
+                    :percentile100 => Forecast.new(:percentile => 100, :duration_weeks => 8, :complete_date => "05/05/16")}
+      @data = {:forecasts => @forecasts}
+      @configuration = {}
     end
 
     should 'build output hash' do
-      @work_items = [[WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 2,
-                     [WorkItem.new(:start_date => "10/3/16", :complete_date => "18/3/16")] * 6,
-                     [WorkItem.new(:start_date => "10/3/16", :complete_date => "25/3/16")] * 1,
-                     [WorkItem.new(:start_date => "10/3/16", :complete_date => "1/4/16")] * 4,
-                     [WorkItem.new(:start_date => "10/3/16", :complete_date => "8/4/16")] * 5,
-                     [WorkItem.new(:start_date => "10/3/16", :complete_date => "22/4/16")] * 7,
-                     [WorkItem.new(:start_date => "10/3/16", :complete_date => "29/4/16")] * 4
-      ].flatten
       widget = ForecastWidgetProcessor.new
 
-      sample = MiniTest::Mock.new
-      #mocking doesn't allow to specify always just do this, so doing it a whole bunch of times
-      (1..10000).each {
-        sample.expect :call, 4, [@completed_items.values]
-      }
-      widget.stub :sample, sample do
-        widget.process(@work_items, @configuration, {:completed => @completed_items})
-      end
-
+      widget.process(@work_items, @configuration, @data)
       output_hash = widget.build_output_hash
 
       assert_equal 2, output_hash.size
       check_output(output_hash)
     end
 
-    should 'calculate forecast' do
-      widget = ForecastWidgetProcessor.new
-
-      sample = MiniTest::Mock.new
-      #mocking doesn't allow to specify always just do this, so doing it a whole bunch of times
-      (1..10000).each {
-        sample.expect :call, 4, [@completed_items.values]
-      }
-      widget.stub :sample, sample do
-        widget.forecast(@forecast_input, @completed_items)
-      end
-
-      (0..100).step(5) do |value|
-        percentile_symbol = ("percentile" + value.to_s).to_sym
-        assert_equal Forecast.new(:percentile => value, :duration_weeks => 8, :complete_date => "05/05/16"), widget.forecasts[percentile_symbol]
-      end
-    end
-
-    should 'calculate forecast with story split rate' do
-      @configuration = {:forecast_config => {:start_date => "10/3/16", :min_number_of_stories => 30, :max_number_of_stories => 30, :story_split_rate_low => 2.0, :story_split_rate_high => 3.5}}
-      @forecast_input = ForecastInput.new(@configuration[:forecast_config])
-      widget = ForecastWidgetProcessor.new
-
-      sample = MiniTest::Mock.new
-      random_split = MiniTest::Mock.new
-      #mocking doesn't allow to specify always just do this, so doing it a whole bunch of times
-      (1..100000).each {
-        sample.expect :call, 4, [@completed_items.values]
-      }
-      (1..10000).each {
-        random_split.expect :call, 2.5, [@forecast_input]
-      }
-      widget.stub :sample, sample do
-        widget.stub :random_split, random_split do
-          widget.forecast(@forecast_input, @completed_items)
-        end
-      end
-
-
-      (0..100).step(5) do |value|
-        percentile_symbol = ("percentile" + value.to_s).to_sym
-        assert_equal Forecast.new(:percentile => value, :duration_weeks => 19, :complete_date => "21/07/16"), widget.forecasts[percentile_symbol]
-      end
-    end
-
-    context 'story range' do
-      should 'calculate forecast with different min and max values' do
-        widget = ForecastWidgetProcessor.new
-        @configuration = {:forecast_config => {:start_date => "10/3/16", :min_number_of_stories => 10, :max_number_of_stories => 50}}
-        @forecast_input = ForecastInput.new(@configuration[:forecast_config])
-
-        sample = MiniTest::Mock.new
-        random_story_value_from_range = MiniTest::Mock.new
-        #mocking doesn't allow to specify always just do this, so doing it a whole bunch of times
-        (1..10000).each {
-          sample.expect :call, 4, [@completed_items.values]
-        }
-        (1..10000).each {
-          random_story_value_from_range.expect :call, 30, [@configuration[:forecast_config][:min_number_of_stories], @configuration[:forecast_config][:max_number_of_stories]]
-        }
-        widget.stub :sample, sample do
-          widget.stub :random_story_value_from_range, random_story_value_from_range do
-            widget.forecast(@forecast_input, @completed_items)
-          end
-        end
-
-        (0..100).step(5) do |value|
-          percentile_symbol = ("percentile" + value.to_s).to_sym
-          assert_equal Forecast.new(:percentile => value, :duration_weeks => 8, :complete_date => "05/05/16"), widget.forecasts[percentile_symbol]
-        end
-      end
-
-    end
-
-
-    context "incomplete data" do
-
-      should "filter items without a complete date" do
-        @work_items = [[WorkItem.new(:start_date => "10/3/16", :complete_date => "11/3/16")] * 2,
-                       [WorkItem.new(:start_date => "10/3/16", :complete_date => "18/3/16")] * 6,
-                       [WorkItem.new(:start_date => "10/3/16", :complete_date => "25/3/16")] * 1,
-                       [WorkItem.new(:start_date => "10/3/16", :complete_date => "1/4/16")] * 4,
-                       [WorkItem.new(:start_date => "10/3/16", :complete_date => "8/4/16")] * 5,
-                       [WorkItem.new(:start_date => "10/3/16", :complete_date => "22/4/16")] * 7,
-                       [WorkItem.new(:start_date => "10/3/16")] * 4
-        ].flatten
-        @completed_items = {"2016-11" => 2, "2016-12" => 6, "2016-13" => 1, "2016-14" => 4, "2016-15" => 5, "2016-16" => 0, "2016-17" => 7}
-        widget = ForecastWidgetProcessor.new
-
-        sample = MiniTest::Mock.new
-        #mocking doesn't allow to specify always just do this, so doing it a whole bunch of times
-        (1..10000).each {
-          sample.expect :call, 4, [@completed_items.values]
-        }
-        widget.stub :sample, sample do
-          widget.process(@work_items, @configuration, {:completed => @completed_items})
-        end
-
-        output_hash = widget.build_output_hash
-
-        assert_equal 2, output_hash.size
-        check_output(output_hash)
-
-      end
-    end
-
-
     should 'call send_event' do
-      @completed_items = {"2016-10"=>0, "2016-11"=>0, "2016-12"=>1}
+      @completed_items = {"2016-10" => 0, "2016-11" => 0, "2016-12" => 1}
 
       widget = ForecastWidgetProcessor.new
-      widget.process(@work_items, @configuration, {:completed => @completed_items})
+      widget.process(@work_items, @configuration, @data)
 
       send_event = MiniTest::Mock.new
       send_event.expect :call, nil, ['forecast', widget.build_output_hash]
