@@ -14,6 +14,7 @@ require_relative '../lib/processor/widgets/threshold_widget_processor'
 require_relative '../lib/processor/widgets/cumulative_flow_widget_processor'
 require_relative '../lib/processor/widgets/throughput_widget_processor'
 require_relative '../lib/processor/widgets/forecast_widget_processor'
+require_relative '../lib/processor/widgets/forecast_vs_target_widget_renderer'
 require_relative '../lib/processor/data/started_vs_completed_data_processor'
 require_relative '../lib/processor/data/forecast_data_processor'
 
@@ -30,6 +31,7 @@ SCHEDULER.every '10s' do
                        ControlChartWidgetProcessor.new, StartedVsCompletedWidgetProcessor.new,
                        NetFlowWidgetProcessor.new, CumulativeFlowWidgetProcessor.new,
                        ThroughputWidgetProcessor.new, ForecastWidgetProcessor.new,
+                       ForecastVsTargetWidgetRenderer.new,
                        ThresholdWidgetProcessor.new(threshold_processor)]
 
   processor = DashboardProcessor.new(work_item_reader, config_reader, widget_processors, data_processors)
