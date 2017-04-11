@@ -62,10 +62,10 @@ Once you've done that, configure the thresholds in the <code>assets/dashboard_da
  
 
 ### Implementing a new widget / graph
-Have a look in the <code>lib/processor/widgets</code> folder for examples. You will need to create a new <code>WidgetProcessor</code> (subclass) class and implement:
+Have a look in the <code>lib/processor/widgets</code> folder for examples. You will need to create a new <code>WidgetRenderer</code> (subclass) class and implement:
 
 <ul>
- <li><code>process(work_items, configuration = Hash.new)</code></li>
+ <li><code>prepare(work_items, configuration = Hash.new, data = Hash.new)</code></li>
  <li><code>build_output_hash</code></li>
 </ul>
 
