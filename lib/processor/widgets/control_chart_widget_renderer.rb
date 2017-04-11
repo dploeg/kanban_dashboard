@@ -1,11 +1,11 @@
 require 'dashing/app'
 require 'descriptive_statistics'
 
-require_relative '../../../lib/processor/widgets/widget_processor'
+require_relative '../../../lib/processor/widgets/widget_renderer'
 require_relative '../../../lib/processor/widgets/data/chart_data_builder'
 require_relative '../processor_utils'
 
-class ControlChartWidgetProcessor < WidgetProcessor
+class ControlChartWidgetRenderer < WidgetRenderer
   include ProcessorUtils, ChartDataBuilder
 
   MAX_X_AXIS_STEPS = 20
@@ -20,7 +20,7 @@ class ControlChartWidgetProcessor < WidgetProcessor
   end
 
 
-  def process(work_items, configuration = Hash.new, data = Hash.new)
+  def prepare(work_items, configuration = Hash.new, data = Hash.new)
     filtered_items = filter_incomplete_items(work_items)
     ordered_work_items = order_work_items_by_completed(filtered_items)
     decorate_with_x_position(ordered_work_items)

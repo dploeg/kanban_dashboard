@@ -3,12 +3,12 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../../lib/processor/widgets/lead_time_percentile_summary_widget_processor'
+require_relative '../../../lib/processor/widgets/lead_time_percentile_summary_widget_renderer'
 require_relative '../../../lib/model/work_item'
 require_relative '../../../test/processor/widgets/started_vs_completed_test_helper'
 require_relative '../../test_constants'
 
-class TestThroughputWidgetProcessor < Minitest::Test
+class TestThroughputWidgetRenderer < Minitest::Test
   include TestConstants
 
   context 'ThroughputWidgetProcessor' do
@@ -24,8 +24,8 @@ class TestThroughputWidgetProcessor < Minitest::Test
     end
 
     should 'allow alternate x axis values' do
-      widget = ThroughputWidgetProcessor.new(10)
-      widget.process @work_items, nil, @data
+      widget = ThroughputWidgetRenderer.new(10)
+      widget.prepare @work_items, nil, @data
 
       output = widget.build_output_hash
 
@@ -42,8 +42,8 @@ class TestThroughputWidgetProcessor < Minitest::Test
     end
 
     should 'call send_event' do
-      widget = ThroughputWidgetProcessor.new
-      widget.process @work_items, nil, @data
+      widget = ThroughputWidgetRenderer.new
+      widget.prepare @work_items, nil, @data
 
       send_event = MiniTest::Mock.new
       send_event.expect :call, nil, ['throughput', widget.build_output_hash]
@@ -57,8 +57,8 @@ class TestThroughputWidgetProcessor < Minitest::Test
   end
 
   private def process_and_build_output_hash
-    widget = ThroughputWidgetProcessor.new
-    widget.process @work_items, nil, @data
+    widget = ThroughputWidgetRenderer.new
+    widget.prepare @work_items, nil, @data
 
     widget.build_output_hash
   end

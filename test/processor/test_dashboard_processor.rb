@@ -60,7 +60,7 @@ class TestDashboardProcessor < Minitest::Test
   end
 
   private def process_work_items(widget_processor)
-    widget_processor.expect :process, nil, [@work_items, @config, @data]
+    widget_processor.expect :prepare, nil, [@work_items, @config, @data]
     widget_processor.expect :output, nil
   end
 

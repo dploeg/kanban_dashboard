@@ -141,7 +141,7 @@ class TestForecastVsTargetWidgetRenderer < Minitest::Test
 
   private def process_and_build_output_hash
     widget = ForecastVsTargetWidgetRenderer.new
-    widget.process @work_items, @configuration, @data
+    widget.prepare @work_items, @configuration, @data
 
     widget.build_output_hash
   end

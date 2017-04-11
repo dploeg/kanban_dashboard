@@ -1,11 +1,11 @@
 
-class WidgetProcessor
+class WidgetRenderer
 
   def initialize(widget_name)
     @widget_name = widget_name
   end
 
-  def process(work_items, configuration = Hash.new, data = Hash.new)
+  def prepare(work_items, configuration = Hash.new, data = Hash.new)
 
   end
 

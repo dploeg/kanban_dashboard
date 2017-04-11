@@ -4,10 +4,10 @@ require 'shoulda/matchers'
 require 'shoulda/context'
 
 require_relative '../../../lib/model/work_item'
-require_relative '../../../lib/processor/widgets/net_flow_widget_processor'
+require_relative '../../../lib/processor/widgets/net_flow_widget_renderer'
 require_relative 'started_vs_completed_test_helper'
 
-class TestNetFlowWidgetProcessor < Minitest::Test
+class TestNetFlowWidgetRenderer < Minitest::Test
   include StartedVsCompletedTestHelper
 
   context 'NetFlowWidgetProcessor' do
@@ -67,8 +67,8 @@ class TestNetFlowWidgetProcessor < Minitest::Test
     end
 
     should "create output" do
-      widget = NetFlowWidgetProcessor.new
-      widget.process @work_items, nil, @data
+      widget = NetFlowWidgetRenderer.new
+      widget.prepare @work_items, nil, @data
 
       send_event = MiniTest::Mock.new
       send_event.expect :call, nil, ['net_flow', widget.build_output_hash]
@@ -82,8 +82,8 @@ class TestNetFlowWidgetProcessor < Minitest::Test
   end
 
   private def process_and_build_output_hash
-    widget = NetFlowWidgetProcessor.new
-    widget.process @work_items, nil, @data
+    widget = NetFlowWidgetRenderer.new
+    widget.prepare @work_items, nil, @data
 
     widget.build_output_hash
   end

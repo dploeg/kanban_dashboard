@@ -1,8 +1,8 @@
 require 'dashing/app'
-require_relative '../../../lib/processor/widgets/widget_processor'
+require_relative '../../../lib/processor/widgets/widget_renderer'
 require_relative '../../../lib/processor/widgets/data/chart_data_builder'
 
-class ThroughputWidgetProcessor < WidgetProcessor
+class ThroughputWidgetRenderer < WidgetRenderer
   include ChartDataBuilder
 
   def initialize(number_of_x_axis_labels = 20)
@@ -10,7 +10,7 @@ class ThroughputWidgetProcessor < WidgetProcessor
     @number_of_x_axis_labels = number_of_x_axis_labels
   end
 
-  def process(work_items, configuration = Hash.new, data = Hash.new)
+  def prepare(work_items, configuration = Hash.new, data = Hash.new)
     @throughput = Hash.new
     data[:completed].each_value { |number_completed|
       if @throughput[number_completed].nil?

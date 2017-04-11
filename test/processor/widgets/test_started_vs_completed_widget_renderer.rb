@@ -4,10 +4,10 @@ require 'shoulda/matchers'
 require 'shoulda/context'
 
 require_relative '../../../lib/model/work_item'
-require_relative '../../../lib/processor/widgets/started_vs_completed_widget_processor'
+require_relative '../../../lib/processor/widgets/started_vs_completed_widget_renderer'
 require_relative '../../../test/processor/widgets/started_vs_completed_test_helper'
 
-class TestStartedVsCompletedWidgetProcessor < Minitest::Test
+class TestStartedVsCompletedWidgetRenderer < Minitest::Test
   include StartedVsCompletedTestHelper
 
   context 'StartedVsCompletedWidgetProcessor' do
@@ -141,8 +141,8 @@ class TestStartedVsCompletedWidgetProcessor < Minitest::Test
     end
 
     should "create output" do
-      widget = StartedVsCompletedWidgetProcessor.new
-      widget.process @work_items, nil, @data
+      widget = StartedVsCompletedWidgetRenderer.new
+      widget.prepare @work_items, nil, @data
 
       send_event = MiniTest::Mock.new
       send_event.expect :call, nil, ['started_vs_completed', widget.build_output_hash]
@@ -155,8 +155,8 @@ class TestStartedVsCompletedWidgetProcessor < Minitest::Test
   end
 
   private def process_and_build_output_hash
-    widget = StartedVsCompletedWidgetProcessor.new
-    widget.process @work_items, nil, @data
+    widget = StartedVsCompletedWidgetRenderer.new
+    widget.prepare @work_items, nil, @data
 
     widget.build_output_hash
   end

@@ -4,9 +4,9 @@ require 'shoulda/matchers'
 require 'shoulda/context'
 
 require_relative '../../../lib/model/work_item'
-require_relative '../../../lib/processor/widgets/widget_processor'
+require_relative '../../../lib/processor/widgets/widget_renderer'
 
-class TestWidgetProcessor < Minitest::Test
+class TestWidgetRenderer < Minitest::Test
 
   context 'WidgetProcessor' do
 
@@ -16,8 +16,8 @@ class TestWidgetProcessor < Minitest::Test
 
     should "send output for a given name" do
       name = 'my_name'
-      widget = WidgetProcessor.new(name)
-      widget.process @work_items
+      widget = WidgetRenderer.new(name)
+      widget.prepare @work_items
 
       send_event = MiniTest::Mock.new
       send_event.expect :call, nil, [name, widget.build_output_hash]

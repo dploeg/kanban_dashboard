@@ -3,11 +3,11 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../../lib/processor/widgets/control_chart_widget_processor'
+require_relative '../../../lib/processor/widgets/control_chart_widget_renderer'
 require_relative '../../../lib/model/work_item'
 require_relative '../../test_constants'
 
-class TestControlChartWidgetProcessor < Minitest::Test
+class TestControlChartWidgetRenderer < Minitest::Test
   include TestConstants
 
   context 'ControlChartWidgetProcessor' do
@@ -194,8 +194,8 @@ class TestControlChartWidgetProcessor < Minitest::Test
     end
 
     should "output" do
-      widget = ControlChartWidgetProcessor.new
-      widget.process @work_items
+      widget = ControlChartWidgetRenderer.new
+      widget.prepare @work_items
 
       send_event = MiniTest::Mock.new
       send_event.expect :call, nil, ['control_chart', widget.build_output_hash]
@@ -225,8 +225,8 @@ class TestControlChartWidgetProcessor < Minitest::Test
                      WorkItem.new(:start_date => "13/4/16", :complete_date => "12/5/16", :class_of_service => TestConstants::INTANGIBLE), #15
       ]
 
-      widget = ControlChartWidgetProcessor.new
-      widget.process @work_items
+      widget = ControlChartWidgetRenderer.new
+      widget.prepare @work_items
 
       output_hash = widget.build_output_hash
       assert_equal 8, output_hash[:datasets].size
@@ -267,8 +267,8 @@ class TestControlChartWidgetProcessor < Minitest::Test
                        WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16")
         ]
 
-        widget = ControlChartWidgetProcessor.new
-        widget.process @work_items
+        widget = ControlChartWidgetRenderer.new
+        widget.prepare @work_items
         output_hash = widget.build_output_hash
         assert_equal 2, output_hash[:datasets].size
 
@@ -295,8 +295,8 @@ class TestControlChartWidgetProcessor < Minitest::Test
                        WorkItem.new(:start_date => "13/4/16", :complete_date => "12/5/16", :class_of_service => TestConstants::INTANGIBLE), #15
         ]
 
-        widget = ControlChartWidgetProcessor.new
-        widget.process @work_items
+        widget = ControlChartWidgetRenderer.new
+        widget.prepare @work_items
 
         output_hash = widget.build_output_hash
         assert_equal 8, output_hash[:datasets].size
@@ -330,8 +330,8 @@ class TestControlChartWidgetProcessor < Minitest::Test
   end
 
   private def process_and_build_output_hash
-    widget = ControlChartWidgetProcessor.new
-    widget.process @work_items
+    widget = ControlChartWidgetRenderer.new
+    widget.prepare @work_items
 
     widget.build_output_hash
   end

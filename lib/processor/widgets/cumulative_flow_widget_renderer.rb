@@ -1,16 +1,16 @@
 require 'dashing/app'
 
-require_relative '../../../lib/processor/widgets/widget_processor'
+require_relative '../../../lib/processor/widgets/widget_renderer'
 require_relative '../../../lib/processor/widgets/data/chart_data_builder'
 
-class CumulativeFlowWidgetProcessor < WidgetProcessor
+class CumulativeFlowWidgetRenderer < WidgetRenderer
   include ChartDataBuilder
 
   def initialize
     super('cumulative_flow')
   end
 
-  def process(work_items, configuration = Hash.new, data = Hash.new)
+  def prepare(work_items, configuration = Hash.new, data = Hash.new)
     @started = data[:started]
     @completed = data[:completed]
   end

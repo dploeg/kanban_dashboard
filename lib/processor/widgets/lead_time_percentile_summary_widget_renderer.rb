@@ -2,10 +2,10 @@ require 'descriptive_statistics'
 require 'dashing/app'
 
 
-require_relative '../../../lib/processor/widgets/widget_processor'
+require_relative '../../../lib/processor/widgets/widget_renderer'
 require_relative '../processor_utils'
 
-class LeadTimePercentileSummaryWidgetProcessor < WidgetProcessor
+class LeadTimePercentileSummaryWidgetRenderer < WidgetRenderer
   include ProcessorUtils
 
 
@@ -15,7 +15,7 @@ class LeadTimePercentileSummaryWidgetProcessor < WidgetProcessor
     @percentile_values = Hash.new
   end
 
-  def process(work_items, configuration = Hash.new, data = Hash.new)
+  def prepare(work_items, configuration = Hash.new, data = Hash.new)
     classes_of_service_items = sort_into_classes_of_service(work_items)
     @percentile_values = populate_percentile_lead_times_from_work_items(classes_of_service_items, @percentile)
   end

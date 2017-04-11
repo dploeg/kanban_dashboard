@@ -1,13 +1,13 @@
 require 'dashing/app'
-require_relative 'widget_processor'
+require_relative 'widget_renderer'
 
-class ForecastWidgetProcessor < WidgetProcessor
+class ForecastWidgetRenderer < WidgetRenderer
 
   def initialize
     super('forecast')
   end
 
-  def process(work_items, configuration = Hash.new, data = Hash.new)
+  def prepare(work_items, configuration = Hash.new, data = Hash.new)
     @forecasts = data[:forecasts]
   end
 

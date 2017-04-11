@@ -1,14 +1,14 @@
 require 'dashing/app'
-require_relative '../../../lib/processor/widgets/widget_processor'
+require_relative '../../../lib/processor/widgets/widget_renderer'
 
-class ThresholdWidgetProcessor < WidgetProcessor
+class ThresholdWidgetRenderer < WidgetRenderer
 
   def initialize(threshold_processor)
     super('thresholds')
     @threshold_processor = threshold_processor
   end
 
-  def process(work_items, configuration = Hash.new, data = Hash.new)
+  def prepare(work_items, configuration = Hash.new, data = Hash.new)
     @warnings = @threshold_processor.process(work_items)
   end
 

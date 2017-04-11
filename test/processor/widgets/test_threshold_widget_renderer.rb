@@ -5,10 +5,10 @@ require 'shoulda/context'
 
 require_relative '../../../lib/model/work_item'
 require_relative '../../../lib/model/threshold_warning'
-require_relative '../../../lib/processor/widgets/threshold_widget_processor'
+require_relative '../../../lib/processor/widgets/threshold_widget_renderer'
 require_relative '../../test_constants'
 
-class TestThresholdWidgetProcessor < Minitest::Test
+class TestThresholdWidgetRenderer < Minitest::Test
   include TestConstants
 
 
@@ -41,9 +41,9 @@ class TestThresholdWidgetProcessor < Minitest::Test
       @threshold_processor = MiniTest::Mock.new
       @threshold_processor.expect :process, @warnings, [@work_items]
 
-      widget = ThresholdWidgetProcessor.new(@threshold_processor)
+      widget = ThresholdWidgetRenderer.new(@threshold_processor)
 
-      widget.process(@work_items)
+      widget.prepare(@work_items)
 
       @threshold_processor.verify
     end
@@ -53,9 +53,9 @@ class TestThresholdWidgetProcessor < Minitest::Test
       @threshold_processor = MiniTest::Mock.new
       @threshold_processor.expect :process, [], [@work_items]
 
-      widget = ThresholdWidgetProcessor.new(@threshold_processor)
+      widget = ThresholdWidgetRenderer.new(@threshold_processor)
 
-      widget.process(@work_items)
+      widget.prepare(@work_items)
 
       @threshold_processor.verify
 
@@ -67,9 +67,9 @@ class TestThresholdWidgetProcessor < Minitest::Test
       @threshold_processor = MiniTest::Mock.new
       @threshold_processor.expect :process, @warnings, [@work_items]
 
-      widget = ThresholdWidgetProcessor.new(@threshold_processor)
+      widget = ThresholdWidgetRenderer.new(@threshold_processor)
 
-      widget.process(@work_items)
+      widget.prepare(@work_items)
 
       @threshold_processor.verify
 
@@ -81,8 +81,8 @@ class TestThresholdWidgetProcessor < Minitest::Test
       @threshold_processor = MiniTest::Mock.new
       @threshold_processor.expect :process, @warnings, [@work_items]
 
-      widget = ThresholdWidgetProcessor.new(@threshold_processor)
-      widget.process(@work_items)
+      widget = ThresholdWidgetRenderer.new(@threshold_processor)
+      widget.prepare(@work_items)
 
       send_event = MiniTest::Mock.new
       send_event.expect :call, nil, ['thresholds', widget.build_output_hash]

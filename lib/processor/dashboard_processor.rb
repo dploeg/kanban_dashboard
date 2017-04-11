@@ -19,7 +19,7 @@ class DashboardProcessor
       data = data.merge(data_processor.process(work_items, config, data))
     }
     @widget_processors.each { |widget|
-      widget.process(work_items, config, data)
+      widget.prepare(work_items, config, data)
       widget.output
     }
   end

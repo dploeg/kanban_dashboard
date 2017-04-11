@@ -1,8 +1,8 @@
 require 'dashing/app'
-require_relative '../../../lib/processor/widgets/widget_processor'
+require_relative '../../../lib/processor/widgets/widget_renderer'
 require_relative '../../../lib/processor/widgets/data/chart_data_builder'
 
-class LeadTimeDistributionWidgetProcessor < WidgetProcessor
+class LeadTimeDistributionWidgetRenderer < WidgetRenderer
   include ChartDataBuilder
 
   def initialize(number_of_x_axis_labels = 20)
@@ -10,7 +10,7 @@ class LeadTimeDistributionWidgetProcessor < WidgetProcessor
     @num_x_axis_labels = number_of_x_axis_labels
   end
 
-  def process(work_items, configuration = Hash.new, data = Hash.new)
+  def prepare(work_items, configuration = Hash.new, data = Hash.new)
     @lead_times = Array.new
     work_items.each { |item|
       unless item.lead_time.nil?

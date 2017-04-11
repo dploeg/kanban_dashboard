@@ -3,10 +3,10 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../../lib/processor/widgets/lead_time_distribution_widget_processor'
+require_relative '../../../lib/processor/widgets/lead_time_distribution_widget_renderer'
 require_relative '../../test_constants'
 
-class TestLeadTimePercentileSummaryWidgetProcessor < Minitest::Test
+class TestLeadTimePercentileSummaryWidgetRenderer < Minitest::Test
   include TestConstants
 
   context 'LeadTimePercentileSummaryWidgetProcessor' do
@@ -33,8 +33,8 @@ class TestLeadTimePercentileSummaryWidgetProcessor < Minitest::Test
     end
 
     should 'process 95th percentile for widget' do
-      widget = LeadTimePercentileSummaryWidgetProcessor.new
-      widget.process @work_items
+      widget = LeadTimePercentileSummaryWidgetRenderer.new
+      widget.prepare @work_items
 
       assert_equal 32, widget.lead_time_95th_percentile
       assert_equal 32, widget.lead_time_95th_percentile(STANDARD)
@@ -47,8 +47,8 @@ class TestLeadTimePercentileSummaryWidgetProcessor < Minitest::Test
 
       should "filter items without a complete date" do
         @work_items.push(WorkItem.new(:start_date => "12/4/16"), WorkItem.new(:start_date => "12/4/16"), WorkItem.new(:start_date => "12/4/16"), WorkItem.new(:start_date => "12/4/16"))
-        widget = LeadTimePercentileSummaryWidgetProcessor.new
-        widget.process @work_items
+        widget = LeadTimePercentileSummaryWidgetRenderer.new
+        widget.prepare @work_items
 
         assert_equal 32, widget.lead_time_95th_percentile
         assert_equal 32, widget.lead_time_95th_percentile(STANDARD)
@@ -59,9 +59,9 @@ class TestLeadTimePercentileSummaryWidgetProcessor < Minitest::Test
     end
 
     should 'builds output map' do
-      widget = LeadTimePercentileSummaryWidgetProcessor.new
+      widget = LeadTimePercentileSummaryWidgetRenderer.new
 
-      widget.process @work_items
+      widget.prepare @work_items
       output = widget.build_output_hash
 
       check_output(output)
@@ -69,8 +69,8 @@ class TestLeadTimePercentileSummaryWidgetProcessor < Minitest::Test
     end
 
     should 'output percentile' do
-      widget = LeadTimePercentileSummaryWidgetProcessor.new
-      widget.process @work_items
+      widget = LeadTimePercentileSummaryWidgetRenderer.new
+      widget.prepare @work_items
 
       send_event = MiniTest::Mock.new
       send_event.expect :call, nil, ['lead_times', widget.build_output_hash]

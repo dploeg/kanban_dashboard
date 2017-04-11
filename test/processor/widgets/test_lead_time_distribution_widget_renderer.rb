@@ -3,11 +3,11 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../../lib/processor/widgets/lead_time_percentile_summary_widget_processor'
+require_relative '../../../lib/processor/widgets/lead_time_percentile_summary_widget_renderer'
 require_relative '../../../lib/model/work_item'
 require_relative '../../test_constants'
 
-class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
+class TestLeadTimeDistributionWidgetRenderer < Minitest::Test
   include TestConstants
 
   context 'LeadTimeDistributionWidgetProcessor' do
@@ -99,8 +99,8 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
 
 
     should 'call send_event' do
-      widget = LeadTimeDistributionWidgetProcessor.new
-      widget.process @work_items
+      widget = LeadTimeDistributionWidgetRenderer.new
+      widget.prepare @work_items
 
       send_event = MiniTest::Mock.new
       send_event.expect :call, nil, ['lead_time_distribution', widget.build_output_hash]
@@ -115,8 +115,8 @@ class TestLeadTimeDistributionWidgetProcessor < Minitest::Test
   end
 
   private def process_and_build_output_hash
-    widget = LeadTimeDistributionWidgetProcessor.new
-    widget.process @work_items
+    widget = LeadTimeDistributionWidgetRenderer.new
+    widget.prepare @work_items
 
     widget.build_output_hash
   end
