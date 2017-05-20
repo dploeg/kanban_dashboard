@@ -7,6 +7,14 @@
   :target_complete_date: 25/5/16
   :risks:
     -
-      :likelihood: 10
+      :likelihood: 20
       :impact_low: 5
       :impact_high: 10
+    -
+      :likelihood: 30
+      :impact_low: 20
+      :impact_high: 30
+    -
+      :likelihood: 75
+      :impact_low: 10
+      :impact_high: 15

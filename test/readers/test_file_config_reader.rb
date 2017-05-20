@@ -29,5 +29,17 @@ class TestFileConfigReader < Minitest::Test
         assert_equal expected, config
       end
 
+      should 'read a multi-level hash with risk values' do
+        reader = FileConfigReader.new('test/fixtures/files/config/risk_config.yaml')
+        config = reader.read_config
+        expected = {:forecast_config =>{:start_date =>"10/3/16", :min_number_of_stories =>30, :max_number_of_stories =>30,
+                                        :story_split_rate_low=> 1.0, :story_split_rate_high =>  1.0, :target_complete_date => "25/5/16",
+                                        :risks => [{:likelihood => 20, :impact_low => 5, :impact_high=> 10},
+                                                   {:likelihood => 30, :impact_low => 20, :impact_high=> 30},
+                                                   {:likelihood => 75, :impact_low => 10, :impact_high=> 15}]
+        }}
+        assert_equal expected, config
+
+      end
     end
 end

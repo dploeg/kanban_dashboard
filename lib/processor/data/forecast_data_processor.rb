@@ -25,23 +25,23 @@ class ForecastDataProcessor
 
   private def populate_forecasts(forecast_input, samples)
     (0..100).step(5) do |percentile_value|
-      duration_weeks = samples.percentile(percentile_value).to_i
-      complete_date = Date.strptime(forecast_input.start_date, WorkItem::DATE_FORMAT) + duration_weeks*7
-      forecast_value = Forecast.new(:percentile => percentile_value, :duration_weeks => duration_weeks, :complete_date => complete_date.strftime(WorkItem::DATE_FORMAT))
+      duration_weeks                                            = samples.percentile(percentile_value).to_i
+      complete_date                                             = Date.strptime(forecast_input.start_date, WorkItem::DATE_FORMAT) + duration_weeks*7
+      forecast_value                                            = Forecast.new(:percentile => percentile_value, :duration_weeks => duration_weeks, :complete_date => complete_date.strftime(WorkItem::DATE_FORMAT))
       @forecasts[("percentile" + percentile_value.to_s).to_sym] = forecast_value
     end
   end
 
   private def generate_samples(forecast_input, completed_items)
-    samples = Array.new
-    completed_values = completed_items.values
+    samples            = Array.new
+    completed_values   = completed_items.values
 
     (1..MAX_SAMPLES).each {
       stories_left = calculate_stories_to_sample(forecast_input)
-      weeks_taken = 0
+      weeks_taken  = 0
       while stories_left >= 0
         stories_left = stories_left - sample(completed_values)
-        weeks_taken+=1
+        weeks_taken  +=1
       end
       samples.push(weeks_taken)
     }
@@ -50,10 +50,37 @@ class ForecastDataProcessor
 
   def calculate_stories_to_sample(forecast_input)
     unless forecast_input.story_split_rate_low.nil? || forecast_input.story_split_rate_high.nil?
-      random_story_value_from_range(forecast_input.min_number_of_stories, forecast_input.max_number_of_stories) * random_split(forecast_input)
+      random_story_value_from_range_with_risk(forecast_input.min_number_of_stories, forecast_input.max_number_of_stories, forecast_input) * random_split(forecast_input)
     else
-      random_story_value_from_range(forecast_input.min_number_of_stories, forecast_input.max_number_of_stories)
+      random_story_value_from_range_with_risk(forecast_input.min_number_of_stories, forecast_input.max_number_of_stories, forecast_input)
     end
+  end
+
+  #pulled this out into a separate method to create seam in order to mock random values
+  private def random_story_value_from_range_with_risk(min, max, forecast_input)
+    risk_stories = calculate_random_risk_stories(forecast_input)
+    risked_min = min + risk_stories
+
+    if max.nil?
+      risked_min
+    elsif max + risk_stories
+      risked_min
+    else
+      rand(risked_min..(max + risk_stories))
+    end
+  end
+
+  private def calculate_random_risk_stories(forecast_input)
+    risk_stories = 0
+    unless forecast_input.risks.nil? || forecast_input.risks.empty?
+      forecast_input.risks.each { |risk|
+        if process_risk?(risk)
+          risk_stories += determine_risk_stories(risk)
+        end
+      }
+    end
+
+    risk_stories
   end
 
   #pulled this out into a separate method to create seam in order to mock random values
@@ -77,5 +104,15 @@ class ForecastDataProcessor
     else
       rand(min..max)
     end
+  end
+
+  #pulled this out into a separate method to create seam in order to mock random values
+  private def process_risk?(risk)
+    rand(100) <= risk[:likelihood]
+  end
+
+  #pulled this out into a separate method to create seam in order to mock random values
+  private def determine_risk_stories(risk)
+    rand(risk[:impact_low]...risk[:impact_high])
   end
 end
