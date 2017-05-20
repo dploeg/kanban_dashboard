@@ -1,11 +1,11 @@
 require 'dashing/app'
 require 'descriptive_statistics'
 
-require_relative '../../lib/renderer/widget_renderer'
+require_relative '../../lib/renderer/base_renderer'
 require_relative '../../lib/renderer/data/chart_data_builder'
 require_relative '../processor/processor_utils'
 
-class ControlChartWidgetRenderer < WidgetRenderer
+class ControlChartRenderer < BaseRenderer
   include ProcessorUtils, ChartDataBuilder
 
   MAX_X_AXIS_STEPS = 20

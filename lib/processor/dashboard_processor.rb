@@ -2,10 +2,10 @@
 
 class DashboardProcessor
 
-  def initialize(data_reader, config_reader, widget_processors, data_processors)
-    @data_reader = data_reader
-    @config_reader = config_reader
-    @widget_processors = widget_processors
+  def initialize(data_reader, config_reader, renderers, data_processors)
+    @data_reader     = data_reader
+    @config_reader   = config_reader
+    @renderers       = renderers
     @data_processors = data_processors
   end
 
@@ -18,9 +18,9 @@ class DashboardProcessor
     @data_processors.each { |data_processor|
       data = data.merge(data_processor.process(work_items, config, data))
     }
-    @widget_processors.each { |widget|
-      widget.prepare(work_items, config, data)
-      widget.output
+    @renderers.each { |renderer|
+      renderer.prepare(work_items, config, data)
+      renderer.output
     }
   end
 

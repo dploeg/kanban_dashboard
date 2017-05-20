@@ -1,8 +1,8 @@
 require 'dashing/app'
-require_relative '../../lib/renderer/widget_renderer'
+require_relative '../../lib/renderer/base_renderer'
 require_relative '../../lib/renderer/data/chart_data_builder'
 
-class ThroughputWidgetRenderer < WidgetRenderer
+class ThroughputRenderer < BaseRenderer
   include ChartDataBuilder
 
   def initialize(number_of_x_axis_labels = 20)

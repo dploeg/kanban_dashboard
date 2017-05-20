@@ -1,5 +1,5 @@
 
-class WidgetRenderer
+class BaseRenderer
 
   def initialize(widget_name)
     @widget_name = widget_name

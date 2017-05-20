@@ -4,9 +4,9 @@ require 'shoulda/matchers'
 require 'shoulda/context'
 
 require_relative '../../lib/model/forecast'
-require_relative '../../lib/renderer/forecast_vs_target_widget_renderer'
+require_relative '../../lib/renderer/forecast_vs_target_renderer'
 
-class TestForecastVsTargetWidgetRenderer < Minitest::Test
+class TestForecastVsTargetRenderer < Minitest::Test
 
   context 'rendering' do
 
@@ -140,10 +140,10 @@ class TestForecastVsTargetWidgetRenderer < Minitest::Test
   end
 
   private def process_and_build_output_hash
-    widget = ForecastVsTargetWidgetRenderer.new
-    widget.prepare @work_items, @configuration, @data
+    renderer = ForecastVsTargetRenderer.new
+    renderer.prepare @work_items, @configuration, @data
 
-    widget.build_output_hash
+    renderer.build_output_hash
   end
 
   private def check_number_of_data_elements(output_hash)

@@ -4,13 +4,13 @@ require 'shoulda/matchers'
 require 'shoulda/context'
 
 require_relative '../../lib/model/work_item'
-require_relative '../../lib/renderer/started_vs_completed_widget_renderer'
+require_relative '../../lib/renderer/started_vs_completed_renderer'
 require_relative 'started_vs_completed_test_helper'
 
-class TestStartedVsCompletedWidgetRenderer < Minitest::Test
+class TestStartedVsCompletedRenderer < Minitest::Test
   include StartedVsCompletedTestHelper
 
-  context 'StartedVsCompletedWidgetProcessor' do
+  context 'StartedVsCompletedRenderer' do
     setup do
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")]
       @data = {:started => {"2016-10"=>1, "2016-11"=>0, "2016-12"=>0}, :completed => {"2016-10"=>0, "2016-11"=>0, "2016-12"=>1}}
@@ -141,13 +141,13 @@ class TestStartedVsCompletedWidgetRenderer < Minitest::Test
     end
 
     should "create output" do
-      widget = StartedVsCompletedWidgetRenderer.new
-      widget.prepare @work_items, nil, @data
+      renderer = StartedVsCompletedRenderer.new
+      renderer.prepare @work_items, nil, @data
 
       send_event = MiniTest::Mock.new
-      send_event.expect :call, nil, ['started_vs_completed', widget.build_output_hash]
-      widget.stub :send_event, send_event do
-        widget.output
+      send_event.expect :call, nil, ['started_vs_completed', renderer.build_output_hash]
+      renderer.stub :send_event, send_event do
+        renderer.output
       end
 
       send_event.verify
@@ -155,9 +155,9 @@ class TestStartedVsCompletedWidgetRenderer < Minitest::Test
   end
 
   private def process_and_build_output_hash
-    widget = StartedVsCompletedWidgetRenderer.new
-    widget.prepare @work_items, nil, @data
+    renderer = StartedVsCompletedRenderer.new
+    renderer.prepare @work_items, nil, @data
 
-    widget.build_output_hash
+    renderer.build_output_hash
   end
 end

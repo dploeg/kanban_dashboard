@@ -3,14 +3,14 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../lib/renderer/lead_time_percentile_summary_widget_renderer'
+require_relative '../../lib/renderer/lead_time_percentile_summary_renderer'
 require_relative '../../lib/model/work_item'
 require_relative '../test_constants'
 
-class TestLeadTimeDistributionWidgetRenderer < Minitest::Test
+class TestLeadTimeDistributionRenderer < Minitest::Test
   include TestConstants
 
-  context 'LeadTimeDistributionWidgetProcessor' do
+  context 'LeadTimeDistributionRenderer' do
 
     setup do
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"),
@@ -99,13 +99,13 @@ class TestLeadTimeDistributionWidgetRenderer < Minitest::Test
 
 
     should 'call send_event' do
-      widget = LeadTimeDistributionWidgetRenderer.new
-      widget.prepare @work_items
+      renderer = LeadTimeDistributionRenderer.new
+      renderer.prepare @work_items
 
       send_event = MiniTest::Mock.new
-      send_event.expect :call, nil, ['lead_time_distribution', widget.build_output_hash]
-      widget.stub :send_event, send_event do
-        widget.output
+      send_event.expect :call, nil, ['lead_time_distribution', renderer.build_output_hash]
+      renderer.stub :send_event, send_event do
+        renderer.output
       end
 
       send_event.verify
@@ -115,10 +115,10 @@ class TestLeadTimeDistributionWidgetRenderer < Minitest::Test
   end
 
   private def process_and_build_output_hash
-    widget = LeadTimeDistributionWidgetRenderer.new
-    widget.prepare @work_items
+    renderer = LeadTimeDistributionRenderer.new
+    renderer.prepare @work_items
 
-    widget.build_output_hash
+    renderer.build_output_hash
   end
 
   private def check_output(output)

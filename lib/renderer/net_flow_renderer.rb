@@ -1,9 +1,9 @@
-require_relative '../../lib/renderer/widget_renderer'
+require_relative '../../lib/renderer/base_renderer'
 require_relative '../../lib/renderer/data/chart_data_builder'
 
 require 'dashing/app'
 
-class NetFlowWidgetRenderer < WidgetRenderer
+class NetFlowRenderer < BaseRenderer
   include ChartDataBuilder
 
   def initialize

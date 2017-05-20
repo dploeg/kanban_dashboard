@@ -3,13 +3,13 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../lib/renderer/lead_time_distribution_widget_renderer'
+require_relative '../../lib/renderer/lead_time_distribution_renderer'
 require_relative '../test_constants'
 
-class TestLeadTimePercentileSummaryWidgetRenderer < Minitest::Test
+class TestLeadTimePercentileSummaryRenderer < Minitest::Test
   include TestConstants
 
-  context 'LeadTimePercentileSummaryWidgetProcessor' do
+  context 'LeadTimePercentileSummaryRenderer' do
 
     setup do
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"),
@@ -32,50 +32,50 @@ class TestLeadTimePercentileSummaryWidgetRenderer < Minitest::Test
 
     end
 
-    should 'process 95th percentile for widget' do
-      widget = LeadTimePercentileSummaryWidgetRenderer.new
-      widget.prepare @work_items
+    should 'process 95th percentile for renderer' do
+      renderer = LeadTimePercentileSummaryRenderer.new
+      renderer.prepare @work_items
 
-      assert_equal 32, widget.lead_time_95th_percentile
-      assert_equal 32, widget.lead_time_95th_percentile(STANDARD)
-      assert_equal 8, widget.lead_time_95th_percentile(EXPEDITE)
-      assert_equal 21, widget.lead_time_95th_percentile(FIXED_DATE)
-      assert_equal 28, widget.lead_time_95th_percentile(INTANGIBLE)
+      assert_equal 32, renderer.lead_time_95th_percentile
+      assert_equal 32, renderer.lead_time_95th_percentile(STANDARD)
+      assert_equal 8, renderer.lead_time_95th_percentile(EXPEDITE)
+      assert_equal 21, renderer.lead_time_95th_percentile(FIXED_DATE)
+      assert_equal 28, renderer.lead_time_95th_percentile(INTANGIBLE)
     end
 
     context "incomplete data" do
 
       should "filter items without a complete date" do
         @work_items.push(WorkItem.new(:start_date => "12/4/16"), WorkItem.new(:start_date => "12/4/16"), WorkItem.new(:start_date => "12/4/16"), WorkItem.new(:start_date => "12/4/16"))
-        widget = LeadTimePercentileSummaryWidgetRenderer.new
-        widget.prepare @work_items
+        renderer = LeadTimePercentileSummaryRenderer.new
+        renderer.prepare @work_items
 
-        assert_equal 32, widget.lead_time_95th_percentile
-        assert_equal 32, widget.lead_time_95th_percentile(STANDARD)
-        assert_equal 8, widget.lead_time_95th_percentile(EXPEDITE)
-        assert_equal 21, widget.lead_time_95th_percentile(FIXED_DATE)
-        assert_equal 28, widget.lead_time_95th_percentile(INTANGIBLE)
+        assert_equal 32, renderer.lead_time_95th_percentile
+        assert_equal 32, renderer.lead_time_95th_percentile(STANDARD)
+        assert_equal 8, renderer.lead_time_95th_percentile(EXPEDITE)
+        assert_equal 21, renderer.lead_time_95th_percentile(FIXED_DATE)
+        assert_equal 28, renderer.lead_time_95th_percentile(INTANGIBLE)
       end
     end
 
     should 'builds output map' do
-      widget = LeadTimePercentileSummaryWidgetRenderer.new
+      renderer = LeadTimePercentileSummaryRenderer.new
 
-      widget.prepare @work_items
-      output = widget.build_output_hash
+      renderer.prepare @work_items
+      output = renderer.build_output_hash
 
       check_output(output)
 
     end
 
     should 'output percentile' do
-      widget = LeadTimePercentileSummaryWidgetRenderer.new
-      widget.prepare @work_items
+      renderer = LeadTimePercentileSummaryRenderer.new
+      renderer.prepare @work_items
 
       send_event = MiniTest::Mock.new
-      send_event.expect :call, nil, ['lead_times', widget.build_output_hash]
-      widget.stub :send_event, send_event do
-        widget.output
+      send_event.expect :call, nil, ['lead_times', renderer.build_output_hash]
+      renderer.stub :send_event, send_event do
+        renderer.output
       end
 
       send_event.verify

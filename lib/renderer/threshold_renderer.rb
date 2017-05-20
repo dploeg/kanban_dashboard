@@ -1,7 +1,7 @@
 require 'dashing/app'
-require_relative '../../lib/renderer/widget_renderer'
+require_relative '../../lib/renderer/base_renderer'
 
-class ThresholdWidgetRenderer < WidgetRenderer
+class ThresholdRenderer < BaseRenderer
 
   def initialize(threshold_processor)
     super('thresholds')

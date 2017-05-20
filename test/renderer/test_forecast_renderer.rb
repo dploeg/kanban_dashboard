@@ -3,12 +3,12 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../lib/renderer/forecast_widget_renderer'
+require_relative '../../lib/renderer/forecast_renderer'
 require_relative '../../lib/model/forecast'
 
-class TestForecastWidgetRenderer < Minitest::Test
+class TestForecastRenderer < Minitest::Test
 
-  context 'ForecastWidgetProcessor' do
+  context 'ForecastRenderer' do
 
     setup do
       @work_items = []
@@ -38,10 +38,10 @@ class TestForecastWidgetRenderer < Minitest::Test
     end
 
     should 'build output hash' do
-      widget = ForecastWidgetRenderer.new
+      renderer = ForecastRenderer.new
 
-      widget.prepare(@work_items, @configuration, @data)
-      output_hash = widget.build_output_hash
+      renderer.prepare(@work_items, @configuration, @data)
+      output_hash = renderer.build_output_hash
 
       assert_equal 2, output_hash.size
       check_output(output_hash)
@@ -50,13 +50,13 @@ class TestForecastWidgetRenderer < Minitest::Test
     should 'call send_event' do
       @completed_items = {"2016-10" => 0, "2016-11" => 0, "2016-12" => 1}
 
-      widget = ForecastWidgetRenderer.new
-      widget.prepare(@work_items, @configuration, @data)
+      renderer = ForecastRenderer.new
+      renderer.prepare(@work_items, @configuration, @data)
 
       send_event = MiniTest::Mock.new
-      send_event.expect :call, nil, ['forecast', widget.build_output_hash]
-      widget.stub :send_event, send_event do
-        widget.output
+      send_event.expect :call, nil, ['forecast', renderer.build_output_hash]
+      renderer.stub :send_event, send_event do
+        renderer.output
       end
 
       send_event.verify

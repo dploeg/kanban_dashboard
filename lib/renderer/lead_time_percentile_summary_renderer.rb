@@ -2,10 +2,10 @@ require 'descriptive_statistics'
 require 'dashing/app'
 
 
-require_relative '../../lib/renderer/widget_renderer'
+require_relative '../../lib/renderer/base_renderer'
 require_relative '../processor/processor_utils'
 
-class LeadTimePercentileSummaryWidgetRenderer < WidgetRenderer
+class LeadTimePercentileSummaryRenderer < BaseRenderer
   include ProcessorUtils
 
 

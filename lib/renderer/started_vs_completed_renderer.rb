@@ -1,10 +1,10 @@
 require 'dashing/app'
 
-require_relative '../../lib/renderer/widget_renderer'
+require_relative '../../lib/renderer/base_renderer'
 require_relative '../../lib/renderer/data/chart_data_builder'
 require_relative '../processor/processor_utils'
 
-class StartedVsCompletedWidgetRenderer < WidgetRenderer
+class StartedVsCompletedRenderer < BaseRenderer
   include ChartDataBuilder
 
   def initialize

@@ -5,14 +5,14 @@ require 'shoulda/context'
 
 require_relative '../../lib/model/work_item'
 require_relative '../../lib/model/threshold_warning'
-require_relative '../../lib/renderer/threshold_widget_renderer'
+require_relative '../../lib/renderer/threshold_renderer'
 require_relative '../test_constants'
 
-class TestThresholdWidgetRenderer < Minitest::Test
+class TestThresholdRenderer < Minitest::Test
   include TestConstants
 
 
-  context 'TestThresholdWidgetProcessor' do
+  context 'ThresholdRenderer' do
 
     setup do
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16"),
@@ -41,9 +41,9 @@ class TestThresholdWidgetRenderer < Minitest::Test
       @threshold_processor = MiniTest::Mock.new
       @threshold_processor.expect :process, @warnings, [@work_items]
 
-      widget = ThresholdWidgetRenderer.new(@threshold_processor)
+      renderer = ThresholdRenderer.new(@threshold_processor)
 
-      widget.prepare(@work_items)
+      renderer.prepare(@work_items)
 
       @threshold_processor.verify
     end
@@ -53,13 +53,13 @@ class TestThresholdWidgetRenderer < Minitest::Test
       @threshold_processor = MiniTest::Mock.new
       @threshold_processor.expect :process, [], [@work_items]
 
-      widget = ThresholdWidgetRenderer.new(@threshold_processor)
+      renderer = ThresholdRenderer.new(@threshold_processor)
 
-      widget.prepare(@work_items)
+      renderer.prepare(@work_items)
 
       @threshold_processor.verify
 
-      output_hash = widget.build_output_hash
+      output_hash = renderer.build_output_hash
       check_output_hash_for_no_warnings(output_hash)
     end
 
@@ -67,13 +67,13 @@ class TestThresholdWidgetRenderer < Minitest::Test
       @threshold_processor = MiniTest::Mock.new
       @threshold_processor.expect :process, @warnings, [@work_items]
 
-      widget = ThresholdWidgetRenderer.new(@threshold_processor)
+      renderer = ThresholdRenderer.new(@threshold_processor)
 
-      widget.prepare(@work_items)
+      renderer.prepare(@work_items)
 
       @threshold_processor.verify
 
-      output_hash = widget.build_output_hash
+      output_hash = renderer.build_output_hash
       check_output_hash_for_warnings(output_hash)
     end
 
@@ -81,13 +81,13 @@ class TestThresholdWidgetRenderer < Minitest::Test
       @threshold_processor = MiniTest::Mock.new
       @threshold_processor.expect :process, @warnings, [@work_items]
 
-      widget = ThresholdWidgetRenderer.new(@threshold_processor)
-      widget.prepare(@work_items)
+      renderer = ThresholdRenderer.new(@threshold_processor)
+      renderer.prepare(@work_items)
 
       send_event = MiniTest::Mock.new
-      send_event.expect :call, nil, ['thresholds', widget.build_output_hash]
-      widget.stub :send_event, send_event do
-        widget.output
+      send_event.expect :call, nil, ['thresholds', renderer.build_output_hash]
+      renderer.stub :send_event, send_event do
+        renderer.output
       end
 
       send_event.verify

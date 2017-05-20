@@ -3,14 +3,14 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../lib/renderer/control_chart_widget_renderer'
+require_relative '../../lib/renderer/control_chart_renderer'
 require_relative '../../lib/model/work_item'
 require_relative '../test_constants'
 
-class TestControlChartWidgetRenderer < Minitest::Test
+class TestControlChartRenderer < Minitest::Test
   include TestConstants
 
-  context 'ControlChartWidgetProcessor' do
+  context 'ControlChartRenderer' do
 
     setup do
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")]
@@ -194,13 +194,13 @@ class TestControlChartWidgetRenderer < Minitest::Test
     end
 
     should "output" do
-      widget = ControlChartWidgetRenderer.new
-      widget.prepare @work_items
+      renderer = ControlChartRenderer.new
+      renderer.prepare @work_items
 
       send_event = MiniTest::Mock.new
-      send_event.expect :call, nil, ['control_chart', widget.build_output_hash]
-      widget.stub :send_event, send_event do
-        widget.output
+      send_event.expect :call, nil, ['control_chart', renderer.build_output_hash]
+      renderer.stub :send_event, send_event do
+        renderer.output
       end
 
       send_event.verify
@@ -225,10 +225,10 @@ class TestControlChartWidgetRenderer < Minitest::Test
                      WorkItem.new(:start_date => "13/4/16", :complete_date => "12/5/16", :class_of_service => TestConstants::INTANGIBLE), #15
       ]
 
-      widget = ControlChartWidgetRenderer.new
-      widget.prepare @work_items
+      renderer = ControlChartRenderer.new
+      renderer.prepare @work_items
 
-      output_hash = widget.build_output_hash
+      output_hash = renderer.build_output_hash
       assert_equal 8, output_hash[:datasets].size
 
       check_CoS_labels(output_hash)
@@ -267,9 +267,9 @@ class TestControlChartWidgetRenderer < Minitest::Test
                        WorkItem.new(:start_date => "3/4/16", :complete_date => "12/4/16")
         ]
 
-        widget = ControlChartWidgetRenderer.new
-        widget.prepare @work_items
-        output_hash = widget.build_output_hash
+        renderer = ControlChartRenderer.new
+        renderer.prepare @work_items
+        output_hash = renderer.build_output_hash
         assert_equal 2, output_hash[:datasets].size
 
         check_percentile_line_base_data(output_hash[:datasets][1], STANDARD, "#F7464A")
@@ -295,10 +295,10 @@ class TestControlChartWidgetRenderer < Minitest::Test
                        WorkItem.new(:start_date => "13/4/16", :complete_date => "12/5/16", :class_of_service => TestConstants::INTANGIBLE), #15
         ]
 
-        widget = ControlChartWidgetRenderer.new
-        widget.prepare @work_items
+        renderer = ControlChartRenderer.new
+        renderer.prepare @work_items
 
-        output_hash = widget.build_output_hash
+        output_hash = renderer.build_output_hash
         assert_equal 8, output_hash[:datasets].size
         check_percentile_line_base_data(output_hash[:datasets][4], STANDARD, "#F7464A")
         check_percentile_line_base_data(output_hash[:datasets][5], EXPEDITE, "#F79B46")
@@ -330,10 +330,10 @@ class TestControlChartWidgetRenderer < Minitest::Test
   end
 
   private def process_and_build_output_hash
-    widget = ControlChartWidgetRenderer.new
-    widget.prepare @work_items
+    renderer = ControlChartRenderer.new
+    renderer.prepare @work_items
 
-    widget.build_output_hash
+    renderer.build_output_hash
   end
 
   private def check_CoS_labels(output_hash)

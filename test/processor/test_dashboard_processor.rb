@@ -17,11 +17,11 @@ class TestDashboardProcessor < Minitest::Test
       setup_work_items
       setup_readers
       setup_data_processors
-      setup_widget_processors
+      setup_renderers
     end
 
     should 'read data from file' do
-      @processor = DashboardProcessor.new(@data_reader, @config_reader, @widget_processors, @data_processors)
+      @processor = DashboardProcessor.new(@data_reader, @config_reader, @renderers, @data_processors)
       @processor.process_dashboards
 
       @data_reader.verify
@@ -50,13 +50,13 @@ class TestDashboardProcessor < Minitest::Test
     @data_processors = [@first_data_processor, @second_data_processor]
   end
 
-  private def setup_widget_processors
-    @first_widget_processor = MiniTest::Mock.new
+  private def setup_renderers
+    @first_widget_processor  = MiniTest::Mock.new
     @second_widget_processor = MiniTest::Mock.new
     process_work_items(@first_widget_processor)
     process_work_items(@second_widget_processor)
 
-    @widget_processors = [@first_widget_processor, @second_widget_processor]
+    @renderers = [@first_widget_processor, @second_widget_processor]
   end
 
   private def process_work_items(widget_processor)

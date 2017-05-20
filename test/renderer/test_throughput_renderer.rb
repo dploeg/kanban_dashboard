@@ -3,15 +3,15 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../lib/renderer/lead_time_percentile_summary_widget_renderer'
+require_relative '../../lib/renderer/lead_time_percentile_summary_renderer'
 require_relative '../../lib/model/work_item'
 require_relative 'started_vs_completed_test_helper'
 require_relative '../test_constants'
 
-class TestThroughputWidgetRenderer < Minitest::Test
+class TestThroughputRenderer < Minitest::Test
   include TestConstants
 
-  context 'ThroughputWidgetProcessor' do
+  context 'ThroughputRenderer' do
 
     setup do
       @work_items = [WorkItem.new(:start_date => "10/3/16", :complete_date => "21/3/16")]
@@ -24,10 +24,10 @@ class TestThroughputWidgetRenderer < Minitest::Test
     end
 
     should 'allow alternate x axis values' do
-      widget = ThroughputWidgetRenderer.new(10)
-      widget.prepare @work_items, nil, @data
+      renderer = ThroughputRenderer.new(10)
+      renderer.prepare @work_items, nil, @data
 
-      output = widget.build_output_hash
+      output = renderer.build_output_hash
 
       assert_equal 10, output[:labels].size
     end
@@ -42,13 +42,13 @@ class TestThroughputWidgetRenderer < Minitest::Test
     end
 
     should 'call send_event' do
-      widget = ThroughputWidgetRenderer.new
-      widget.prepare @work_items, nil, @data
+      renderer = ThroughputRenderer.new
+      renderer.prepare @work_items, nil, @data
 
       send_event = MiniTest::Mock.new
-      send_event.expect :call, nil, ['throughput', widget.build_output_hash]
-      widget.stub :send_event, send_event do
-        widget.output
+      send_event.expect :call, nil, ['throughput', renderer.build_output_hash]
+      renderer.stub :send_event, send_event do
+        renderer.output
       end
 
       send_event.verify
@@ -57,10 +57,10 @@ class TestThroughputWidgetRenderer < Minitest::Test
   end
 
   private def process_and_build_output_hash
-    widget = ThroughputWidgetRenderer.new
-    widget.prepare @work_items, nil, @data
+    renderer = ThroughputRenderer.new
+    renderer.prepare @work_items, nil, @data
 
-    widget.build_output_hash
+    renderer.build_output_hash
   end
 
   private def check_output(output)

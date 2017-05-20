@@ -1,7 +1,7 @@
 require 'dashing/app'
-require_relative 'widget_renderer'
+require_relative 'base_renderer'
 
-class ForecastWidgetRenderer < WidgetRenderer
+class ForecastRenderer < BaseRenderer
 
   def initialize
     super('forecast')
