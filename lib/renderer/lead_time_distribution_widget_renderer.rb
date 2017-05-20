@@ -1,6 +1,6 @@
 require 'dashing/app'
-require_relative '../../../lib/processor/widgets/widget_renderer'
-require_relative '../../../lib/processor/widgets/data/chart_data_builder'
+require_relative '../../lib/renderer/widget_renderer'
+require_relative '../../lib/renderer/data/chart_data_builder'
 
 class LeadTimeDistributionWidgetRenderer < WidgetRenderer
   include ChartDataBuilder

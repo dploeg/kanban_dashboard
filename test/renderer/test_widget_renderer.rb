@@ -3,8 +3,8 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../../lib/model/work_item'
-require_relative '../../../lib/processor/widgets/widget_renderer'
+require_relative '../../lib/model/work_item'
+require_relative '../../lib/renderer/widget_renderer'
 
 class TestWidgetRenderer < Minitest::Test
 

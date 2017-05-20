@@ -3,8 +3,8 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../../lib/model/work_item'
-require_relative '../../../lib/processor/widgets/net_flow_widget_renderer'
+require_relative '../../lib/model/work_item'
+require_relative '../../lib/renderer/net_flow_widget_renderer'
 require_relative 'started_vs_completed_test_helper'
 
 class TestNetFlowWidgetRenderer < Minitest::Test

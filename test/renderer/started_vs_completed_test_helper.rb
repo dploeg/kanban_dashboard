@@ -3,8 +3,8 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../../lib/model/work_item'
-require_relative '../../../lib/processor/widgets/started_vs_completed_widget_renderer'
+require_relative '../../lib/model/work_item'
+require_relative '../../lib/renderer/started_vs_completed_widget_renderer'
 
 module StartedVsCompletedTestHelper
 

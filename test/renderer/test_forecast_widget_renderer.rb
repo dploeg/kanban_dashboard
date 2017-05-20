@@ -3,8 +3,8 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../../lib/processor/widgets/forecast_widget_renderer'
-require_relative '../../../lib/model/forecast'
+require_relative '../../lib/renderer/forecast_widget_renderer'
+require_relative '../../lib/model/forecast'
 
 class TestForecastWidgetRenderer < Minitest::Test
 

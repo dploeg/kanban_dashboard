@@ -3,10 +3,10 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../../lib/processor/widgets/lead_time_percentile_summary_widget_renderer'
-require_relative '../../../lib/model/work_item'
-require_relative '../../../test/processor/widgets/started_vs_completed_test_helper'
-require_relative '../../test_constants'
+require_relative '../../lib/renderer/lead_time_percentile_summary_widget_renderer'
+require_relative '../../lib/model/work_item'
+require_relative 'started_vs_completed_test_helper'
+require_relative '../test_constants'
 
 class TestThroughputWidgetRenderer < Minitest::Test
   include TestConstants

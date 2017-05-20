@@ -3,9 +3,9 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../../lib/processor/widgets/control_chart_widget_renderer'
-require_relative '../../../lib/model/work_item'
-require_relative '../../test_constants'
+require_relative '../../lib/renderer/control_chart_widget_renderer'
+require_relative '../../lib/model/work_item'
+require_relative '../test_constants'
 
 class TestControlChartWidgetRenderer < Minitest::Test
   include TestConstants

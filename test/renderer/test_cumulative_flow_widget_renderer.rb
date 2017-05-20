@@ -3,10 +3,10 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../../lib/model/work_item'
-require_relative '../../test_constants'
-require_relative '../../../lib/processor/widgets/cumulative_flow_widget_renderer'
-require_relative '../../../test/processor/widgets/started_vs_completed_test_helper'
+require_relative '../../lib/model/work_item'
+require_relative '../test_constants'
+require_relative '../../lib/renderer/cumulative_flow_widget_renderer'
+require_relative '../../test/renderer/started_vs_completed_test_helper'
 
 class TestCumulativeFlowWidgetRenderer < Minitest::Test
   include TestConstants, StartedVsCompletedTestHelper

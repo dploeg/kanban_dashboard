@@ -1,6 +1,6 @@
 require 'dashing/app'
 require_relative 'widget_renderer'
-require_relative '../../../lib/model/work_item'
+require_relative '../../lib/model/work_item'
 
 class ForecastVsTargetWidgetRenderer < WidgetRenderer
 

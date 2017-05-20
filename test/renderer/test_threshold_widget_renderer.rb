@@ -3,10 +3,10 @@ require 'minitest/mock'
 require 'shoulda/matchers'
 require 'shoulda/context'
 
-require_relative '../../../lib/model/work_item'
-require_relative '../../../lib/model/threshold_warning'
-require_relative '../../../lib/processor/widgets/threshold_widget_renderer'
-require_relative '../../test_constants'
+require_relative '../../lib/model/work_item'
+require_relative '../../lib/model/threshold_warning'
+require_relative '../../lib/renderer/threshold_widget_renderer'
+require_relative '../test_constants'
 
 class TestThresholdWidgetRenderer < Minitest::Test
   include TestConstants
