@@ -33,7 +33,7 @@ This has been written in such a way that we can potentially hook this up to any 
 all that exists so far.
  
  
-##Example site
+## Example site
 An example site is available on Heroku:
 https://intense-retreat-30395.herokuapp.com/dashboard 
 
