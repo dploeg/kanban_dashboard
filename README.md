@@ -32,6 +32,10 @@ This has been written in such a way that we can potentially hook this up to any 
 \- we just need to write an adapter to read out the information from the particular source. A very basic one for Jira is 
 all that exists so far.
  
+ 
+##Example site
+An example site is available on Heroku:
+https://intense-retreat-30395.herokuapp.com/dashboard 
 
 ## Technical stuff
  
